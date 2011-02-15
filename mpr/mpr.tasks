@@ -1,0 +1,14 @@
+-- -*- lua -*-
+-- $Id: mpr.tasks 194 2008-06-25 21:43:50Z mclay $ --
+
+function taskMain()
+   task{"ReadProject"}
+   task{"CmdLineOptions"}
+   local masterTbl = masterTbl()
+
+   task{"BuildMpprunCmd"}
+   return 0
+
+end
+
+

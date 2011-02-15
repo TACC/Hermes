@@ -1,0 +1,41 @@
+* Runscript and build problems:
+  Want to use lua as configuration files for building and running.  So
+  things like what the compiler is called (mpiCC, g++, etc), compiler
+  flags how to run in parallel (mpirun,  mprun, etc)
+
+  Want a configuration system like this:
+
+  a) Unix.lua
+  b) $os-$mach.lua
+  c) $hostname.lua (optional)
+  d) $class.lua    (optional, specified by $hostname.lua if needed)
+
+  So the conf files are read from Unix.lua on down
+
+  Then a lua script (like build or tm) reads in the configuration
+  files and in build's case produces include files (rules, etc).
+  In tm case, it helps convert the generic commands in the runscript to commands for
+  the current platform.
+
+* Idea for testing the runtest system (epr, hermes, ...)
+  Specify an option to ETM or tm (say --rtest) which marks blocks
+  of the output that can be compared like the way that comptool and
+  mgflo work.  
+
+  Inside those blocks if there are things like runtimes or time or
+  date or version number, etc, then wrap them in special sequence
+  (like %%string%% or [string] or maybe <<string>> or %<%string%>% (I
+  like <<string>>)
+  
+  
+    
+
+
+
+
+*End
+
+# Local Variables:
+# mode: outline
+# end:
+

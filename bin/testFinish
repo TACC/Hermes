@@ -1,0 +1,5 @@
+#!/bin/sh
+# -*- shell-script -*-
+
+lua_cmd $0 "$@"
+

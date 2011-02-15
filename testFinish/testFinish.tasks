@@ -1,0 +1,9 @@
+-- -*- lua -*-
+-- $Id: testFinish.tasks 194 2008-06-25 21:43:50Z mclay $ --
+
+function taskMain()
+   task{"ReadProject"}  -- Project file shows top of dir tree
+   task{"CmdLineOptions"}   
+   task{"Finish"}
+   return 0
+end

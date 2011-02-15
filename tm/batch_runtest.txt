@@ -1,0 +1,36 @@
+Batch Steps
+
+* build RunScript in string
+
+* Save Current Directory
+
+* cd to outputDir
+
+* Write initial resultFn and runtimeFn
+
+* Create scriptFn
+
+* Report scriptFn submitted no pass/fail count
+
+* The scriptFn must convert cmdResultFn and Generate resultFn  and runtimeFn
+  (Auto generated?)
+
+* Done
+
+
+
+
+------------------------------------------------------------------------
+Q:
+
+1) Where do scripts run?
+
+   If a runscript runs make should it work?
+
+2) Is there any way to be signaled if a job times out?
+
+3) Do I require that all test have alarms?
+
+4) Can alarms be implemented in shell scripts?
+
+5) Should runscript be in lua?

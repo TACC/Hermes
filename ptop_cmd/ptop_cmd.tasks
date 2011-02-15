@@ -1,0 +1,10 @@
+-- -*- lua -*-
+-- $Id$ --
+
+function taskMain()
+   task{"ReadProject"}
+   task{"ProjectTop"}
+   return masterTbl().status
+end
+
+

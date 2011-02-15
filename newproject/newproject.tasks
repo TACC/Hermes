@@ -1,0 +1,9 @@
+-- -*- lua -*-
+
+-- $Id: newproject.tasks 194 2008-06-25 21:43:50Z mclay $ -- 
+
+function taskMain()
+   task{"CmdLineOptions"}
+   task{"CreateProject"}
+   return 0
+end

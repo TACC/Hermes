@@ -1,0 +1,48 @@
+-- -*- lua -*-
+-- $Id: tm.tasks 312 2009-02-12 01:51:15Z mclay $ --
+
+function taskMain()
+   task{"CmdLineOptions"}   
+   task{"ReadProject"}  -- Project file shows top of dir tree
+   task{"Initialize"}
+   task{"FindTests", spanning=true} -- Get all tests
+   task{"BuildMasterTbl"}           -- initialize tagTbl and targetTbl
+
+   print("TM Version: "..Version)
+
+   local masterTbl = masterTbl()
+
+   for tag       in pairs(masterTbl.tagTbl)                do
+      for target in pairs(masterTbl.tagTbl[tag].targetTbl) do
+	 task{"SpecializeMasterTbl", target=target,tag=tag}
+	 task{"FindTests",spanning=false}       -- Get all tests for given tag, target
+	 task{"SelectTests"}                    -- Run the gauntlet (create rptTbl, tstTbl)
+	 
+	 if (masterTbl.generate) then
+	    task{"WriteTests"}                  -- Create "my.tests"
+	    return 0
+	 end
+	 task{"CreateTestReport",target=target} -- Create initial report 
+      end
+   end
+   task{"ResetMasterTbl"}
+   task{"RunActiveTests"}               -- Run all active tests (if any)
+
+   if (masterTbl.rptTests == 0) then
+      print("\n*** No tests found! ***\n")
+      return -1
+   end
+   for tag       in pairs(masterTbl.tagTbl)                do
+      for target in pairs(masterTbl.tagTbl[tag].targetTbl) do
+	 local mTbl = masterTbl.tagTbl[tag].targetTbl[target]
+	 task{"AnalyzeTests",  masterTbl=mTbl} -- Review rptTbl
+	 task{"ReportResults", masterTbl=mTbl} -- Report result, human, voucher
+         masterTbl.errors = masterTbl.errors + mTbl.errors
+      end
+   end
+   for tag in pairs(masterTbl.tagTbl)    do
+      task{"ReportSpanResults",tag=tag}       -- Report result, human, voucher
+   end
+   task{"ReportAllResults"}                   -- Report human
+   return masterTbl.errors
+end

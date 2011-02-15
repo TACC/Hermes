@@ -1,0 +1,52 @@
+#!/bin/sh
+# -*- shell-script -*-
+cmdPath=$1
+cmdName=`expr "$cmdPath" : '.*/\(.*\)'`
+execDir=`expr "$cmdPath" : '\(.*\)/'`
+
+if [ -z $execDir ]; then
+  execDir="./"
+fi
+
+shift
+
+cwd=`pwd`
+cd $execDir
+projectDir=''
+done=0
+while [ $done != 1 ]; do
+  if [ -f Hermes.db ]; then
+    done=1
+    projectDir=`pwd`
+  else
+    cd ..
+    if [ `pwd` = '/' ]; then
+      echo Did not find 'Hermes.db', Hermes must be in a project.
+      exit;
+    fi
+  fi
+done
+
+cd $cwd
+
+
+execLuaPath="$projectDir/lib/?.lua"
+extra=
+if [ "x$LUA_PATH" != x ]; then
+  extra=";$LUA_PATH"
+else
+  extra=";`lua -e 'print(package.path)'`"
+fi
+
+export LUA_PATH="$execLuaPath$extra"
+
+#echo projectDir : $projectDir
+#echo LD_LIBRARY_PATH : $LD_LIBRARY_PATH
+#echo LUA_PATH : $LUA_PATH
+#echo LUA_CPATH : $LUA_CPATH
+#echo execDir  : $execDir
+#echo cmdPath  : $cmdPath
+#echo
+
+$projectDir/lib/tool.lua $cmdPath "$@"
+

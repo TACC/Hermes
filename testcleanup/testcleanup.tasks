@@ -1,0 +1,17 @@
+-- -*- lua -*-
+-- $Id: testcleanup.tasks 194 2008-06-25 21:43:50Z mclay $ --
+
+function taskMain()
+   task{"ReadProject"}
+   task{"Initialize"}
+
+   task{"CmdLineOptions"}
+   local masterTbl = masterTbl()
+
+
+   task{"FindAllTmFiles"}
+   task{"RemoveTestDirs"}
+   return 0
+end
+
+

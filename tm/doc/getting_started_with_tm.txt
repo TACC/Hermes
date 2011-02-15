@@ -1,0 +1,514 @@
+                       TM - Testing Manager
+                        by Robert McLay
+
+
+----------------------------------------------------------------------
+Getting Started.
+----------------------------------------------------------------------
+
+This document describes how to get started with the TM testing
+manager.  This document is split up into two parts.  The first
+part describes how to install the lua scripting language and how to
+install  the Hermes package of which "tm" is a part of.  The second
+part explains how to use the tool by way of an example.
+
+What tm provides is a way to run tests and easily know what tests
+passed, failed or diffed.  It is easy to run all tests, one test or
+select a subset of tests.  Having an easy way to run tests means that
+refactoring is much easier.   It also completely captures inputs and
+outputs and how to run your program.  This is a convenient way to pass
+on knowledge of how your program works to others or yourself six
+months to a year later when you can't remember how things work.
+
+
+----------------------------------------------------------------------
+Installing Lua and TM.
+----------------------------------------------------------------------
+
+The Hermes package is a collection of tools. The main part is "tm" the
+testing manager and the rest of the tools necessary to run it.  This
+package is written in the Lua programming language.  Lua is a
+scripting language similar to Perl, Python and Ruby.  Lua is designed
+to be a scripting language as well as library to be a configuration
+language to be embedded with other applications.  See www.lua.org for
+more details.
+
+To use lua in this context we need some libraries that do not come
+from the standard distribution.  I maintain an svn repository that has
+the lua source as well as the necessary libraries.
+
+  $ svn co https://riverton.dyndns.org/svn/lua/trunk lua
+
+Change to the lua directory and follow the INSTALL file directions.
+
+The hermes package is much simplier to install.  Take the attached tar
+ball and untar it where you wish it installed:
+
+   $ tar xzf hermes-x.y.z.tar.gz
+
+then add hermes-x.y.z/bin to your PATH environment variable, where
+x.y.z is the version number such as 1.9.1
+
+
+----------------------------------------------------------------------
+General Principles for TM
+----------------------------------------------------------------------
+
+The idea behind tm is to provide a general testing manager that
+independent of the program(s) under test.  There is a test description
+file (*.tdesc) that contains the information required to run each
+test.  In that file there is a section which contains a (Bourne) shell
+script  that runs your test.   In order for "tm" to know if your test
+passed or not, your script will have to write to a particular file on
+how your test did.
+
+----------------------------------------------------------------------
+Example on how to use tm.
+----------------------------------------------------------------------
+
+Probably the best way to explain tm is by way of an example.  In the
+hermes-x.y.z/tm/doc directory is where this example lives.  So change
+your directory to there and lets start.
+
+  $ cd hermes-x.y.z/tm/doc
+  $ make
+
+The make command will build two programs: testprog and diffprog.  The
+testprog program is there to represent a program under test and the
+diffprog is there as an example of a program to compute the difference
+between a "gold" solution file and a test one.
+
+The testprog.c file shows a very simple program that writes a file
+containing the numbers 0 to 99 with a little random noise added.  The
+diffprog.c file  takes two files and compares them.  The diffprog
+takes several arguments:
+
+   $ diffprog result.lua 1.0e-6 gold_file test_file
+
+The first argument is the name of the lua file that is required to
+tell tm how your program did.  The second argument is the norm test
+value.  The final two arguments are the gold file that has the known
+good solution and test file.
+
+The results.lua file looks something like this:
+
+   -- -*- lua -*-
+   -- Fri Feb 19 16:39:18 2015
+   myTbl = {
+     {
+        ["result"] = "passed",
+     },
+   }  
+
+This is actually a simple lua program.  In lua lines that have two
+minus signs in a row are a comment so the first two line are comment
+lines and are not required.  Your diff program should generate
+something similar. It is important that you have all the commas that
+are shown above.  Obviously, the "passed" line should be either
+"passed", "failed" or "diff" depending on how your program did.
+
+----------------------------------------------------------------------
+Test Directory Structure
+----------------------------------------------------------------------
+
+The test directory structure can be quite flexible.  I usually create
+a directory named "rt" for regression tests and place the tests under
+"rt".   I place each test in a separate directory although that is not
+required.   The test directories can nested.  This way similar tests
+can be grouped together.  Generally, I recommend that tests live in leaf
+and not branch directories.
+
+As an example, the test directory structure given here is:
+
+     .:
+     Hermes.db  diffprog.c                   rt/         
+     Makefile   getting_started_with_tm.txt  testprog.c
+
+     ./rt:
+     diff_test/  fail_test/  simple_test/ multiple_tests/
+
+     ./rt/diff_test:
+     diff_test.tdesc  testprog.gold
+
+     ./rt/fail_test:
+     fail_test.tdesc  testprog.gold
+
+     ./rt/simple_test:
+     simple_test.tdesc  testprog.gold
+
+     ./rt/multiple_tests:
+     multiple_tests.tdesc  testprog.gold
+
+In the top level directory we have the Makefile and the two .c
+programs along with the rt directory.  There is also a file called
+"Hermes.db" which is necessary for tm to work.   You need to create a
+zero length file with that name above the directory that contains the
+tests.
+
+
+----------------------------------------------------------------------
+Test Description file (*.tdesc)
+----------------------------------------------------------------------
+
+So here we have four test directories underneath the rt directory,
+each with a test description file (*.tdesc) and a gold results file
+(testprog.gold).   
+
+Each of the .tdesc files are similar so lets look at the
+simple_test.tdesc file in detail.
+
+    -- -*- lua -*-
+    testdescript = {
+
+       -- An optional description                     
+       description = [[
+             A long description
+             over many lines
+       ]],
+
+       -- An optional list of key words
+       keywords = { "simple", "other", "key", "words"},
+
+       -- Mark the test as active.  
+       active = 1,
+
+       -- The test name  (required)
+       testName = "simple_test",
+
+       -- The script to run the test case
+       runScript = [[
+         PATH=$(projectDir):$PATH;      export PATH
+         testprog $(outputDir)/testprog.soln
+         diffprog $(cmdResultFn) $(tol) $(testDir)/testprog.gold $(outputDir)/testprog.soln
+         testFinish -c $(cmdResultFn) -r $(resultFn) -t $(runtimeFn)
+       ]],
+
+       
+       -- The list of tests to run
+       tests = {
+          { id='t1', tol = 1.01e-6, },
+       },
+    }   
+
+The .tdesc file is a valid lua program.  Here we are setting key value
+pairs that describe the test for the table "testdescript".  As you can
+see there are several keyword that are specified so that tm can run
+the test.  In lua upper and lower case variables are distinct, so your
+test files need to match the case and spelling used here.  
+    
+The file shown here has some required and optional key and
+values. Below is a table describing each:
+
+   Key             Required         Description
+   ------------------------------------------------------------------------
+   description     no               An optional place to descibe the
+                                    test.
+   keywords        no               A list keywords so that a test can
+                                    be selected.
+   active          yes              Tells if test is active.  Set
+                                    value to "false" (w/o quotes) to
+                                    mark as inactive.
+   testname        yes              A unique test name.
+   runScript       yes              A parameterized shell script for
+                                    running the test.
+   tests           yes              An array of 1 or more tests. Each
+                                    array entry must set the "id" key.
+
+
+------------------------------------------------------------------------
+How individual tests are run
+------------------------------------------------------------------------
+
+Later I'll describe the complete features on how to run tm with all
+its power.   For the moment lets see how a single test is run.  By
+changing your directory to "simple_test" we can run that individual
+test:
+
+    $ tm .
+
+The period says run tm by looking for all the test descriptions files
+from the current directory on down.  In this case there is only the
+simple_test.tdesc file.  The output will look like this:
+
+
+    TM Version: 1.5
+
+    Starting Tests:
+
+         Started : 10:16:49 tst: 1/1 P/F: 0:0, rt/simple_test/simple_test/t1
+          passed : 10:16:49 tst: 1/1 P/F: 1:0, rt/simple_test/simple_test/t1        
+
+
+    Finished Tests
+
+    ************************************************************************
+    *** Test Results                                                     ***
+    ************************************************************************
+     
+    Date:             Mon Feb 22 10:16:49 2010
+    Tag:              2010_02_22
+    TM Version:       1.5
+    Hermes Version:   1.9.1
+    Lua Version:      Lua 5.1
+    Total Test Time:  00:00:00.09
+     
+    ************************************************************************
+    *** Test Summary                                                     ***
+    ************************************************************************
+     
+    Total:   1
+    passed:  1
+
+    *******  *  ****    *****************              *********************
+    Results  R  Time    Test Name                      version/message
+    *******  *  ****    *****************              *********************
+    passed   R  0.0881  rt/simple_test/simple_test/t1  
+
+The output is has two parts.  The first part is from the "Starting
+Tests" to "Finished Tests".   For each test it reports the start and
+end times, a record of the current number of pass/failed test and the
+test name.
+
+The test name looks like a path but it is not.  It is the relative path name
+from the directory that contains the "Hermes.db" directory.  So that
+is the "rt/simple_test".  It is followed by the name of the test file
+base name (simple_test from simple_test.tdesc) and the id tag, in this
+case "t1".  The result is "rt/simple_test/simple_test/t1"
+
+The second part is the report of results.  There is header information
+about the time the test was run and version information.  Finally
+there is a report of the individual tests.  If any tests fail/diff
+then a list of them is given.  I'll show that later.
+
+
+The way the an individual *.tdesc file is run is as follows.  The id
+value is used to name the test. If there are any other keyword listed
+on the entry then they are added to the list of parameters that are
+used in the substitution process (i.e. tol = 1.01e-6). The lines given
+for the runScript keyword are used to build the actual script used.
+
+
+Actual step to run an individual *.tdesc file is as follows:
+
+
+   1) The id value is used to name the test.
+   2) The output directory for running the test is created as a subdirectory to
+      the tdesc file. Its name is $id/$date_name where $id is the
+      id value and $date_name is the date_os_arch_testName: (e.g.
+      "t1/2010_02_22_14_58_04-Linux-x86_64-simple_test")
+   3) The runScript value is converted to an actual shell script with
+      the parameter substituted.  A table below gives the list of
+      predefined names.
+   4) The generated script is run in the output directory.
+   5) The output directory is checked for a the result file and the
+      runtime file to report the status of the test.
+
+There is a list of predefined parameters that are used in the
+expansion of the runScript value into the script:
+
+
+    Key               Value
+    -----------       ----------
+    cmdResultFn       The absolute path to the "results.lua" file
+    idTag             The id value
+    messageFn         The absolute path to the "message.lua" file
+    outputDir         The absolute path to the output directory
+    projectDir        The absolute path to the directory that has
+                      Hermes.db in it.
+    resultFn          The absolute path to the results file ($id.results)
+    runtimeFn         The absolute path to the runtime file ($id.runtime)
+    testDir           The absolute path to the directory that has the
+                      *.tdesc file in it.
+    testName          The testName value given in the .tdesc file.
+    testdescriptFn    the absolute path to the .tdesc file.
+
+----------------------------------------------------------------------
+Comments on runScript
+----------------------------------------------------------------------
+
+The runScript value is repeated here:
+
+       runScript = [[
+         PATH=$(projectDir):$PATH;      export PATH
+         testprog $(outputDir)/testprog.soln
+         diffprog $(cmdResultFn) $(tol) $(testDir)/testprog.gold $(outputDir)/testprog.soln
+         testFinish -c $(cmdResultFn) -r $(resultFn) -t $(runtimeFn)
+       ]],
+
+
+The script given here should now be clear what is happening.  Line 1
+adds the project directory which has the testprog and diffprog
+programs.  Line 2 runs the test program (testprog). Line 3 runs the
+"diffprog" to compare the results from "testprog" with the gold file
+in the $(testDir).  Line 4 is important for tm to know what
+happens. The testFinish program converts the $(cmdResults) file, into
+the results file that tm needs.  All of your runScripts MUST end with
+that program, otherwise tm will assume that the test program was not
+run.
+
+
+------------------------------------------------------------------------
+Running more than one test at a time.
+------------------------------------------------------------------------
+
+So running "tm ." in the simple_test directory ran one test.  If we
+change our directory up one to the rt directory we can run all the
+tests by:
+
+  $ tm .
+
+You should see output similar to this:
+
+    TM Version: 1.5
+
+    Starting Tests:
+
+         Started : 16:23:08 tst: 1/5 P/F: 0:0, rt/multiple_tests/multiple_tests/t2
+            diff : 16:23:08 tst: 1/5 P/F: 0:1, rt/multiple_tests/multiple_tests/t2  
+
+         Started : 16:23:08 tst: 2/5 P/F: 0:1, rt/fail_test/fail_test/t1
+          failed : 16:23:08 tst: 2/5 P/F: 0:2, rt/fail_test/fail_test/t1    
+
+         Started : 16:23:08 tst: 3/5 P/F: 0:2, rt/diff_test/diff_test/t1
+            diff : 16:23:08 tst: 3/5 P/F: 0:3, rt/diff_test/diff_test/t1    
+
+         Started : 16:23:08 tst: 4/5 P/F: 0:3, rt/simple_test/simple_test/t1
+          passed : 16:23:08 tst: 4/5 P/F: 1:3, rt/simple_test/simple_test/t1        
+
+         Started : 16:23:08 tst: 5/5 P/F: 1:3, rt/multiple_tests/multiple_tests/t1
+          passed : 16:23:08 tst: 5/5 P/F: 2:3, rt/multiple_tests/multiple_tests/t1  
+
+
+    Finished Tests
+
+    ************************************************************************
+    *** Test Results                                                     ***
+    ************************************************************************
+     
+    Date:             Mon Feb 22 16:23:08 2010
+    TARGET:           x86_64_dbg_intel_openmpi
+    Tag:              2010_02_22
+    TM Version:       1.5
+    Hermes Version:   1.9.1
+    Lua Version:      Lua 5.1
+    Total Test Time:  00:00:00.23
+     
+    ************************************************************************
+    *** Test Summary                                                     ***
+    ************************************************************************
+     
+    Total:   5
+    diff:    2
+    failed:  1
+    passed:  2
+
+    *******  *  ****    *****************                    ***********************************
+    Results  R  Time    Test Name                            version/message
+    *******  *  ****    *****************                    ***********************************
+    passed   R  0.0306  rt/multiple_tests/multiple_tests/t1  
+    passed   R  0.0307  rt/simple_test/simple_test/t1        
+    failed   R  0.0347  rt/fail_test/fail_test/t1            
+    diff     R  0.0959  rt/diff_test/diff_test/t1            
+    diff     R  0.0386  rt/multiple_tests/multiple_tests/t2  
+
+    *******  ***********************************************************
+    Results  Output Directory
+    *******  ***********************************************************
+    diff     /home/mclay/w/hermes/tm/doc/rt/diff_test/t1/x86_64_dbg_intel_openmpi-2010_02_22_16_23_08-Linux-x86_64-diff_test
+    diff     /home/mclay/w/hermes/tm/doc/rt/multiple_tests/t2/x86_64_dbg_intel_openmpi-2010_02_22_16_23_08-Linux-x86_64-multiple_tests
+    failed   /home/mclay/w/hermes/tm/doc/rt/fail_test/t1/x86_64_dbg_intel_openmpi-2010_02_22_16_23_08-Linux-x86_64-fail_test
+
+
+We see that two of the five tests passed.  We see that one test failed
+and two tests diffed.  Let's look at the three problem children.
+
+The diff test has a very similar .tdesc file but if we look at the
+at the testprog.gold file we see that the first value that should be a
+0 has been changed to 123.  This is a large difference between the
+"gold" and the "test" values so it "diff'ed".
+
+
+The fail_test.tdesc shows that I've removed the output file from
+"testprog" so the "diffprog" program states that the test failed:
+
+    runScript = [[
+       PATH=$(projectDir):$PATH;      export PATH
+       testprog $(outputDir)/testprog.soln
+       rm $(outputDir)/testprog.soln
+       diffprog $(cmdResultFn) 1.e-6 $(testDir)/testprog.gold $(outputDir)/testprog.soln
+       testFinish -c $(cmdResultFn) -r $(resultFn) -t $(runtimeFn)
+     ]],
+
+Finally the multiple_tests programs shows that the "t1" test passed
+and the "t2" test failed.  We can see why by looking at the runScript
+and tests parts:
+
+   runScript = [[
+     PATH=$(projectDir):$PATH;      export PATH
+     testprog $(outputDir)/testprog.soln
+     diffprog $(cmdResultFn) $(tol) $(testDir)/testprog.gold $(outputDir)/testprog.soln
+     testFinish -c $(cmdResultFn) -r $(resultFn) -t $(runtimeFn)
+   ]],
+
+   tests = {
+      { id='t1', tol=1.01e-6},
+      { id='t2', tol=1.01e-12},
+   },
+
+So the "t1" test has a resonable tolerance of 1.01e-6 where as the
+"t2" test has an impossible tolerance  of 1.01e-12 so that test fails.
+
+
+------------------------------------------------------------------------
+Cleanup
+------------------------------------------------------------------------
+
+One you have run test you'll wish to cleanup the results.  In order to
+make that simple you can run the command:
+
+   $ testcleanup
+
+and it will remove all the generated files and directories.
+
+
+
+------------------------------------------------------------------------
+Advance Features: Restarting, Keywords
+------------------------------------------------------------------------
+
+If you find that there are "diff's" and "failed" tests you can rerun
+only these tests.  You can run 
+
+   $ tm -r wrong
+
+to get both the failed and diff'ed tests.
+
+You can run only test that have a certain keyword given so:
+
+   $ tm -k multiple .
+
+
+will run the multiple_tests.tdesc file  (assuming that you are in the
+"rt" directory), because only multiple_tests.tdesc file has the
+multiple keyword defined.
+
+Where as:
+
+
+   $ tm -k single .
+
+will run simple_test.tdesc, diff_test.tdesc and fail_test.tdesc files
+because each have the "single" keyword defined.
+
+Note that the keywords are case sensitive so "Single" and "single" and
+"SINGLE" are different keys.
+
+----------------------------------------------------------------------
+Conclusions
+----------------------------------------------------------------------
+
+This discussion covers the basic uses of "tm".  If you have questions
+then please send them to mclay@tacc.utexas.edu.
+
+
+

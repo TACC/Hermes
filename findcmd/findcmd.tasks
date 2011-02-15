@@ -1,0 +1,24 @@
+-- -*- lua -*-
+-- $Id: findcmd.tasks 309 2009-02-07 01:24:09Z eijkhout $ --
+require("fileOps")
+
+
+function taskMain()
+   local masterTbl = masterTbl()
+   local path	   = os.getenv('PATH') or ''
+
+   task{"CmdLineOptions"}   
+   
+   local cmd	   = masterTbl.pargs[1]
+   local results   = findInPath(cmd,path)
+
+   if (masterTbl.pathOnly) then
+      results = dirname(results)
+      if (results:sub(-1) == '/') then
+	 results = results:sub(1,-2)
+      end
+   end
+
+   print(results)
+   return 0
+end

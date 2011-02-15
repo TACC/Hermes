@@ -1,0 +1,22 @@
+-- -*- lua -*-
+testdescript = {
+   description = [[
+         A long description
+         over many lines
+   ]],
+   keywords = { "single", "other", "key", "words"},
+
+   active = 1,
+   testName = "diff_test",
+
+   runScript = [[
+     PATH=$(projectDir):$PATH;      export PATH
+     testprog $(outputDir)/testprog.soln
+     diffprog $(cmdResultFn) 1.e-6 $(testDir)/testprog.gold $(outputDir)/testprog.soln
+     testFinish -c $(cmdResultFn) -r $(resultFn) -t $(runtimeFn)
+   ]],
+
+   tests = {
+      { id='t1'},
+   },
+}

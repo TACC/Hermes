@@ -1,0 +1,43 @@
+-- $Id: CmdLineOptions.lua 302 2009-02-04 23:56:32Z mclay $ --
+require("Optiks")
+CmdLineOptions = BaseTask:new()
+
+function CmdLineOptions:execute(myTable)
+   local masterTbl     = masterTbl()
+   local usage         = "testfinish [options]"
+   local cmdlineParser = Optiks:new{usage=usage, error = Error}
+
+   cmdlineParser:add_option{ 
+      name   = {'-c','--cmdResultFn'},
+      dest   = 'cmdResultFn',
+      action = 'store',
+      type   = 'string',
+   }
+
+   cmdlineParser:add_option{ 
+      name   = {'-r','--resultFn'},
+      dest   = 'resultFn',
+      action = 'store',
+      type   = 'string',
+   }
+
+   cmdlineParser:add_option{ 
+      name   = {'-t','--runtimeFn'},
+      dest   = 'runtimeFn',
+      action = 'store',
+      type   = 'string',
+   }
+
+   cmdlineParser:add_option{ 
+      name   = {'-v','--verbose'},
+      dest   = 'verbosityLevel',
+      action = 'count'
+   }
+
+   local optionTbl, pargs = cmdlineParser:parse(arg)
+
+   for v in pairs(optionTbl) do
+      masterTbl[v] = optionTbl[v]
+   end
+
+end

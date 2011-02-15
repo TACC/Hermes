@@ -1,0 +1,19 @@
+-- -*- lua -*-
+-- $Id: updateProjectDataVersion.tasks 306 2009-02-06 18:30:56Z eijkhout $ --
+
+function taskMain()
+   task{"ReadProject"}
+
+   task{"CmdLineOptions"}
+
+   local masterTbl = masterTbl()
+   if (masterTbl.version) then
+      task{"GetVersion"}
+   else
+      task{"WriteProjectData"}
+   end
+
+   return 0
+end
+
+

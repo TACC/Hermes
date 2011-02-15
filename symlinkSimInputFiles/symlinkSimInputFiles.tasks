@@ -1,0 +1,12 @@
+-- -*- lua -*-
+-- $Id: symlinkSimInputFiles.tasks 194 2008-06-25 21:43:50Z mclay $ --
+
+function taskMain()
+
+   task{"CmdLineOptions"}
+   task{"ProcessSimFile"}
+   task{"SymlinkInputFiles"}
+   return 0
+end
+
+

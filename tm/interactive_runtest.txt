@@ -1,0 +1,23 @@
+Interactive Steps
+
+
+
+* build Run Script in string
+
+* Save Current Directory
+
+* cd to outputDir
+
+* Write initial resultFn and runtimeFn
+
+* Create scriptFn
+
+* Report Script started and  Pass/Fail count
+
+* submit script
+
+* Read cmdResultFn => Generate resultFn
+
+* Update runtimeFn
+
+* Report Script Finish and  Pass/Fail count
