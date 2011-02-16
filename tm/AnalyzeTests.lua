@@ -1,5 +1,6 @@
 -- $Id: AnalyzeTests.lua 301 2009-02-04 23:56:06Z mclay $ --
 require("common")
+require("Dbg")
 AnalyzeTests = BaseTask:new()
 
 MyResult = nil
@@ -7,6 +8,7 @@ function AnalyzeTests:execute(myTable)
    local masterTbl     = myTable.masterTbl
    local tstTbl        = masterTbl.tstTbl
    local rptTbl        = masterTbl.rptTbl
+   local dbg           = Dbg:dbg()
    
    local tstSummary    = {}
    local testValues    = Tst:testresultValues()
@@ -35,6 +37,9 @@ function AnalyzeTests:execute(myTable)
       assert(loadfile(resultFn))()
       
       local result = myResult.testresult:lower()
+
+
+      dbg.print ("tst.testName: ", tst.testName, " result: ",result,"\n")
 
       -- Save result in current test
       tst:set('result', result)

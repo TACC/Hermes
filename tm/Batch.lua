@@ -1,7 +1,7 @@
 -- $Id: Batch.lua 353 2011-02-01 21:09:25Z mclay $ --
 
 local JobSubmitBase = JobSubmitBase
-local masterTbl     = masterTbl
+local masterTbl     = masterTbl()
 local concatTbl     = table.concat
 local execute       = os.execute
 
@@ -21,9 +21,17 @@ function queue(tbl, envTbl, funcTbl)
 end
 
 function runtest(self, tbl)
-   local t = {}
-   t[#t + 1] = self.batchTbl.submitCmd
-   t[#t + 1] = tbl.scriptFn
-   local s = concatTbl(t," ")
+   local logFileNm = tbl.idTag .. ".log"
+   if (masterTbl.batchLog) then
+      logFileNm = masterTbl.batchLog
+   end
+
+   local a = {}
+   a[#a + 1] = self.batchTbl.submitCmd
+   a[#a + 1] = tbl.scriptFn
+   a[#a + 1] = ">>"
+   a[#a + 1] = logFileNm
+   a[#a + 1] = "2>&1"
+   local s = concatTbl(a," ")
    execute(s)
 end   

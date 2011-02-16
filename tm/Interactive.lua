@@ -16,16 +16,16 @@ INTERACTIVE.my_name = "INTERACTIVE"
 module("INTERACTIVE")
 
 function runtest(self, tbl)
-   local  t = {}
-   t[#t + 1]  = "./" .. tbl.scriptFn
-   t[#t + 1]  = "2>&1"
-   t[#t + 1]  = ">"
-   t[#t + 1]  = tbl.idTag .. ".log"
+   local  a = {}
+   a[#a + 1]  = "./" .. tbl.scriptFn
+   a[#a + 1]  = ">"
+   a[#a + 1]  = tbl.idTag .. ".log"
+   a[#a + 1]  = "2>&1"
    if (tbl.background) then
-      t[#t + 1]  = "</dev/null &"
+      a[#a + 1]  = "</dev/null &"
    end
 
-   local s = concatTbl(t," ")
+   local s = concatTbl(a," ")
    execute(s)
 end
 
