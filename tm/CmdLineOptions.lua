@@ -2,6 +2,8 @@
 require("common")
 require("string_split")
 require("sys")
+require("posix")
+require("fileOps")
 require("version")
 
 require("Optiks")
@@ -37,6 +39,13 @@ function CmdLineOptions:execute(myTable)
       dest   = 'BatchFlag',
       action = 'store_true',
       help   = 'Submit tests to a batch queue',
+   }
+
+   cmdlineParser:add_option{
+      name   = {'--batchlog'},
+      dest   = 'batchLog',
+      action = 'store',
+      help   = 'filename to capture submit script info',
    }
 
    cmdlineParser:add_option{
@@ -155,6 +164,14 @@ function CmdLineOptions:execute(myTable)
       masterTbl[v] = optionTbl[v]
    end
    masterTbl.pargs = pargs
+
+   masterTbl.cwd = posix.getcwd()
+   if (masterTbl.batchLog) then
+      if (masterTbl.batchLog:sub(1,1) ~= '/') then
+         masterTbl.batchLog = pathJoin(masterTbl.cwd,masterTbl.batchLog)
+      end
+      posix.unlink(masterTbl.batchLog)
+   end
 
    masterTbl.tagA       = expandOptions(masterTbl.tagA)
    masterTbl.targetList = expandOptions(masterTbl.targetList)
