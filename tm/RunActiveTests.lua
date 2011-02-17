@@ -45,11 +45,11 @@ end
 function RunActiveTests:execute(myTable)
    local masterTbl = masterTbl()
 
-   masterTbl.passed = 0
-   masterTbl.failed = 0
+   masterTbl.passed       = 0
+   masterTbl.failed       = 0
 
-   local numTests  = 0
-   local rptTests  = 0
+   local numTests         = 0
+   local rptTests         = 0
 
    for tag       in pairs(masterTbl.tagTbl)    do
       for target in pairs(masterTbl.tagTbl[tag].targetTbl) do
@@ -58,7 +58,7 @@ function RunActiveTests:execute(myTable)
       end
    end
 
-   masterTbl.rptTests = rptTests
+   masterTbl.rptTests        = rptTests
 
    if (numTests > 0) then
       print("\nStarting Tests:\n")
@@ -173,7 +173,8 @@ function RunActiveTests:runTest(masterTbl, tst, iTest, numTests)
 
    local id         = tst:get('id')
    local background = tst:get('background') or (jobSubmitMethod == "BATCH")
-   
+   tst:set('runInBackground',background)
+
    job:Msg('Started', iTest, numTests, id, envTbl.resultFn, background)
    job:runtest{scriptFn = scriptFn, idTag = idTag, background = background}
    job:Msg('Finished', iTest, numTests, id, envTbl.resultFn, background)
