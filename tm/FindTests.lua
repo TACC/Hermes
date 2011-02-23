@@ -22,7 +22,22 @@ function FindTests:execute(myTable)
       if (#masterTbl.restart > 0 or masterTbl.analyzeFlag) then
          FindTests:findLastTM(pargs)
       else
-	 pargs[#pargs + 1] = pathJoin(masterTbl.projectDir, masterTbl.testlistFn)
+         local fn = pathJoin(masterTbl.projectDir, masterTbl.testlistFn)
+         if (isFile(fn)) then
+            pargs[#pargs + 1] = fn
+         else
+            pargs[#pargs + 1] = "."
+         end
+      end
+   elseif (#masterTbl.restart > 0 or masterTbl.analyzeFlag) then
+      for i = 1, #pargs do
+         local path = pargs[i]
+         local ext  = extname(path)
+         if (ext ~= ".tm") then
+            Error("Illegal file: ",path,"\n",
+                  "The options -r and -a expect *.tm files in the $(projectdir)/testreport directory\n",
+                  "or none when using the last generated testing run")
+         end
       end
    end
 

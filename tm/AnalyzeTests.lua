@@ -32,75 +32,77 @@ function AnalyzeTests:execute(myTable)
 
    for id in hash.pairs(rptTbl) do
       local tst		= rptTbl[id]
-      local resultFn	= fullFn(tst:get('resultFn'))
-
-      assert(loadfile(resultFn))()
       
-      local result = myResult.testresult:lower()
+      if (not tst:get("runInBackground")) then
+         local resultFn	= fullFn(tst:get('resultFn'))
+
+         assert(loadfile(resultFn))()
+      
+         local result = myResult.testresult:lower()
 
 
-      dbg.print ("tst.testName: ", tst.testName, " result: ",result,"\n")
+         dbg.print ("tst.testName: ", tst.testName, " result: ",result,"\n")
 
-      -- Save result in current test
-      tst:set('result', result)
+         -- Save result in current test
+         tst:set('result', result)
    
-      -- Accumulate test results
-      if (testValues[result] == nil) then
-	 result = result or "nil"
-   	 Error("Unknown test result: " .. result .. " from: " .. resultFn)
-      end
-      tstSummary[result] = tstSummary[result] + 1
-      tstSummary.total   = tstSummary.total   + 1
+         -- Accumulate test results
+         if (testValues[result] == nil) then
+            result = result or "nil"
+            Error("Unknown test result: " .. result .. " from: " .. resultFn)
+         end
+         tstSummary[result] = tstSummary[result] + 1
+         tstSummary.total   = tstSummary.total   + 1
 
 
-      if (testValues[result] < testValues[status] ) then
-         status = result
-      end
+         if (testValues[result] < testValues[status] ) then
+            status = result
+         end
 
-      if (result ~= 'passed') then
-         masterTbl.errors  = masterTbl.errors  + 1
-      end
+         if (result ~= 'passed') then
+            masterTbl.errors  = masterTbl.errors  + 1
+         end
    
-      local fini = sys.gettimeofday()
+         local fini = sys.gettimeofday()
    
 
-      -- Save runtime in current test
-      assert(loadfile(fullFn(tst:get('runtimeFn'))))()
-      local tstTime
-      local t, _
-      if (runtime.start_time < 0 or runtime.end_time < 0) then
-   	 tstTime = '****'
-	 t       = -1
-      else
-	 t                 = runtime.end_time - runtime.start_time
-	 _, _, tstTime     = string.format("%10.3g", t):find("^%s*([0123456789.-e+]+%s*)")
-	 masterTbl.totalTestTime = masterTbl.totalTestTime + t
-      end
+         -- Save runtime in current test
+         assert(loadfile(fullFn(tst:get('runtimeFn'))))()
+         local tstTime
+         local t, _
+         if (runtime.start_time < 0 or runtime.end_time < 0) then
+            tstTime = '****'
+            t       = -1
+         else
+            t                 = runtime.end_time - runtime.start_time
+            _, _, tstTime     = string.format("%10.3g", t):find("^%s*([0123456789.-e+]+%s*)")
+            masterTbl.totalTestTime = masterTbl.totalTestTime + t
+         end
 
-      local versionFn = fullFn(tst:get("versionFn"))
-      local f = io.open(versionFn,"r")
-      if (f) then
-         local s = f:read("*all")
-         assert(loadstring(s))()
-         tst:set('ProgVersion',ProgVersion)
-         f:close()
-      end
+         local versionFn = fullFn(tst:get("versionFn"))
+         local f = io.open(versionFn,"r")
+         if (f) then
+            local s = f:read("*all")
+            assert(loadstring(s))()
+            tst:set('ProgVersion',ProgVersion)
+            f:close()
+         end
 
-      local messageFn = fullFn(tst:get("messageFn"))
-      local f = io.open(messageFn,"r")
-      if (f) then
-         local s = f:read("*all")
-         assert(loadstring(s))()
-         tst:set('message',messageTbl.message)
-         f:close()
-      end
+         local messageFn = fullFn(tst:get("messageFn"))
+         local f = io.open(messageFn,"r")
+         if (f) then
+            local s = f:read("*all")
+            assert(loadstring(s))()
+            tst:set('message',messageTbl.message)
+            f:close()
+         end
 
-      tst:set('runtime', t)
-      tst:set('strRuntime', tstTime)
-      for k in pairs(runtime) do
-         tst:set(k,runtime[k])
+         tst:set('runtime', t)
+         tst:set('strRuntime', tstTime)
+         for k in pairs(runtime) do
+            tst:set(k,runtime[k])
+         end
       end
-
    end
    if (masterTbl.totalTestTime <= 0) then
       masterTbl.errors  = 0

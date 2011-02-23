@@ -80,6 +80,7 @@ function Tst.new(self, testparams, fileName, testdescript, target, epoch, i)
    o.machName          = ''
    o.hostName          = ''
    o.os_mach           = ''
+   o.runInBackground   = false
    o.target            = target
    o.TARGET            = target
    o.start_time        = 0
