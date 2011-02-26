@@ -55,7 +55,6 @@ end
 function Initialize:execute(myTable)
    local mtblFunc            = masterTbl
    local masterTbl           = masterTbl()
-   masterTbl.errors          = 0
    masterTbl.testRptLoc      = "testreports"
    masterTbl.testRptDirRoot  = pathJoin(masterTbl.projectDir, masterTbl.testRptLoc)
    masterTbl.tstReportFn     = nil
@@ -67,6 +66,8 @@ function Initialize:execute(myTable)
    masterTbl.TM_Version      = "TM "..Version
    masterTbl.Lua_Version     = _G._VERSION
    masterTbl.errors          = 0
+   masterTbl.diffCnt         = 0
+   masterTbl.failCnt         = 0
    masterTbl.setparent       = function(k,v) local mtbl = masterTbl.mtblFunc()
                                   mtbl[k] = v
                                end

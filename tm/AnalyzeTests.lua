@@ -15,8 +15,10 @@ function AnalyzeTests:execute(myTable)
    for v in pairs(testValues) do
       tstSummary[v] = 0
    end
-   tstSummary.total = 0
-   masterTbl.errors = 0
+   tstSummary.total  = 0
+   masterTbl.errors  = 0
+   masterTbl.diffCnt = 0
+   masterTbl.failCnt = 0
       
    masterTbl.totalTestTime = 0
 
@@ -63,6 +65,14 @@ function AnalyzeTests:execute(myTable)
             masterTbl.errors  = masterTbl.errors  + 1
          end
    
+         if (result == 'diff') then
+            masterTbl.diffCnt = masterTbl.diffCnt + 1
+         end
+
+         if (result == 'failed') then
+            masterTbl.failCnt= masterTbl.failCnt + 1
+         end
+         
          local fini = sys.gettimeofday()
    
 

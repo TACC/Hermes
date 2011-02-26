@@ -17,5 +17,5 @@ end
 local rtn = tool()
 
 if (rtn ~= 0) then
-   os.exit(-1)
+   os.exit(rtn)
 end

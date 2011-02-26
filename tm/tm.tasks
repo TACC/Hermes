@@ -37,12 +37,22 @@ function taskMain()
 	 local mTbl = masterTbl.tagTbl[tag].targetTbl[target]
 	 task{"AnalyzeTests",  masterTbl=mTbl} -- Review rptTbl
 	 task{"ReportResults", masterTbl=mTbl} -- Report result, human, voucher
-         masterTbl.errors = masterTbl.errors + mTbl.errors
+         masterTbl.errors  = masterTbl.errors  + mTbl.errors
+         masterTbl.diffCnt = masterTbl.diffCnt + mTbl.diffCnt
+         masterTbl.failCnt = masterTbl.failCnt + mTbl.failCnt
       end
    end
    for tag in pairs(masterTbl.tagTbl)    do
       task{"ReportSpanResults",tag=tag}       -- Report result, human, voucher
    end
    task{"ReportAllResults"}                   -- Report human
-   return masterTbl.errors
+   local rtn = 0
+   if (masterTbl.diffCnt > 0) then
+      rtn = rtn + 1
+   end
+   if (masterTbl.failCnt > 0) then
+      rtn = rtn + 2
+   end
+
+   return rtn
 end
