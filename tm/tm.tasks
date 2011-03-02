@@ -48,10 +48,10 @@ function taskMain()
    task{"ReportAllResults"}                   -- Report human
    local rtn = 0
    if (masterTbl.diffCnt > 0) then
-      rtn = rtn + 1
+      rtn = rtn + 2
    end
    if (masterTbl.failCnt > 0) then
-      rtn = rtn + 2
+      rtn = rtn + 4
    end
 
    return rtn
