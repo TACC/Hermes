@@ -55,6 +55,9 @@ function Tst.new(self, testparams, fileName, testdescript, target, epoch, i)
    end
    local id            = testparams.id .. extra
 
+   o:validName("id",       id)
+   o:validName("testName", testdescript.testName)
+
    o.testdescript      = testdescript
    o.test              = testparams
    o.id                = pathJoin(baseId, id)
@@ -91,13 +94,6 @@ function Tst.new(self, testparams, fileName, testdescript, target, epoch, i)
 # -*- shell-script -*-
 ]]
 
-
-   local i, j = o.testName:find('[ ?/*"\']')
-   if (i) then
-      Error("Test Name: \"",o.testName,"\" has an illegal character: '",o.testName:sub(i,j),"'",
-         "\nIllegal characters are: \" ?/*\" and the quote characters: ' and '\"'")
-   end
-
    o:setup_outputDir(epoch,target)
 
    if (o.testdescript.active ~= nil) then
@@ -119,6 +115,15 @@ end
 function Tst.topOfScript(self)
    return self.at_top_of_script
 end
+
+function Tst.validName(self, stringName, name)
+   local i, j = name:find('[ ?/*"\']')
+   if (i) then
+      Error(stringName,": \"",name,"\" has an illegal character: '",name:sub(i,j),"'",
+         "\nIllegal characters are: \" ?/*\" and the quote characters: ' and '\"'")
+   end
+end
+
 
 function Tst.setup_outputDir(self,epoch, target)
    local masterTbl       = masterTbl()
