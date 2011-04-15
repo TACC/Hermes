@@ -20,6 +20,7 @@ function SelectTests:execute(myTable)
    masterTbl.gauntlet:add('keywords', masterTbl.keywords)
    masterTbl.gauntlet:add('restart',  masterTbl.restart)
 
+
    masterTbl.gauntlet:apply(masterTbl.candidateTsts)
 
 

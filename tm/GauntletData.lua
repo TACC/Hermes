@@ -51,6 +51,7 @@ end
 function GauntletData.applyRestart(self, name, candidateTsts)
    for id in pairs(candidateTsts) do
       local tst = candidateTsts[id]
+      local active = tst:get('active')
       if (tst:get('active')) then
 	 local result = tst:get('result')
 	 if (self.restartValueTbl[result] ~= nil) then

@@ -10,6 +10,7 @@ require("Dbg")
 function FindTests:execute(myTable)
    local masterTbl         = masterTbl()
    local pargs             = {}
+   local dbg               = Dbg:dbg()
    masterTbl.candidateTsts = {}
 
    if (masterTbl.spanning ~= myTable.spanning) then return end
@@ -47,9 +48,7 @@ function FindTests:execute(myTable)
          path   = pathJoin(masterTbl.projectDir,path)
          mystat = posix.stat(path)
       end
-      if (masterTbl.verbosityLevel > 0) then
-	 print("Reading: "..path)
-      end
+      dbg.print("Reading: ",path,"\n")
       if (mystat and mystat.type == "regular") then
 	 if (path:find(masterTbl.testRptExt.."$")) then
 	    FindTests:readTMfile(path)
@@ -59,9 +58,7 @@ function FindTests:execute(myTable)
 	    FindTests:readTestList(path)
 	 end
       else
-         if (masterTbl.verbosityLevel > 0) then
-            print("Searching: "..path)
-         end
+         dbg.print("Searching: ",path,"\n")
 	 FindTests:search(path)
       end
    end
@@ -76,8 +73,12 @@ function FindTests:buildCandidateTsts(testA, ntimes, target, epoch, candidateTst
 
    local tstKeys = Tst:testfields()
 
+   -- Copy results from previous run to current test.
+   -- Active is controlled by user input not last run.
+
    for _,v in ipairs(testresults.tests) do
-      local tst = candidateTsts[v.id]
+      local tst    = candidateTsts[v.id]
+      v.active     = tst:get("active")
       for _,key in ipairs(tstKeys) do 
 	 tst[key] = v[key]
       end
@@ -90,10 +91,9 @@ function FindTests:readTestDescriptFn(path)
    local targetA   = masterTbl.targetA
    local fn        = pathJoin(posix.getcwd(), path)
    local epoch     = masterTbl.origEpoch
+   local dbg       = Dbg:dbg()
    assert(loadfile(fn))()
-   if (masterTbl.verbosityLevel > 0) then 
-      print("Found: " .. fn)
-   end
+   dbg.print("Found: ",fn,"\n")
    if (masterTbl.spanning) then
       masterTbl.tagTbl = masterTbl.tagTbl or {} 
       for _,tag       in ipairs(tagA)    do
@@ -128,9 +128,8 @@ end
 function FindTests:readTMfile(path)
    local masterTbl = masterTbl()
    local tagA      = masterTbl.tagA
-   if (masterTbl.verbosityLevel > 0) then
-      print("readTMfile: "..path)
-   end
+   local dbg       = Dbg:dbg()
+   dbg.print("readTMfile: ",path,"\n")
    assert(loadfile(path))()
 
    -- Use original Epoch from TM file
@@ -171,9 +170,8 @@ function FindTests:readTestList(fn)
    local masterTbl = masterTbl()
    local tagA      = masterTbl.tagA
    local targetA   = masterTbl.targetA
-   if (masterTbl.verbosityLevel > 0) then
-      print("readTestList: "..fn)
-   end
+   local dbg       = Dbg:dbg()
+   dbg.print("readTestList: ",fn,"\n")
    assert(loadfile(fn))()
 
    local epoch = masterTbl.origEpoch
@@ -231,16 +229,16 @@ function FindTests:buildCandidateTsts_id(idA, ntimes, target, epoch, candidateTs
 end
 
 function FindTests:search(path)
+   local dbg       = Dbg:dbg()
    local masterTbl = masterTbl()
 
    if (not posix.access(path)) then return end
    local cwd	   = posix.getcwd()
    posix.chdir(path)
-   if (masterTbl.verbosityLevel > 3) then print("Searching: " .. posix.getcwd()) end
-
-   if (masterTbl.verbosityLevel > 0) then
-      print ("FindTests:search dirlist(\".\")")
+   if (masterTbl.verbosityLevel > 3) then
+      dbg.print("Searching: ",posix.getcwd(),"\n")
    end
+   dbg.print("FindTests:search dirlist(\".\")")
    local list	   = dirlist(".")
    local found     = false
    for _,v in ipairs(list.files) do
@@ -260,6 +258,7 @@ function FindTests:search(path)
 end
 
 function FindTests:findLastTM(pargs)
+   local dbg        = Dbg:dbg()
    local masterTbl  = masterTbl()
    local pattern    = masterTbl.os_mach .. '%' .. masterTbl.testRptExt .. "$"
    pattern          = pattern:gsub("%-", "%%-")
@@ -278,9 +277,7 @@ function FindTests:findLastTM(pargs)
 	 testRptDir = pathJoin(masterTbl.testRptDirRoot,".span",tag)
       end
 
-      if (masterTbl.verbosityLevel > 0) then
-	 print("FindTests:findLastTM:  filelist(\""..testRptDir .. "\")")
-      end
+      dbg.print("FindTests:findLastTM:  filelist(\"",testRptDir ,"\")\n")
       local list	    = filelist(testRptDir)
       for _,v in ipairs(list) do
 	 if (v:find(pattern)) then

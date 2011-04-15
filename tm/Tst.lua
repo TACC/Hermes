@@ -35,6 +35,7 @@ function Tst.new(self, testparams, fileName, testdescript, target, epoch, i)
    setmetatable(o,self)
    self.__index = self
 
+
    local masterTbl = masterTbl()
 
    masterTbl.date = os.date("%c", masterTbl.currentEpoch)
@@ -189,7 +190,8 @@ function Tst.testfields(self)
    local tbl = {
       "id", "idTag", "start_epoch", "runtime", "result", "active", "report" , "strRuntime",
       "outputDir", "testName", "reason", "UUid", "resultFn", "runtimeFn", "cmdResultFn",
-      "versionFn","osName","machName","hostName","target","ProgVersion","message","tag"
+      "versionFn","osName","machName","hostName","target","ProgVersion","message","tag",
+      "userActive",
    }
 
    return tbl
