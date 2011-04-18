@@ -27,7 +27,7 @@ BatchSystems = {
          ]],
          maxCoresPerNode = 8,
       },
-      lonestar = {
+      ls4 = {
          submitHeader= [[
                # lonestar
                #$ -V
