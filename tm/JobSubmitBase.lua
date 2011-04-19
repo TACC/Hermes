@@ -16,6 +16,7 @@ local assert       = assert
 local date         = os.date
 local expand       = expand
 local format       = string.format
+local findInPath   = findInPath
 local io           = io
 local isFile       = isFile
 local getenv       = os.getenv
