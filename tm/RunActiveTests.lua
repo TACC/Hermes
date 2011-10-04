@@ -143,6 +143,8 @@ function RunActiveTests:runTest(masterTbl, tst, iTest, numTests)
    local jobSubmitMethod = tst:get("job_submit_method") or "INTERACTIVE"
    if (masterTbl.BatchFlag) then
       jobSubmitMethod = "BATCH"
+   elseif (masterTbl.InteractiveFlag) then
+      jobSubmitMethod = "INTERACTIVE"
    end
 
    local job             = JobSubmitBase:build(jobSubmitMethod, masterTbl)

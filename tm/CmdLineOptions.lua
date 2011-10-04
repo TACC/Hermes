@@ -79,6 +79,13 @@ function CmdLineOptions:execute(myTable)
    }
 
    cmdlineParser:add_option{
+      name   = {'--interactive'},
+      dest   = 'InteractiveFlag',
+      action = 'store_true',
+      help   = 'Force batch run to be interactive.',
+   }
+
+   cmdlineParser:add_option{
       name   = {'-m','--min', '--minNP'},
       dest   = 'minNP',
       action = 'store',
