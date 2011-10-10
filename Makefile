@@ -42,7 +42,7 @@ _distTar:
 	$(RM) -r `cat .fname` `cat .fname`.tar*;         		   \
 	mv ${DistD} `cat .fname`;                            		   \
 	tar chf `cat .fname`.tar `cat .fname`;           		   \
-	gzip `cat .fname`.tar;                           		   \
+	bzip2 `cat .fname`.tar;                           		   \
 	rm -rf `cat .fname` .fname; 
 
 
