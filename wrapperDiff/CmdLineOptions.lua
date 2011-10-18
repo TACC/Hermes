@@ -1,5 +1,4 @@
 -- $Id$ --
-require("Optiks")
 CmdLineOptions = BaseTask:new()
 
 function CmdLineOptions:execute(myTable)
@@ -7,6 +6,7 @@ function CmdLineOptions:execute(myTable)
 
    local usage         = "Usage: wrapperDiff [options] gold.file trial.file"
 
+   local Optiks        = require("Optiks")
    local cmdlineParser = Optiks:new{usage=usage, error = Error}
 
 

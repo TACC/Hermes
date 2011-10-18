@@ -6,7 +6,6 @@ require("posix")
 require("fileOps")
 require("version")
 
-require("Optiks")
 CmdLineOptions = BaseTask:new()
 
 local function vname()
@@ -19,6 +18,7 @@ function CmdLineOptions:execute(myTable)
 
    local usage         = "Usage: tm [options] [file] [directory]"
 
+   local Optiks        = require("Optiks")
    local cmdlineParser = Optiks:new{usage=usage,version=vname(), error = Error}
 
    cmdlineParser:add_option{

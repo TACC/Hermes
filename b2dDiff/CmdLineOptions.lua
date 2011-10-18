@@ -3,7 +3,7 @@
 CmdLineOptions = BaseTask:new()
 
 function CmdLineOptions:execute(myTable)
-   require("Optiks")
+   local Optiks = require("Optiks")
 
    local usage = "b2dDiff [-v] [-S num] [-r resultFn] -t testSimFile -g goldSimFile -f tdesc"
    local cmdlineParser = Optiks:new{usage = usage, error = Error}

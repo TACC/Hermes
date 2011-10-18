@@ -1,9 +1,9 @@
 -- $Id$ --
-require("Optiks")
 CmdLineOptions = BaseTask:new()
 
 function CmdLineOptions:execute(myTable)
    local masterTbl     = masterTbl()
+   local Optiks        = require("Optiks")
    local usage         = "Usage: pairTest cmd"
 
    local cmdlineParser = Optiks:new{usage=usage, error = Error}

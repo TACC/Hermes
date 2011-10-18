@@ -1,10 +1,11 @@
 -- $Id: CmdLineOptions.lua 302 2009-02-04 23:56:32Z mclay $ --
-require("Optiks")
+
 CmdLineOptions = BaseTask:new()
 
 function CmdLineOptions:execute(myTable)
    local masterTbl     = masterTbl()
    local usage         = "mpr [options]"
+   local Optiks        = require("Optiks")
    local cmdlineParser = Optiks:new{usage=usage, error = Error}
 
    cmdlineParser:add_option{ 

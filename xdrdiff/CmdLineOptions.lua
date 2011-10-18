@@ -3,9 +3,9 @@
 CmdLineOptions = BaseTask:new()
 
 function CmdLineOptions:execute(myTable)
-   require("Optiks")
 
    local usage         = "xdrdiff -r resultFn -f xdrdiff.lua  xdr1 xdr2"
+   local Optiks        = require("Optiks")
    local cmdlineParser = Optiks:new{usage=usage, error = Error}
 
    cmdlineParser:add_option{ 

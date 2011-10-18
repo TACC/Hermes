@@ -1,5 +1,4 @@
 -- $Id$ --
-require("Optiks")
 CmdLineOptions = BaseTask:new()
 
 local function vname()
@@ -8,6 +7,7 @@ end
 
 function CmdLineOptions:execute(myTable)
    local masterTbl     = masterTbl()
+   local Optiks        = require("Optiks")
 
    local usage         = "Usage: findcmd [options] cmd"
 

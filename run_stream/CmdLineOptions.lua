@@ -1,5 +1,4 @@
 -- $Id: CmdLineOptions.lua 204 2008-06-26 23:06:17Z mclay $ --
-require("Optiks")
 CmdLineOptions = BaseTask:new()
 
 function CmdLineOptions:execute(myTable)
@@ -7,6 +6,7 @@ function CmdLineOptions:execute(myTable)
 
    local usage         = "Usage: run_stream [options] rack1 rack2 ..."
 
+   local Optiks        = require("Optiks")
    local cmdlineParser = Optiks:new{usage=usage, error = Error}
 
    cmdlineParser:add_option{

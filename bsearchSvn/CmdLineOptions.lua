@@ -1,10 +1,10 @@
 -- $Id$ --
-require("Optiks")
 CmdLineOptions = BaseTask:new()
 
 function CmdLineOptions:execute(myTable)
    local masterTbl     = masterTbl()
    local usage         = "Usage: bsearchSvn cmd"
+   local Optiks        = require("Optiks")
 
    local cmdlineParser = Optiks:new{usage=usage, error = Error}
 

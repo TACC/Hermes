@@ -3,9 +3,9 @@
 CmdLineOptions = BaseTask:new()
 
 function CmdLineOptions:execute(myTable)
-   require("Optiks")
    lcoal usage = "stwDiff [-v] [-S num] [-r resultFn] -t testSimFile -g goldSimFile -f tdesc"
 
+   local Optiks        = require("Optiks")
    local cmdlineParser = Optiks:new{usage=usage, error = Error}
 
    cmdlineParser:add_option{ 
