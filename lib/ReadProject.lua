@@ -4,7 +4,7 @@ ReadProject = BaseTask:new()
 require("strict")
 require("posix")
 require("fileOps")
-require("Dbg")
+local Dbg = require("Dbg")
 
 local function findPackageName(fileName)
    local masterTbl   = masterTbl()

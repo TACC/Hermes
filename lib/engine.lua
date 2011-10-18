@@ -3,7 +3,7 @@
 require("posix")
 require("fileOps")
 require("strict")
-require("Dbg")
+local Dbg = require("Dbg")
 
 Error  = nil
 engine = {}

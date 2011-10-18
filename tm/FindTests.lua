@@ -5,7 +5,7 @@ require("Tst")
 require("dirlist")
 require("posix")
 require("fileOps")
-require("Dbg")
+local Dbg = require("Dbg")
 
 function FindTests:execute(myTable)
    local masterTbl         = masterTbl()
