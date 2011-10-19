@@ -8,7 +8,7 @@ CMDList		:= $(CMDS) lib
 VERSION		:= $(shell updateProjectDataVersion --version)
 
 
-MAIN_DIR := Hermes.db Makefile
+MAIN_DIR := Hermes.db Makefile COPYRIGHT
 
 
 dist:  

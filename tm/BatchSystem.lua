@@ -54,5 +54,54 @@ BatchSystems = {
          ]],
          maxCoresPerNode = 16,
       },
+      garnet = {
+         submitHeader= [[
+               #PBS -V
+               #PBS -N $(JOBNAME)
+               #PBS -A $(ACCOUNT)
+               #PBS -q $(QUEUE)
+               #PBS -l walltime=$(TIME)
+               #PBS -l ncpus=$(NP)
+               #PBS -j oe
+               #PBS -o $(JOBNAME).oe
+               # START OF COMMANDS
+               umask 007
+               umask
+               cd $PBS_O_WORKDIR
+         ]],
+         maxCoresPerNode = 16,
+      },
+      diamond  = {
+         submitHeader= [[
+               #PBS -V
+               #PBS -N $(JOBNAME)
+               #PBS -A $(ACCOUNT)
+               #PBS -q $(QUEUE)
+               #PBS -l walltime=$(TIME)
+               #PBS -l ncpus=$(NP)
+               #PBS -j oe
+               # START OF COMMANDS
+               umask 007
+               umask
+               cd $PBS_O_WORKDIR
+         ]],
+         maxCoresPerNode = 16,
+      },
+      chugach  = {
+         submitHeader= [[
+               #PBS -V
+               #PBS -N $(JOBNAME)
+               #PBS -A $(ACCOUNT)
+               #PBS -q $(QUEUE)
+               #PBS -l walltime=$(TIME)
+               #PBS -l mppwidth=$(NP)
+               #PBS -j oe
+               # START OF COMMANDS
+               umask 007
+               umask
+               cd $PBS_O_WORKDIR
+         ]],
+         maxCoresPerNode = 16,
+      },
    },
 }

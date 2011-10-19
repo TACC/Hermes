@@ -2,7 +2,7 @@ BatchSystems = {
    INTERACTIVE = {
       default = {
          submitHeader = "",
-         mprCmd = "mpirun -np $(NP) $(CMD) $(CMD_ARGS) ",
+         mprCmd = "mpirun -np $(NP) $(CMD) $(CMD_ARGS)",
          CurrentWD = ".",
          maxCoresPerNode = 1,
          submitCmd = "",
@@ -86,7 +86,7 @@ BatchSystems = {
                #PBS -l size="$(NP)"
                #PBS -j oe
          ]],
-         mprCmd = "yod -np $(NP) $(CMD) $(CMD_ARGS)",
+         mprCmd = "aprun -n $(NP) $(CMD) $(CMD_ARGS)",
          submitCmd = "qsub ",
          CurrentWD = "$PBS_O_WORKDIR",
          maxCoresPerNode = 1,
