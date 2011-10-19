@@ -1,10 +1,10 @@
 -- $Id: RunActiveTests.lua 353 2011-02-01 21:09:25Z mclay $ --
 
-require("posix")
 require("sys")
 require("common")
 require("JobSubmitBase")
 
+local posix = require("posix")
 RunActiveTests = BaseTask:new()
 comment    = [[
    Test Results:

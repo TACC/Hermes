@@ -1,8 +1,8 @@
 -- $Id$ --
 BsearchAndTest = BaseTask:new()
 
-require("lfs")
 require("fileOps")
+local lfs = require("lfs")
 
 local function testRev(rev, cmd)
    local cwd  = lfs.currentdir()

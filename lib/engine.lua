@@ -1,9 +1,9 @@
 -- $Id: engine.lua 337 2010-02-24 21:43:36Z mclay $ --
 -- -*- lua -*-
-require("posix")
-require("fileOps")
 require("strict")
-local Dbg = require("Dbg")
+require("fileOps")
+local Dbg   = require("Dbg")
+local posix = require("posix")
 
 Error  = nil
 engine = {}

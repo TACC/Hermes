@@ -1,10 +1,10 @@
 -- $Id: Finish.lua 287 2008-11-06 18:45:20Z mclay $ --
 
-require("posix")
 require("sys")
 require("serialize")
 require("getUname")
 
+local posix = require("posix")
 Finish = BaseTask:new()
 
 function Finish:execute(myTable)

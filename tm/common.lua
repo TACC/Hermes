@@ -1,8 +1,8 @@
 -- $Id: common.lua 353 2011-02-01 21:09:25Z mclay $ --
 
 require("string_utils")
-require("posix")
 require("fileOps")
+local posix = require("posix")
 
 local function findCmd(s,i)
 

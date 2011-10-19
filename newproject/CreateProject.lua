@@ -1,7 +1,7 @@
 -- $Id: CreateProject.lua 287 2008-11-06 18:45:20Z mclay $ --
 
 CreateProject = BaseTask:new()
-require("posix")
+local posix   = require("posix")
 
 function CreateProject:execute(myTable)
    local masterTbl = masterTbl()

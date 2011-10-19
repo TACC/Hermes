@@ -2,10 +2,10 @@
 require("common")
 require("string_split")
 require("sys")
-require("posix")
 require("fileOps")
 require("version")
 
+local posix = require("posix")
 CmdLineOptions = BaseTask:new()
 
 local function vname()

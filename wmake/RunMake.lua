@@ -1,10 +1,10 @@
 -- $Id: RunMake.lua 314 2009-02-12 01:52:31Z mclay $ --
 
 RunMake = BaseTask:new()
-require("lfs")
 require("fileOps")
 require("string_utils")
-require("posix")
+local lfs   = require("lfs")
+local posix = require("posix")
 function RunMake:execute(myTable)
    local masterTbl  = masterTbl()
    local pargs      = masterTbl.pargs

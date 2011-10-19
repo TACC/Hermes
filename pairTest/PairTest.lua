@@ -1,9 +1,9 @@
 -- $Id$ --
 PairTest = BaseTask:new()
-require("posix")
-require("lfs")
 require("fileOps")
+local lfs = require("lfs")
 
+local posix     = require("posix")
 local max       = math.max
 local concatTbl = table.concat
 

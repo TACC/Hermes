@@ -1,8 +1,9 @@
 -- $Id: dirlist.lua 278 2008-10-16 02:49:20Z mclay $ --
 -- -*- lua -*-
-require("lfs")
-require("posix")
 require("fileOps")
+local lfs   = require("lfs")
+local posix = require("posix")
+
 function dirlist(path)
    local list = {}
    list.dirs  = {}

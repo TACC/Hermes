@@ -1,5 +1,5 @@
 -- $Id: CmdLineOptions.lua 204 2008-06-26 23:06:17Z mclay $ --
-require("Optiks")
+local Optiks = require("Optiks")
 RunAlltoAll = BaseTask:new()
 
 function RunAlltoAll:execute(myTable)

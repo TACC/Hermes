@@ -2,8 +2,8 @@
 
 ProjectTop = BaseTask:new()
 require("fileOps")
-require("lfs")
-require("posix")
+local lfs   = require("lfs")
+local posix = require("posix")
 function ProjectTop:execute(myTable)
    local masterTbl  = masterTbl()
    local pargs      = masterTbl.pargs
