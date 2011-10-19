@@ -53,12 +53,17 @@ install:  $(INSTALLDIR)
 $(INSTALLDIR):
 	mkdir -p $@
 
-svntag:
+gittag:
         ifneq ($(TAG),)
-	  updateProjectDataVersion --new_version $(TAG);                             \
-          SVN=`svn info | grep "Repository Root" | sed -e 's/Repository Root: //'`;  \
-	  svn ci -m'moving to TAG_VERSION $(TAG)' Hermes.db;          	             \
-	  svn cp -m'moving to TAG_VERSION $(TAG)' $$SVN/trunk $$SVN/tags/$(TAG)
+	  @git status -s > /tmp/hermes$$$$;                                      \
+          if [ -s /tmp/hermes$$$$ ]; then                                        \
+	    echo "All files not checked in => try again";                        \
+	  else                                                                   \
+	    updateProjectDataVersion --new_version $(TAG);                       \
+            git commit -m "moving to TAG_VERSION $(TAG)"             Hermes.db;  \
+            git tag -a $(TAG) -m 'Setting TAG_VERSION to $(TAG)'                 \
+          fi;                                                                    \
+          rm -f /tmp/hermes$$$$
         else
-	  @echo "To svn tag do: make svntag TAG=?"
+	  @echo "To git tag do: make gittag TAG=?"
         endif
