@@ -61,7 +61,7 @@ gittag:
 	  else                                                                   \
 	    updateProjectDataVersion --new_version $(TAG);                       \
             git commit -m "moving to TAG_VERSION $(TAG)"             Hermes.db;  \
-            git tag -a $(TAG) -m 'Setting TAG_VERSION to $(TAG)'                 \
+            git tag -a $(TAG) -m 'Setting TAG_VERSION to $(TAG)'              ;  \
           fi;                                                                    \
           rm -f /tmp/hermes$$$$
         else
