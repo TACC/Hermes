@@ -2,6 +2,7 @@
 
 require("string_utils")
 require("fileOps")
+local hash  = require("hash")
 local posix = require("posix")
 
 local function findCmd(s,i)
