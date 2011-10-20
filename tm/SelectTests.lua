@@ -1,7 +1,5 @@
--- $Id: SelectTests.lua 279 2008-10-23 18:38:21Z mclay $ --
-
-require("hash")
 require("Gauntlet")
+local hash  = require("hash")
 SelectTests = BaseTask:new()
 
 function SelectTests:execute(myTable)
