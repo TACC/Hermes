@@ -3,6 +3,7 @@
 require("Tst")
 require("common")
 require("serialize")
+local hash = require("hash")
 
 ReportResults = BaseTask:new()
 

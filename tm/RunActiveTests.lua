@@ -4,6 +4,7 @@ require("sys")
 require("common")
 require("JobSubmitBase")
 
+local hash  = require("hash")
 local posix = require("posix")
 RunActiveTests = BaseTask:new()
 comment    = [[

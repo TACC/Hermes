@@ -1,6 +1,8 @@
 -- $Id: AnalyzeTests.lua 301 2009-02-04 23:56:06Z mclay $ --
 require("common")
+
 local Dbg = require("Dbg")
+local hash = require("hash")
 AnalyzeTests = BaseTask:new()
 
 MyResult = nil
