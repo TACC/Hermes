@@ -25,7 +25,7 @@ function Wrapper:execute(myTable)
    local cmdline = table.concat(cmdA," ")
    print ("cmdline:",cmdline)
 
-   masterTbl.status = os.execute(cmdline .. " >& xdrdiff.log")
+   masterTbl.status = os.execute(cmdline .. " > xdrdiff.log 2>&1")
 
 end
 

@@ -30,6 +30,6 @@ function Wrapper:execute(myTable)
 
    print ("cmdline",cmdline)
 
-   local status = os.execute(cmdline .. " > diff.log")
+   local status = os.execute(cmdline .. " > diff.log 2>&1")
    masterTbl.status = status
 end
