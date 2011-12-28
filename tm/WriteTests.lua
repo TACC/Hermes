@@ -2,7 +2,7 @@
 
 WriteTests = BaseTask:new()
 require("fileOps")
-require("serialize")
+require("serializeTbl")
 function WriteTests:execute(myTable)
    local masterTbl  = masterTbl()
    local testlistFn = pathJoin(masterTbl.projectDir, masterTbl.testlistFn)
@@ -17,5 +17,5 @@ function WriteTests:execute(myTable)
 
    print ("Found " .. icount .. " tests")
 
-   serialize{name="testlist", value=testlist, fn=testlistFn, indent=true}
+   serializeTbl{name="testlist", value=testlist, fn=testlistFn, indent=true}
 end

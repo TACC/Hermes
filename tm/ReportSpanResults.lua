@@ -2,7 +2,7 @@
 
 ReportSpanResults = BaseTask:new()
 
-require("serialize")
+require("serializeTbl")
 require("ReportResults")
 require("fileOps")
 
@@ -138,7 +138,7 @@ function ReportSpanResults:execute(myTable)
 
    if (masterTbl.span.numRpt > 0) then
       local testresultT = ReportSpanResults:buildTestReportTable(HumanData,masterTbl)
-      serialize{name="testresults", value=testresultT, fn=masterTbl.tstSpanReportFn, indent=true}
+      serializeTbl{name="testresults", value=testresultT, fn=masterTbl.tstSpanReportFn, indent=true}
    end
 end
 

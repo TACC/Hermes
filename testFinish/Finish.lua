@@ -1,7 +1,7 @@
 -- $Id: Finish.lua 287 2008-11-06 18:45:20Z mclay $ --
 
 require("sys")
-require("serialize")
+require("serializeTbl")
 require("getUname")
 
 local posix = require("posix")
@@ -32,7 +32,7 @@ function Finish:execute(myTable)
       result = 'failed'
    end
    local myResult = { testresult = result }
-   serialize{name="myResult", value=myResult, fn=resultFn, indent=true}
+   serializeTbl{name="myResult", value=myResult, fn=resultFn, indent=true}
 
    local t = getUname()
 
@@ -43,5 +43,5 @@ function Finish:execute(myTable)
       runtime[k] = t[k]
    end
 
-   serialize{name="runtime",  value=runtime,  fn=runtimeFn, indent=true}
+   serializeTbl{name="runtime",  value=runtime,  fn=runtimeFn, indent=true}
 end

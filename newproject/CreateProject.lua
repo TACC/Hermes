@@ -25,5 +25,5 @@ function CreateProject:execute(myTable)
       PackageList  = {}
    }
 
-   serialize{name="ProjectData", value=tbl, fn="Hermes.db",indent=true}
+   serializeTbl{name="ProjectData", value=tbl, fn="Hermes.db",indent=true}
 end

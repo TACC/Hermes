@@ -2,7 +2,7 @@
 
 require("Tst")
 require("common")
-require("serialize")
+require("serializeTbl")
 local hash = require("hash")
 
 ReportResults = BaseTask:new()
@@ -143,7 +143,7 @@ function ReportResults:execute(myTable)
    
    if (icount > 0) then
       local testresultT = buildTestReportTable(HumanData, masterTbl)
-      serialize{name="testresults", value=testresultT, fn=masterTbl.tstReportFn, indent=true}
+      serializeTbl{name="testresults", value=testresultT, fn=masterTbl.tstReportFn, indent=true}
    end
 end
 

@@ -1,5 +1,5 @@
 -- $Id: UpdateProject.lua 287 2008-11-06 18:45:20Z mclay $ --
-require("serialize")
+require("serializeTbl")
 
 UpdateProject = BaseTask:new()
 
@@ -18,5 +18,5 @@ function UpdateProject:execute(myTable)
 		    revision =  rev,
 		   })
    end
-   serialize{name='ProjectData', value=ProjectData, fn=masterTbl.projectFn,indent=true}
+   serializeTbl{name='ProjectData', value=ProjectData, fn=masterTbl.projectFn,indent=true}
 end

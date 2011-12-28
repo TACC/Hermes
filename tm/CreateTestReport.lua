@@ -2,7 +2,7 @@
 
 CreateTestReport = BaseTask:new()
 
-require("serialize")
+require("serializeTbl")
 require("fileOps")
 
 function CreateTestReport:execute(myTable)
@@ -26,5 +26,5 @@ function CreateTestReport:execute(myTable)
    local HumanData	 = ''
    local testresults	 = buildTestReportTable(HumanData,masterTbl)
 
-   serialize{name="testresults", value=testresults, fn=tstReportFn, indent=true}
+   serializeTbl{name="testresults", value=testresults, fn=tstReportFn, indent=true}
 end

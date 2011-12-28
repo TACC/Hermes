@@ -3,6 +3,7 @@
 require("sys")
 require("common")
 require("JobSubmitBase")
+require("serializeTbl")
 
 local hash  = require("hash")
 local posix = require("posix")
@@ -117,8 +118,8 @@ function RunActiveTests:makeOutputDirs(masterTbl, tstTbl)
       local resultFn  = fullFn(tst:get('resultFn')  )
       local runtimeFn = fullFn(tst:get('runtimeFn') )
       
-      serialize{name="myResult", value=resultTbl.notrun, fn=resultFn , indent=true}
-      serialize{name="runtime",  value=runtime,          fn=runtimeFn, indent=true}
+      serializeTbl{name="myResult", value=resultTbl.notrun, fn=resultFn , indent=true}
+      serializeTbl{name="runtime",  value=runtime,          fn=runtimeFn, indent=true}
    end
 end
 
@@ -158,12 +159,12 @@ function RunActiveTests:runTest(masterTbl, tst, iTest, numTests)
    posix.unlink(fullFn(tst:get('cmdResultFn')))
 
    local resultFn  = fullFn(tst:get('resultFn'))
-   serialize{name='myResult', value=resultTbl.started, fn=resultFn, indent=true}
+   serializeTbl{name='myResult', value=resultTbl.started, fn=resultFn, indent=true}
    local t      = sys.gettimeofday()
    local stime  = { start_time = t, end_time = -1 }
    tst:set('start_epoch', t)
 
-   serialize{name="runtime",  value=stime,  fn=fullFn(tst:get('runtimeFn')), indent=true}
+   serializeTbl{name="runtime",  value=stime,  fn=fullFn(tst:get('runtimeFn')), indent=true}
    
    local idTag       = envTbl.idTag
    local scriptFn    = idTag .. ".script"

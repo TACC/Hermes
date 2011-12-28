@@ -1,5 +1,5 @@
 -- $Id: WriteProjectData.lua 306 2009-02-06 18:30:56Z eijkhout $ --
-require("serialize")
+require("serializeTbl")
 
 WriteProjectData = BaseTask:new()
 
@@ -12,5 +12,5 @@ function WriteProjectData:execute(myTable)
 
    print ('version: ', masterTbl.new_version)
 
-   serialize{name="ProjectData",value=masterTbl.projectData, fn=masterTbl.projectFn, indent=true}
+   serializeTbl{name="ProjectData",value=masterTbl.projectData, fn=masterTbl.projectFn, indent=true}
 end

@@ -1,6 +1,6 @@
 -- $Id: Wrapper.lua 194 2008-06-25 21:43:50Z mclay $ --
 
-require("serialize")
+require("serializeTbl")
 
 myTbl = {}
 
@@ -35,5 +35,5 @@ function DiffWrapper:execute(myTable)
    end
    os.remove("diff.log")
    myTbl[#myTbl+1] = { result=result, program="wrapperDiff"}
-   serialize{name="myTbl", value=myTbl, fn=resultFn, indent=true}
+   serializeTbl{name="myTbl", value=myTbl, fn=resultFn, indent=true}
 end
