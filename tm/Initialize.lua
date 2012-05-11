@@ -138,7 +138,7 @@ function Initialize:build_targetA()
       
    Initialize:processTargFiles()
    if (#targetA < 1 and not masterTbl.spanning) then
-      targetA[1] = os.getenv("TARGET") or ""
+      targetA[1] = os.getenv("TARGET") or os.getenv("TARG_TARGET") or ""
    end
 end
 
