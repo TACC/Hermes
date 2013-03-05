@@ -3,11 +3,13 @@
 require("Tst")
 require("common")
 require("serializeTbl")
+require("TermWidth")
 local hash = require("hash")
 
 ReportResults = BaseTask:new()
 
 function ReportResults:execute(myTable)
+   local width          = TermWidth() - 1 
    local masterTbl      = myTable.masterTbl
    local tstTbl         = masterTbl.tstTbl
    local rptTbl         = masterTbl.rptTbl
@@ -30,11 +32,19 @@ function ReportResults:execute(myTable)
          icount = icount + 1
       end
    end
+
+   local HDR = string.rep("*", width)
+   local TR  = "*** Test Results"
+   local TS  = "*** Test Summary"
+   local TRl = width - TR:len() - 3
+   TR        = TR .. string.rep(" ", TRl) .. "***"
+   TS        = TS .. string.rep(" ", TRl) .. "***"
+
    
    table.insert(HumanDataA, 0)
-   table.insert(HumanDataA, "************************************************************************")
-   table.insert(HumanDataA, "*** Test Results                                                     ***")
-   table.insert(HumanDataA, "************************************************************************")
+   table.insert(HumanDataA, HDR)
+   table.insert(HumanDataA, TR)
+   table.insert(HumanDataA, HDR)
    table.insert(HumanDataA, " ")
    table.insert(HumanDataA, 0)
    
@@ -50,9 +60,9 @@ function ReportResults:execute(myTable)
    
    table.insert(HumanDataA, 0)
    table.insert(HumanDataA, " ")
-   table.insert(HumanDataA, "************************************************************************")
-   table.insert(HumanDataA, "*** Test Summary                                                     ***")
-   table.insert(HumanDataA, "************************************************************************")
+   table.insert(HumanDataA, HDR)
+   table.insert(HumanDataA, TS)
+   table.insert(HumanDataA, HDR)
    table.insert(HumanDataA, " ")
    table.insert(HumanDataA, 0)
    
@@ -71,9 +81,9 @@ function ReportResults:execute(myTable)
    table.insert(HumanDataA, 0)
    
    table.insert(HumanDataA, 5)
-   table.insert(HumanDataA, {"*******","*","****","*****************","***********************************"})
-   table.insert(HumanDataA, {"Results","R","Time","Test Name",         "version/message"})
-   table.insert(HumanDataA, {"*******","*","****","*****************","***********************************"})
+   table.insert(HumanDataA, {"*******","*","****","*********","***************"})
+   table.insert(HumanDataA, {"Results","R","Time","Test Name","version/message"})
+   table.insert(HumanDataA, {"*******","*","****","*********","***************"})
    
    
    local resultTbl = {}
@@ -109,9 +119,9 @@ function ReportResults:execute(myTable)
 
    if (tstSummary.total ~= tstSummary.passed) then
       table.insert(HumanDataA, 2)
-      table.insert(HumanDataA, {"*******",  "***********************************************************"})
+      table.insert(HumanDataA, {"*******",  "****************"})
       table.insert(HumanDataA, {"Results",  "Output Directory"})
-      table.insert(HumanDataA, {"*******",  "***********************************************************"})
+      table.insert(HumanDataA, {"*******",  "****************"})
 
       resultTbl = {}
 

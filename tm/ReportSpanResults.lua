@@ -5,6 +5,7 @@ ReportSpanResults = BaseTask:new()
 require("serializeTbl")
 require("ReportResults")
 require("fileOps")
+require("TermWidth")
 
 function ReportSpanResults:execute(myTable)
    local tag         = myTable.tag
@@ -27,11 +28,18 @@ function ReportSpanResults:execute(myTable)
    local spanSummary = masterTbl.span.Summary
 
    local HumanDataA = {}
+   local width      = TermWidth() - 1
+   local HDR        = string.rep("*", width)
+   local STR        = "*** Span Test Results"
+   local TS         = "*** Test Summary     "
+   local TSl        = width - TS:len() - 3
+   STR              = STR .. string.rep(" ",TRl) .. "***"
+   TS               = TS  .. string.rep(" ",TRl) .. "***"
 
    table.insert(HumanDataA, 0)
-   table.insert(HumanDataA, "************************************************************************")
-   table.insert(HumanDataA, "*** Span Test Results                                                ***")
-   table.insert(HumanDataA, "************************************************************************")
+   table.insert(HumanDataA, HDR)
+   table.insert(HumanDataA, STR)
+   table.insert(HumanDataA, HDR)
    table.insert(HumanDataA, " ")
    table.insert(HumanDataA, 0)
    
@@ -47,9 +55,9 @@ function ReportSpanResults:execute(myTable)
    
    table.insert(HumanDataA, 0)
    table.insert(HumanDataA, " ")
-   table.insert(HumanDataA, "************************************************************************")
-   table.insert(HumanDataA, "*** Test Summary                                                     ***")
-   table.insert(HumanDataA, "************************************************************************")
+   table.insert(HumanDataA, HDR)
+   table.insert(HumanDataA, TS)
+   table.insert(HumanDataA, HDR)
    table.insert(HumanDataA, " ")
    table.insert(HumanDataA, 0)
    
@@ -70,9 +78,9 @@ function ReportSpanResults:execute(myTable)
    
    if (masterTbl.full) then
       table.insert(HumanDataA, 6)
-      table.insert(HumanDataA, {"*******","*","****","******","*****************","***********************************"})
-      table.insert(HumanDataA, {"Results","R","Time","Target","Test Name",         "version/message"})
-      table.insert(HumanDataA, {"*******","*","****","******","*****************","***********************************"})
+      table.insert(HumanDataA, {"*******","*","****","******","*********","***************"})
+      table.insert(HumanDataA, {"Results","R","Time","Target","Test Name","version/message"})
+      table.insert(HumanDataA, {"*******","*","****","******","*********","***************"})
    
       local resultTbl = {}
    
