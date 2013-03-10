@@ -37,7 +37,7 @@ function ReportAllResults:execute(myTable)
    table.insert(HumanDataA, 0)
    table.insert(HumanDataA, HDR)
    table.insert(HumanDataA, STR)
-   table.insert(HumanDataA, HDR))
+   table.insert(HumanDataA, HDR)
    table.insert(HumanDataA, " ")
    table.insert(HumanDataA, 0)
    
