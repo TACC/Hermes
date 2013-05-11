@@ -1,5 +1,4 @@
 require("Gauntlet")
-local hash  = require("hash")
 SelectTests = BaseTask:new()
 
 function SelectTests:execute(myTable)
@@ -23,8 +22,8 @@ function SelectTests:execute(myTable)
 
 
    local analyzeFlag      = masterTbl.analyzeFlag
-   masterTbl.tstTbl       = hash.new()
-   masterTbl.rptTbl       = hash.new()
+   masterTbl.tstTbl       = {}
+   masterTbl.rptTbl       = {}
    masterTbl.resultMaxLen = 12
 
    for id in pairs(masterTbl.candidateTsts) do

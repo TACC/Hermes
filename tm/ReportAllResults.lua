@@ -87,7 +87,7 @@ function ReportAllResults:execute(myTable)
             local tbl            = masterTbl.tagTbl[tag].targetTbl[target]
             local rptTbl         = tbl.rptTbl
             local testresultsTbl = tbl.testresultsTbl
-            for id in hash.pairs(rptTbl) do
+            for id in pairs(rptTbl) do
                local tst     = rptTbl[id]
                local aFlag   = " "
                if (tst:get("active")) then aFlag = "R" end
@@ -159,8 +159,8 @@ function ReportAllResults:summarize(masterTbl)
          if (testValues[tbl.status] < testValues[status]) then
             status = tbl.status
          end
-         numRpt       = numRpt    + #tbl.rptTbl
-         numTests     = numTests  + #tbl.tstTbl
+         numRpt       = numRpt    + countEntries(tbl.rptTbl)
+         numTests     = numTests  + countEntries(tbl.tstTbl)
          totalTime    = totalTime + tbl.totalTestTime
          currentEpoch = math.max(currentEpoch, tbl.currentEpoch)
          origEpoch    = math.max(origEpoch,    tbl.origEpoch)

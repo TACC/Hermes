@@ -1,8 +1,7 @@
 -- $Id: AnalyzeTests.lua 301 2009-02-04 23:56:06Z mclay $ --
 require("common")
 
-local Dbg = require("Dbg")
-local hash = require("hash")
+local Dbg    = require("Dbg")
 AnalyzeTests = BaseTask:new()
 
 MyResult = nil
@@ -25,16 +24,16 @@ function AnalyzeTests:execute(myTable)
    masterTbl.totalTestTime = 0
 
    local epoch = masterTbl.currentEpoch
-   if (#tstTbl == 0) then
+   if (next(tstTbl) == nil) then
       epoch = masterTbl.origEpoch
    end
    
    local status = 'passed'
-   if (#rptTbl == 0) then
+   if (next(rptTbl) == nil) then
       status = ' '
    end
 
-   for id in hash.pairs(rptTbl) do
+   for id in pairs(rptTbl) do
       local tst		= rptTbl[id]
       
       if (not tst:get("runInBackground")) then

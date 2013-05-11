@@ -38,7 +38,7 @@ function DiffWrapper:execute(myTable)
    local cmdline = concatTbl(cmdA," ")
 
    print (cmdline)
-   local status     = os.execute(cmdline)
+   local status = os_execute(cmdline)
    masterTbl.status = status
 
    local resultFn = masterTbl.resultFn
@@ -58,3 +58,20 @@ function DiffWrapper:execute(myTable)
    myTbl[#myTbl+1] = { result=result, program="wrapperDiff"}
    serializeTbl{name="myTbl", value=myTbl, fn=resultFn, indent=true}
 end
+
+
+local function execute51(s)
+   return os.execute(s)
+end
+
+local function execute52(s)
+   local success, flag, status = os.execute(s)
+   return status
+end
+
+local version = _VERSION:gsub("^Lua%s+","")
+os_execute = execute52
+if (version == "5.1") then
+  os_execute = execute51
+end
+

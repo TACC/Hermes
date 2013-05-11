@@ -87,7 +87,7 @@ function ReportSpanResults:execute(myTable)
       for target in pairs(masterTbl.targetTbl) do
          local rptTbl = masterTbl.targetTbl[target].rptTbl
          local testresultsTbl = masterTbl.targetTbl[target].testresultsTbl
-         for id in hash.pairs(rptTbl) do
+         for id in pairs(rptTbl) do
             local tst	    = rptTbl[id]
             local aFlag   = " "
             if (tst:get("active")) then aFlag = "R" end
@@ -161,8 +161,8 @@ function ReportSpanResults:summarize(masterTbl)
 
    for target in pairs(masterTbl.targetTbl) do
       local tbl    = masterTbl.targetTbl[target]
-      numRpt       = numRpt    + #tbl.rptTbl
-      numTests     = numTests  + #tbl.tstTbl
+      numRpt       = numRpt    + countEntries(tbl.rptTbl)
+      numTests     = numTests  + countEnties(tbl.tstTbl)
       totalTime    = totalTime + tbl.totalTestTime
       tstSummary   = tbl.tstSummary
       for v in pairs(tstSummary) do
@@ -205,7 +205,7 @@ function ReportSpanResults:buildTestReportTable(HumanData, masterTbl)
    for target in pairs(masterTbl.targetTbl) do
       local rptTbl = masterTbl.targetTbl[target].rptTbl
       local tests  = {}
-      for id in hash.pairs(rptTbl) do
+      for id in pairs(rptTbl) do
          local tst      = rptTbl[id]
          local testData = {}
          for i,v in ipairs(testfields) do

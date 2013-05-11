@@ -2,7 +2,6 @@
 
 require("string_utils")
 require("fileOps")
-local hash  = require("hash")
 local posix = require("posix")
 
 local function findCmd(s,i)
@@ -143,6 +142,13 @@ function expand(s, tbl, envTbl, funcTbl)
 end
 
 
+function countEntries(T)
+   local count = 0
+   for _ in pairs(T) do
+      count = count + 1
+   end
+   return count
+end
 
 
 function buildTestReportTable(HumanData, masterTbl)
@@ -168,7 +174,7 @@ function buildTestReportTable(HumanData, masterTbl)
 
    local testfields = Tst:testfields()
 
-   for id in hash.pairs(masterTbl.rptTbl) do
+   for id in pairs(masterTbl.rptTbl) do
       local tst	     = masterTbl.rptTbl[id]
       local testData = {}
       for i,v in ipairs(testfields) do

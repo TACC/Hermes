@@ -10,7 +10,7 @@ function WriteTests:execute(myTable)
    local testlist = {}
 
    local icount = 0
-   for id in hash.pairs(masterTbl.tstTbl) do
+   for id in pairs(masterTbl.tstTbl) do
       icount = icount + 1
       table.insert(testlist, id)
    end

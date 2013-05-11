@@ -21,7 +21,7 @@ function CreateTestReport:execute(myTable)
    --------------------------------------------------------
    -- Do not create a report when there are no tests to run
 
-   if (#masterTbl.tstTbl == 0) then return end
+   if (next(masterTbl.tstTbl) == nil) then return end
 
    local HumanData	 = ''
    local testresults	 = buildTestReportTable(HumanData,masterTbl)

@@ -5,7 +5,6 @@ require("common")
 require("JobSubmitBase")
 require("serializeTbl")
 
-local hash  = require("hash")
 local posix = require("posix")
 RunActiveTests = BaseTask:new()
 comment    = [[
@@ -55,8 +54,8 @@ function RunActiveTests:execute(myTable)
 
    for tag       in pairs(masterTbl.tagTbl)    do
       for target in pairs(masterTbl.tagTbl[tag].targetTbl) do
-	 numTests     = numTests + #masterTbl.tagTbl[tag].targetTbl[target].tstTbl
-	 rptTests     = rptTests + #masterTbl.tagTbl[tag].targetTbl[target].rptTbl
+	 numTests     = numTests + countEntries(masterTbl.tagTbl[tag].targetTbl[target].tstTbl)
+	 rptTests     = rptTests + countEntries(masterTbl.tagTbl[tag].targetTbl[target].rptTbl)
       end
    end
 
@@ -78,7 +77,7 @@ function RunActiveTests:execute(myTable)
          
 	 RunActiveTests:makeOutputDirs(mTbl, tstTbl)
 	 
-	 for id in hash.pairs(tstTbl) do
+	 for id in pairs(tstTbl) do
 	    i = i+1
 	    RunActiveTests:runTest(mTbl, tstTbl[id], i, numTests)
 	 end
@@ -101,7 +100,7 @@ function RunActiveTests:makeOutputDirs(masterTbl, tstTbl)
    local runtime  = { start_time = -1, end_time = -1 }
 
    local projectDir = masterTbl.projectDir
-   for id in hash.pairs(tstTbl) do
+   for id in pairs(tstTbl) do
       local tst	      = tstTbl[id]
       local testDir   = tst:get('testDir')
       local idTag     = tst:get('idTag')
@@ -113,7 +112,7 @@ function RunActiveTests:makeOutputDirs(masterTbl, tstTbl)
       MakeDir(fullFn(outputDir))
    end
    
-   for id in hash.pairs(tstTbl) do
+   for id in pairs(tstTbl) do
       local tst	      = tstTbl[id]
       local resultFn  = fullFn(tst:get('resultFn')  )
       local runtimeFn = fullFn(tst:get('runtimeFn') )

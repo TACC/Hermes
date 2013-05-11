@@ -4,7 +4,6 @@ require("Tst")
 require("common")
 require("serializeTbl")
 require("TermWidth")
-local hash = require("hash")
 
 ReportResults = BaseTask:new()
 
@@ -25,7 +24,7 @@ function ReportResults:execute(myTable)
    local testresultsTbl = masterTbl.testresultsTbl
 
    local icount = 0
-   for id in hash.pairs(rptTbl) do
+   for id in pairs(rptTbl) do
       local tst	    = rptTbl[id]
       local result  = tst:get('result')
       if (testresultsTbl[result]) then
@@ -88,7 +87,7 @@ function ReportResults:execute(myTable)
    
    local resultTbl = {}
 
-   for id in hash.pairs(rptTbl) do
+   for id in pairs(rptTbl) do
       local tst	    = rptTbl[id]
       local aFlag   = " "
       if (tst:get("active")) then aFlag = "R" end
@@ -125,7 +124,7 @@ function ReportResults:execute(myTable)
 
       resultTbl = {}
 
-      for id in hash.pairs(rptTbl) do
+      for id in pairs(rptTbl) do
          local tst = rptTbl[id]
          local result  = tst:get('result')
          if (result ~= "passed" and testresultsTbl[result]) then
