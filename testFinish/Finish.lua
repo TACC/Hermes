@@ -5,6 +5,8 @@ require("serializeTbl")
 require("getUname")
 
 local posix = require("posix")
+local load  = (_VERSION == "Lua 5.1") and loadstring or load
+
 Finish = BaseTask:new()
 
 function Finish:execute(myTable)
@@ -19,7 +21,7 @@ function Finish:execute(myTable)
    local f = io.open(cmdResultFn,"r")
    if (f) then
       local s = f:read("*all")
-      assert(loadstring(s))()
+      assert(load(s))()
       result = 'passed'
       for i,v in ipairs(myTbl) do
 	 if (v.result ~= 'passed' and v.result ~= 'Passed') then

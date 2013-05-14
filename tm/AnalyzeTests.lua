@@ -3,6 +3,7 @@ require("common")
 
 local Dbg    = require("Dbg")
 AnalyzeTests = BaseTask:new()
+local load   = (_VERSION == "Lua 5.1") and loadstring or load
 
 MyResult = nil
 function AnalyzeTests:execute(myTable)
@@ -94,7 +95,7 @@ function AnalyzeTests:execute(myTable)
          local f = io.open(versionFn,"r")
          if (f) then
             local s = f:read("*all")
-            assert(loadstring(s))()
+            assert(load(s))()
             tst:set('ProgVersion',ProgVersion)
             f:close()
          end
@@ -103,7 +104,7 @@ function AnalyzeTests:execute(myTable)
          local f = io.open(messageFn,"r")
          if (f) then
             local s = f:read("*all")
-            assert(loadstring(s))()
+            assert(load(s))()
             tst:set('message',messageTbl.message)
             f:close()
          end

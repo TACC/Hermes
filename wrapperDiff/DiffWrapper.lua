@@ -3,9 +3,9 @@
 require("serializeTbl")
 require("fileOps")
 
-myTbl = {}
-
+myTbl       = {}
 concatTbl   = table.concat
+local load  = (_VERSION == "Lua 5.1") and loadstring or load
 DiffWrapper = BaseTask:new()
 
 function DiffWrapper:execute(myTable)
@@ -46,7 +46,7 @@ function DiffWrapper:execute(myTable)
    local f        = io.open(resultFn,"r")
    if (f) then
       local s = f:read("*all")
-      assert(loadstring(s))()
+      assert(load(s))()
    end
    local result = "failed"
    if (status == 0) then
