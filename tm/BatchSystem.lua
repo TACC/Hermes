@@ -1,4 +1,19 @@
 BatchSystems = {
+   SLURM = {
+      stampede = {
+         submitHeader = [[
+               # stampede
+               #SBATCH -J $(JOBNAME)
+               #SBATCH -o $(JOBNAME).%j.out
+               #SBATCH -p $(QUEUE)
+               #SBATCH -N $(NODES)
+               #SBATCH -n $(NP)
+               #SBATCH -t $(TIME)
+               #SBATCH -A $(ACCOUNT)
+         ]],
+         maxCoresPerNode = 16,
+      },
+   },
    SGE = {
       ranger = {
          submitHeader= [[

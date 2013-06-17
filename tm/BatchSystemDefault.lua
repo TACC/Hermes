@@ -74,6 +74,24 @@ BatchSystems = {
          maxCoresPerNode = 1,
       },
    },
+   SLURM = {
+      default = 
+         {
+         submitHeader= [[
+               #SBATCH -J $(JOBNAME)
+               #SBATCH -o $(LOGNAME)
+               #SBATCH -p $(QUEUE)
+               #SBATCH -N $(NODES)
+               #SBATCH -n $(NP)
+               #SBATCH -t $(TIME)
+               #SBATCH -A $(ACCOUNT)
+         ]],
+         mprCmd = "ibrun $(CMD) $(CMD_ARGS)",
+         submitCmd = "sbatch ",
+         CurrentWD = ".",
+         maxCoresPerNode = 1,
+      },
+   },
    PBS = {
       default = 
          {
