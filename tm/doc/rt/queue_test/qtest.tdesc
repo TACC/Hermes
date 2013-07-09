@@ -10,7 +10,7 @@ testdescript = {
    testName = "simple_test",
 
    runScript = [[
-     $(submit JOBNAME="$(testName)-$(id)", NP=$(np), QUEUE="normal", TIME=00:15:00)
+     $(submit JOBNAME="$(testName)-$(id)", NP=$(np), NODES=$(nodes), QUEUE="normal", TIME=00:15:00)
      PATH=$(projectDir):$PATH;      export PATH
      testprog $(outputDir)/testprog.soln
      diffprog $(cmdResultFn) $(tol) $(testDir)/testprog.gold $(outputDir)/testprog.soln
@@ -18,6 +18,6 @@ testdescript = {
    ]],
 
    tests = {
-      { id='t1', tol=1.01e-6},
+      { id='t1', tol=1.01e-6, np=1, nodes=1},
    },
 }
