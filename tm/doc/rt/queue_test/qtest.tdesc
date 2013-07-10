@@ -18,6 +18,6 @@ testdescript = {
    ]],
 
    tests = {
-      { id='t1', tol=1.01e-6},
+      { id='t1', tol=1.01e-6, np=1},
    },
 }
