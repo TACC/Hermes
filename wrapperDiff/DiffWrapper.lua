@@ -48,9 +48,17 @@ function DiffWrapper:execute(myTable)
       local s = f:read("*all")
       assert(load(s))()
    end
-   local result = "failed"
+   local result = "diff"
    if (status == 0) then
       result = "passed"
+   else
+      cmdA = {}
+      cmdA[#cmdA + 1] = 'grep -q "lua: error"'
+      cmdA[#cmdA + 1] = modA[2]
+      cmdA[#cmdA + 1] = "> diff.log 2>&1"      
+      cmdline         = concatTbl(cmdA," ")
+      status          = os_execute(cmdline)
+      result          = (status == 0) and "failed" or "diff"
    end
    os.remove("diff.log")
    os.remove(modA[1])
