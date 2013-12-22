@@ -91,7 +91,7 @@ function Tst.new(self, testparams, fileName, testdescript, target, epoch, i)
    o.end_time          = 0
    o.background        = testdescript.background or false
    o.at_top_of_script  = testdescript.topOfScript or
-[[#!/bin/sh
+[[#!/bin/bash
 # -*- shell-script -*-
 ]]
 
