@@ -21,7 +21,7 @@ function Finish.parseInput(self, fn)
    end
 
    local ext = extname(fn)
-   if (ext == "lua") then
+   if (ext == ".lua") then
       return self:parseLuaResult(fn)
    else
       return self:parseCSVResult(fn)
@@ -29,7 +29,6 @@ function Finish.parseInput(self, fn)
 end
 
 acceptT = { failed = true, passed = true, diff = true } 
-
 
 function Finish.parseCSVResult(self, fn)
    local result = "passed"
@@ -62,7 +61,7 @@ function Finish.parseCSVResult(self, fn)
 end
 
 function Finish.parseLuaResult(self, fn)
-   local f      = io.open(cmdResultFn,"r")
+   local f      = io.open(fn,"r")
    local result = "passed"
    local found  = false
    if (f) then
@@ -70,6 +69,7 @@ function Finish.parseLuaResult(self, fn)
       assert(load(s))()
       for i,v in ipairs(myTbl) do
          local word  = v.result:lower()
+
          found       = true
 	 if (word ~= "passed") then
             result = word
