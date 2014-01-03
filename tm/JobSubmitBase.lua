@@ -4,29 +4,20 @@ JobSubmitBase = {}
 
 
 require("inherits")
-JobSubmitBase = inheritsFrom(nil)
 require("Interactive")
 require("Batch")
 require("fileOps")
 
-local BATCH        = BATCH
-local Error        = Error
-local INTERACTIVE  = INTERACTIVE
+local Stencil      = require("Stencil")
 local assert       = assert
 local date         = os.date
-local expand       = expand
 local format       = string.format
-local findInPath   = findInPath
-local io           = io
 local isFile       = isFile
 local getenv       = os.getenv
-local getmetatable = getmetatable
-local inheritsFrom = inheritsFrom
 local loadfile     = loadfile
 local package      = package
 local pairs        = pairs
 local print        = print
-local string       = string
 local systemG      = _G
 local type         = type
 
@@ -34,6 +25,7 @@ local factoryT = {
    INTERACTIVE = INTERACTIVE,
    BATCH       = BATCH
 }
+
 
 
 module ("JobSubmitBase")
@@ -101,8 +93,8 @@ end
 
 local function findFileInPackagePath(modulename)
   -- Find source
-  for path in string.gmatch(package.path, "([^;]+)") do
-    local filename = string.gsub(path, "%?", modulename)
+  for path in package.path:gmatch("([^;]+)") do
+    local filename = path:gsub("%?", modulename)
     if (isFile(filename)) then
        return filename
     end
@@ -112,8 +104,10 @@ end
 
 
 function mpr(tbl, envTbl, funcTbl)
-   local mprCmd = funcTbl.batchTbl.mprCmd
-   return expand(mprCmd, tbl, envTbl, funcTbl)
+   local mprCmd  = funcTbl.batchTbl.mprCmd
+   local stencil = Stencil:new{tbl=tbl, envTbl=envTbl, funcTbl=funcTbl}
+   
+   return stencil:expand(mprCmd)
 end
 
 
@@ -123,7 +117,8 @@ end
 
 function submit(tbl, envTbl, funcTbl)
    local batchTbl = funcTbl.batchTbl
-   return expand(batchTbl.submitHeader, tbl, envTbl, funcTbl)
+   local stencil  = Stencil:new{tbl=tbl, envTbl=envTbl, funcTbl=funcTbl}
+   return stencil:expand(batchTbl.submitHeader)
 end
 
 function build(self, name, masterTbl)
@@ -174,3 +169,5 @@ function build(self, name, masterTbl)
                   
    return o
 end
+
+return M
