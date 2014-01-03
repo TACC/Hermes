@@ -10,7 +10,8 @@ require("string_split")
 require("ignoreDirList")
 require("fileOps")
 
-Initialize = BaseTask:new()
+Initialize    = BaseTask:new()
+JobSubmitBase = {}
 
 local function  processTag(tagA)
    local masterTbl = masterTbl()
@@ -72,6 +73,7 @@ function Initialize:execute(myTable)
                                   mtbl[k] = v
                                end
 
+   JobSubmitBase             = require("JobSubmitBase")   
    ----------------------------------------------------------------------------------
    -- Use user supplied command line epoch if given (default is -1)
 
