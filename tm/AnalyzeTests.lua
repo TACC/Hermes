@@ -45,7 +45,7 @@ function AnalyzeTests:execute(myTable)
          local result = myResult.testresult:lower()
 
 
-         dbg.print ("tst.testName: ", tst.testName, " result: ",result,"\n")
+         dbg.print{"tst.testName: ", tst.testName, " result: ",result,"\n"}
 
          -- Save result in current test
          tst:set('result', result)
