@@ -3,6 +3,7 @@
 local masterTbl     = masterTbl()
 local concatTbl     = table.concat
 local execute       = os.execute
+local dbg           = require("Dbg"):dbg()
 
 local M             = inheritsFrom(JobSubmitBase)
 M.my_name           = "Batch"
@@ -12,10 +13,7 @@ M.my_name           = "Batch"
 function M.queue(tbl, envTbl, funcTbl)
    local t      = funcTbl.batchTbl.queueTbl
    local name   = tbl.name
-   local result = name
-   if (t[name]) then
-      result = t[name]
-   end
+   local result = t[name] or name
    return result
 end
 

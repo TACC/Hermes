@@ -4,6 +4,7 @@ require("sys")
 require("common")
 require("JobSubmitBase")
 require("serializeTbl")
+local dbg = require("Dbg"):dbg()
 
 local posix = require("posix")
 RunActiveTests = BaseTask:new()
@@ -147,6 +148,7 @@ function RunActiveTests:runTest(masterTbl, tst, iTest, numTests)
    elseif (masterTbl.InteractiveFlag) then
       jobSubmitMethod = "INTERACTIVE"
    end
+
 
    local job             = JobSubmitBase:build(jobSubmitMethod, masterTbl)
 
