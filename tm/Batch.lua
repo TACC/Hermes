@@ -1,16 +1,15 @@
 -- $Id: Batch.lua 353 2011-02-01 21:09:25Z mclay $ --
 
-local JobSubmitBase = JobSubmitBase
 local masterTbl     = masterTbl()
 local concatTbl     = table.concat
 local execute       = os.execute
 
-BATCH         = inheritsFrom(JobSubmitBase)
-BATCH.my_name = "Batch"
+local M             = inheritsFrom(JobSubmitBase)
+M.my_name           = "Batch"
 
-module("BATCH")
 
-function queue(tbl, envTbl, funcTbl)
+
+function M.queue(tbl, envTbl, funcTbl)
    local t      = funcTbl.batchTbl.queueTbl
    local name   = tbl.name
    local result = name
@@ -20,12 +19,8 @@ function queue(tbl, envTbl, funcTbl)
    return result
 end
 
-function runtest(self, tbl)
-   local logFileNm = tbl.idTag .. ".log"
-   if (masterTbl.batchLog) then
-      logFileNm = masterTbl.batchLog
-   end
-
+function M.runtest(self, tbl)
+   local logFileNm = masterTbl.batchLog or tbl.idTag .. ".log"
    local a = {}
    a[#a + 1] = self.batchTbl.submitCmd
    a[#a + 1] = tbl.scriptFn
@@ -35,3 +30,6 @@ function runtest(self, tbl)
    local s = concatTbl(a," ")
    execute(s)
 end   
+
+return M
+

@@ -10,8 +10,5 @@ function tool()
    return engine.execute(execDir, execName)
 end
 
-local rtn = tool()
+os.exit(tool())
 
-if (rtn ~= 0) then
-   os.exit(rtn)
-end

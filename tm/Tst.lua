@@ -1,7 +1,7 @@
--- $Id: Tst.lua 345 2010-09-28 22:29:58Z mclay $ --
 require("fileOps")
 require("string_split")
 
+local Stencil = require("Stencil")
 Tst = {}
 
 function buildTstTbl(fileName, testdescript, target, epoch, ntimes)
@@ -145,7 +145,8 @@ function Tst.setup_outputDir(self,epoch, target)
 end
 
 function Tst.expandRunScript(self, envTbl, funcTbl)
-   local runScript = expand(self.testdescript.runScript, self.test, envTbl, funcTbl)
+   local stencil   = Stencil:new{tbl=self.test, envTbl=envTbl, funcTbl=funcTbl}
+   local runScript = stencil:expand(self.testdescript.runScript)
    runScript = runScript:gsub("^%s+#","#")
    runScript = runScript:gsub("\n%s+#","\n#")
 

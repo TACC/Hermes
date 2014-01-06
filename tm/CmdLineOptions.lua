@@ -150,6 +150,13 @@ function CmdLineOptions:execute(myTable)
    }
 
    cmdlineParser:add_option{
+      name   = {'-D','--debug'},
+      dest   = 'debugLevel',
+      action = 'count',
+      help   = 'Increasing the level of debug support',
+   }
+
+   cmdlineParser:add_option{
       name   = {'-x','--max', '--maxNP'},
       dest   = 'maxNP',
       action = 'store',

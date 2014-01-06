@@ -13,8 +13,8 @@ testdescript = {
      PATH=$(projectDir):$PATH;      export PATH
      testprog $(outputDir)/testprog.soln
      rm $(outputDir)/testprog.soln
-     diffprog $(cmdResultFn) 1.e-6 $(testDir)/testprog.gold $(outputDir)/testprog.soln
-     testFinish -c $(cmdResultFn) -r $(resultFn) -t $(runtimeFn)
+     diffprog result.csv 1.e-6 $(testDir)/testprog.gold $(outputDir)/testprog.soln
+     testFinish -r $(resultFn) -t $(runtimeFn) result.csv
    ]],
 
    tests = {

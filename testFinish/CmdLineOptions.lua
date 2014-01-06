@@ -40,4 +40,6 @@ function CmdLineOptions:execute(myTable)
       masterTbl[v] = optionTbl[v]
    end
 
+   masterTbl.pargs = pargs
+
 end

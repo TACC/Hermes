@@ -2,7 +2,7 @@
 -- -*- lua -*-
 require("strict")
 require("fileOps")
-local Dbg   = require("Dbg")
+local dbg   = require("Dbg"):dbg()
 local posix = require("posix")
 
 Error  = nil
@@ -47,7 +47,6 @@ function engine.execute(execDir, execName)
    engine.execDir   = execDir
    engine.execName  = execName
    local masterTbl  = masterTbl()
-   local dbg        = Dbg:dbg()
 
    -- Load the Hermes.db file from the Hermes Project file: Hermes.db
    local projDir = findDirInDirTree(engine.execDir, masterTbl.projectFn)
@@ -62,11 +61,6 @@ function engine.execute(execDir, execName)
 
    masterTbl.taskDir = taskDir
 
-   --print ('projDir:',projDir)
-   --print ('execDir:',execDir)
-   --print ('execName:',execName)
-   --print ('taskDir:',taskDir)
-   --print ('taskFileName:',taskFileName)
    assert(loadfile(taskFileName))()
 
    engine.buildLuaPath(taskDir,execName)
@@ -75,22 +69,33 @@ function engine.execute(execDir, execName)
    -- count number of '-v' or '--verbose' in argument list
 
    local verboseCnt = 0
+   local debugCnt = 0
    for i,v in ipairs(arg) do
       if (v == '-v' or v == '--verbose') then verboseCnt = verboseCnt + 1 end
+      if (v == '-D' or v == '--debug')   then debugCnt   = debugCnt   + 1 end
+      
    end
 
   
-   engine.verboseCnt = verboseCnt
+   engine.verboseCnt = math.max(verboseCnt, debugCnt)
 
    Error = ErrorStd
-   if (verboseCnt > 0) then
-      Error = ErrorDbg
+   if (engine.verboseCnt > 0) then
+      dbg:activateDebug(engine.verboseCnt) 
    end
-   if (engine.verboseCnt > 1) then  dbg:activateDebug() end
    
-   dbg.start("engine")
+   dbg.start{"engine()"}
+   dbg.start{"engine initial state()", level=2}
+   dbg.print{'projDir:      ',projDir,      "\n"}
+   dbg.print{'execDir:      ',execDir,      "\n"}
+   dbg.print{'execName:     ',execName,     "\n"}
+   dbg.print{'taskDir:      ',taskDir,      "\n"}
+   dbg.print{'taskFileName: ',taskFileName, "\n"}
+   dbg.fini("engine initial state")
+
+
    local rtn = taskMain()
-   dbg.fini()
+   dbg.fini("engine")
 
    return rtn
 end
@@ -129,10 +134,9 @@ end
 
 function task(myTable)
    local name = myTable[1]
-   local dbg  = Dbg:dbg()
    table.remove(myTable,1)
 
-   dbg.start("task{",name,"}")
+   dbg.start{"task{",name,"}"}
    require(name)
    local myTask = _G[name]:new(name)
 

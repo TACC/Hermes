@@ -1,48 +1,23 @@
 -- $Id$ --
 
-JobSubmitBase = {}
-
-
 require("inherits")
-JobSubmitBase = inheritsFrom(nil)
-require("Interactive")
-require("Batch")
 require("fileOps")
 
-local BATCH        = BATCH
-local Error        = Error
-local INTERACTIVE  = INTERACTIVE
-local assert       = assert
+local M            = {}
+local Stencil      = require("Stencil")
 local date         = os.date
-local expand       = expand
 local format       = string.format
-local findInPath   = findInPath
-local io           = io
-local isFile       = isFile
 local getenv       = os.getenv
-local getmetatable = getmetatable
-local inheritsFrom = inheritsFrom
-local loadfile     = loadfile
-local package      = package
-local pairs        = pairs
-local print        = print
-local string       = string
 local systemG      = _G
-local type         = type
 
-local factoryT = {
-   INTERACTIVE = INTERACTIVE,
-   BATCH       = BATCH
-}
+s_jobTypeT = false
 
 
-module ("JobSubmitBase")
-
-function name(self)
+function M.name(self)
    return self.my_name
 end
 
-function tableMerge(t1, t2)
+function M.tableMerge(t1, t2)
    for k,v in pairs(t2) do
       if (type(v) == "table") then
          if (type(t1[k] or false) == "table") then
@@ -61,12 +36,11 @@ function tableMerge(t1, t2)
    return t1
 end
 
-function Msg(self, result, iTest, numTests, id, resultFn, background)
+function M.Msg(self, messageStr, iTest, numTests, id, resultFn, background)
    local masterTbl	= self.masterTbl
-   
-   if (result == "Started") then
-      print(self.formatMsg(self, result, iTest, masterTbl.passed, masterTbl.failed, numTests, id))
-   elseif (not background) then
+   local msgExtra       = ""
+   if (messageStr ~= "Started" and not background) then
+      msgExtra       = "\n"
       assert(loadfile(resultFn))()
       local myResult = systemG.myResult.testresult
       if (myResult == "passed") then
@@ -74,12 +48,14 @@ function Msg(self, result, iTest, numTests, id, resultFn, background)
       else
          masterTbl.failed = masterTbl.failed + 1
       end
-      
-      print(self.formatMsg(self, myResult, iTest, masterTbl.passed, masterTbl.failed, numTests, id),"\n")
+      messageStr = myResult
    end
+   print(self.formatMsg(self, messageStr, iTest, masterTbl.passed,
+                        masterTbl.failed, numTests, id),msgExtra)
+
 end
 
-function formatMsg(self, result, iTest, passed, failed, numTests, id)
+function M.formatMsg(self, result, iTest, passed, failed, numTests, id)
    local blank    = " "
    local r        = result or "failed"
    local blankLen = self.resultMaxLen - r:len()
@@ -93,7 +69,7 @@ function formatMsg(self, result, iTest, passed, failed, numTests, id)
    return msg
 end
 
-function findcmd(tbl)
+function M.findcmd(tbl)
    local abspath = findInPath(tbl.cmd, tbl.path)
    if (abspath == nil) then abspath = "" end
    return abspath 
@@ -101,8 +77,8 @@ end
 
 local function findFileInPackagePath(modulename)
   -- Find source
-  for path in string.gmatch(package.path, "([^;]+)") do
-    local filename = string.gsub(path, "%?", modulename)
+  for path in package.path:gmatch("([^;]+)") do
+    local filename = path:gsub("%?", modulename)
     if (isFile(filename)) then
        return filename
     end
@@ -111,23 +87,33 @@ local function findFileInPackagePath(modulename)
 end
 
 
-function mpr(tbl, envTbl, funcTbl)
-   local mprCmd = funcTbl.batchTbl.mprCmd
-   return expand(mprCmd, tbl, envTbl, funcTbl)
+function M.mpr(tbl, envTbl, funcTbl)
+   local mprCmd  = funcTbl.batchTbl.mprCmd
+   local stencil = Stencil:new{tbl=tbl, envTbl=envTbl, funcTbl=funcTbl}
+   
+   return stencil:expand(mprCmd)
 end
 
 
-function CWD(tbl, envTbl, funcTbl)
+function M.CWD(tbl, envTbl, funcTbl)
    return funcTbl.batchTbl.CurrentWD
 end
 
-function submit(tbl, envTbl, funcTbl)
+function M.submit(tbl, envTbl, funcTbl)
    local batchTbl = funcTbl.batchTbl
-   return expand(batchTbl.submitHeader, tbl, envTbl, funcTbl)
+   local stencil  = Stencil:new{tbl=tbl, envTbl=envTbl, funcTbl=funcTbl}
+   return stencil:expand(batchTbl.submitHeader)
 end
 
-function build(self, name, masterTbl)
-   local class     = factoryT[name:upper()]
+function M.build(self, name, masterTbl)
+   if (not s_jobTypeT) then
+      local jobTypeT       = {}
+      jobTypeT.INTERACTIVE = require("Interactive")
+      jobTypeT.BATCH       = require("Batch")
+      s_jobTypeT           = jobTypeT
+   end
+
+   local class     = s_jobTypeT[name:upper()] or s_jobTypeT["INTERACTIVE"]
    local o         = class:create()
 
    o.masterTbl     = masterTbl
@@ -146,7 +132,7 @@ function build(self, name, masterTbl)
    for k,v in pairs(batchDefault) do
       if (type (batchTbl[k]) == "table") then
          for kk, vv in pairs(batchTbl[k]) do
-            vv = tableMerge(vv,v.default)
+            vv = self.tableMerge(vv,v.default)
          end
       end
    end
@@ -174,3 +160,5 @@ function build(self, name, masterTbl)
                   
    return o
 end
+
+return M

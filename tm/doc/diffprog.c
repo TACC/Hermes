@@ -132,13 +132,6 @@ void   write_results(Status s, const char * fn)
 
   t   = time(NULL);
   strftime(buf, bufSize, "%c", localtime(&t));
-  
 
-  fprintf(fp,"-- -*- lua -*-\n");
-  fprintf(fp,"-- %s\n", buf);
-  fprintf(fp,"myTbl = {\n"
-             "  {\n"
-             "     [\"result\"] = \"%s\"\n"
-             "  },\n"
-             "}\n", STbl[s]);
+  fprintf(fp,"# %s\n%s\n", buf,STbl[s]);
 }

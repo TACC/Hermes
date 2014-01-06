@@ -14,8 +14,8 @@ function AnalyzeTests:execute(myTable)
    
    local tstSummary    = {}
    local testValues    = Tst:testresultValues()
-   for v in pairs(testValues) do
-      tstSummary[v] = 0
+   for k in pairs(testValues) do
+      tstSummary[k] = 0
    end
    tstSummary.total  = 0
    masterTbl.errors  = 0
@@ -45,7 +45,7 @@ function AnalyzeTests:execute(myTable)
          local result = myResult.testresult:lower()
 
 
-         dbg.print ("tst.testName: ", tst.testName, " result: ",result,"\n")
+         dbg.print{"tst.testName: ", tst.testName, " result: ",result,"\n"}
 
          -- Save result in current test
          tst:set('result', result)
@@ -75,9 +75,6 @@ function AnalyzeTests:execute(myTable)
             masterTbl.failCnt= masterTbl.failCnt + 1
          end
          
-         local fini = sys.gettimeofday()
-   
-
          -- Save runtime in current test
          assert(loadfile(fullFn(tst:get('runtimeFn'))))()
          local tstTime
