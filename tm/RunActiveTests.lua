@@ -76,7 +76,7 @@ function RunActiveTests:execute(myTable)
 	 mTbl.passed  = masterTbl.passed
 	 mTbl.failed  = masterTbl.failed
          
-	 RunActiveTests:makeOutputDirs(mTbl, tstTbl)
+	 RunActiveTests:makeOutputDirs(tstTbl)
 	 
 	 for id in pairs(tstTbl) do
 	    i = i+1
@@ -97,19 +97,12 @@ function RunActiveTests:execute(myTable)
    end 
 end
 
-function RunActiveTests:makeOutputDirs(masterTbl, tstTbl)
+function RunActiveTests.makeOutputDirs(self, tstTbl)
    local runtime  = { start_time = -1, end_time = -1 }
 
-   local projectDir = masterTbl.projectDir
    for id in pairs(tstTbl) do
       local tst	      = tstTbl[id]
-      local testDir   = tst:get('testDir')
-      local idTag     = tst:get('idTag')
-      local testName  = tst:get('testName')
       local outputDir = tst:get('outputDir')
-      local resultFn  = tst:get('resultFn')
-      local runtimeFn = tst:get('runtimeFn')
-
       MakeDir(fullFn(outputDir))
    end
    

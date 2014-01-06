@@ -48,7 +48,7 @@ function FindTests:execute(myTable)
          path   = pathJoin(masterTbl.projectDir,path)
          mystat = posix.stat(path)
       end
-      dbg.print("Reading: ",path,"\n")
+      dbg.print{"Reading: ",path,"\n"}
       if (mystat and mystat.type == "regular") then
 	 if (path:find(masterTbl.testRptExt.."$")) then
 	    FindTests:readTMfile(path)
@@ -58,7 +58,7 @@ function FindTests:execute(myTable)
 	    FindTests:readTestList(path)
 	 end
       else
-         dbg.print("Searching: ",path,"\n")
+         dbg.print{"Searching: ",path,"\n"}
 	 FindTests:search(path)
       end
    end
@@ -93,7 +93,7 @@ function FindTests:readTestDescriptFn(path)
    local epoch     = masterTbl.origEpoch
    local dbg       = Dbg:dbg()
    assert(loadfile(fn))()
-   dbg.print("Found: ",fn,"\n")
+   dbg.print{"Found: ",fn,"\n"}
    if (masterTbl.spanning) then
       masterTbl.tagTbl = masterTbl.tagTbl or {} 
       for _,tag       in ipairs(tagA)    do
@@ -129,7 +129,7 @@ function FindTests:readTMfile(path)
    local masterTbl = masterTbl()
    local tagA      = masterTbl.tagA
    local dbg       = Dbg:dbg()
-   dbg.print("readTMfile: ",path,"\n")
+   dbg.print{"readTMfile: ",path,"\n"}
    assert(loadfile(path))()
 
    -- Use original Epoch from TM file
@@ -171,7 +171,7 @@ function FindTests:readTestList(fn)
    local tagA      = masterTbl.tagA
    local targetA   = masterTbl.targetA
    local dbg       = Dbg:dbg()
-   dbg.print("readTestList: ",fn,"\n")
+   dbg.print{"readTestList: ",fn,"\n"}
    assert(loadfile(fn))()
 
    local epoch = masterTbl.origEpoch
@@ -236,9 +236,9 @@ function FindTests:search(path)
    local cwd	   = posix.getcwd()
    posix.chdir(path)
    if (masterTbl.verbosityLevel > 3) then
-      dbg.print("Searching: ",posix.getcwd(),"\n")
+      dbg.print{"Searching: ",posix.getcwd(),"\n"}
    end
-   dbg.print("FindTests:search dirlist(\".\")")
+   dbg.print{"FindTests:search dirlist(\".\")"}
    local list	   = dirlist(".")
    local found     = false
    for _,v in ipairs(list.files) do
@@ -277,7 +277,7 @@ function FindTests:findLastTM(pargs)
 	 testRptDir = pathJoin(masterTbl.testRptDirRoot,".span",tag)
       end
 
-      dbg.print("FindTests:findLastTM:  filelist(\"",testRptDir ,"\")\n")
+      dbg.print{"FindTests:findLastTM:  filelist(\"",testRptDir ,"\")\n"}
       local list	    = filelist(testRptDir)
       for _,v in ipairs(list) do
 	 if (v:find(pattern)) then

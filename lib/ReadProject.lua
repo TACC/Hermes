@@ -3,7 +3,7 @@
 ReadProject = BaseTask:new()
 require("strict")
 require("fileOps")
-local Dbg   = require("Dbg")
+local dbg   = require("Dbg"):dbg()
 local posix = require("posix")
 
 local function findPackageName(fileName)
@@ -58,7 +58,6 @@ end
 
 function ReadProject:execute(myTable)
    local masterTbl  = masterTbl()
-   local dbg        = Dbg:dbg()
 
    masterTbl.projectDir = findDirInDirTree(posix.getcwd(),masterTbl.projectFn)
    local projectFn = pathJoin(masterTbl.projectDir, masterTbl.projectFn)
@@ -68,9 +67,9 @@ function ReadProject:execute(myTable)
    masterTbl.packageName = findPackageName(posix.getcwd())
    masterTbl.packageDir  = pathJoin(masterTbl.projectDir, masterTbl.packageName)
 
-   dbg.print ("packageDir:  ","\"",masterTbl.packageDir,"\"\n")
-   dbg.print ("packageName: ","\"",masterTbl.packageName,"\"\n")
-   dbg.print ("projectDir:  ","\"",masterTbl.projectDir,"\"\n")
+   dbg.print{"packageDir:  ","\"",masterTbl.packageDir,"\"\n"}
+   dbg.print{"packageName: ","\"",masterTbl.packageName,"\"\n"}
+   dbg.print{"projectDir:  ","\"",masterTbl.projectDir,"\"\n"}
 
 end
 
