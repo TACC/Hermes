@@ -69,12 +69,15 @@ function engine.execute(execDir, execName)
    -- count number of '-v' or '--verbose' in argument list
 
    local verboseCnt = 0
+   local debugCnt = 0
    for i,v in ipairs(arg) do
       if (v == '-v' or v == '--verbose') then verboseCnt = verboseCnt + 1 end
+      if (v == '-D' or v == '--debug')   then debugCnt   = debugCnt   + 1 end
+      
    end
 
   
-   engine.verboseCnt = verboseCnt
+   engine.verboseCnt = math.max(verboseCnt, debugCnt)
 
    Error = ErrorStd
    if (engine.verboseCnt > 0) then
@@ -83,11 +86,11 @@ function engine.execute(execDir, execName)
    
    dbg.start{"engine()"}
    dbg.start{"engine initial state()", level=2}
-   dbg.print{'projDir:     ',projDir}
-   dbg.print{'execDir:     ',execDir}
-   dbg.print{'execName:    ',execName}
-   dbg.print{'taskDir:     ',taskDir}
-   dbg.print{'taskFileName:',taskFileName}
+   dbg.print{'projDir:      ',projDir,      "\n"}
+   dbg.print{'execDir:      ',execDir,      "\n"}
+   dbg.print{'execName:     ',execName,     "\n"}
+   dbg.print{'taskDir:      ',taskDir,      "\n"}
+   dbg.print{'taskFileName: ',taskFileName, "\n"}
    dbg.fini("engine initial state")
 
 

@@ -1,6 +1,5 @@
 -- $Id$ --
 
-
 require("inherits")
 require("fileOps")
 
@@ -37,12 +36,11 @@ function M.tableMerge(t1, t2)
    return t1
 end
 
-function M.Msg(self, result, iTest, numTests, id, resultFn, background)
+function M.Msg(self, messageStr, iTest, numTests, id, resultFn, background)
    local masterTbl	= self.masterTbl
-   
-   if (result == "Started") then
-      print(self.formatMsg(self, result, iTest, masterTbl.passed, masterTbl.failed, numTests, id))
-   elseif (not background) then
+   local msgExtra       = ""
+   if (messageStr ~= "Started" and not background) then
+      msgExtra       = "\n"
       assert(loadfile(resultFn))()
       local myResult = systemG.myResult.testresult
       if (myResult == "passed") then
@@ -50,9 +48,11 @@ function M.Msg(self, result, iTest, numTests, id, resultFn, background)
       else
          masterTbl.failed = masterTbl.failed + 1
       end
-      
-      print(self.formatMsg(self, myResult, iTest, masterTbl.passed, masterTbl.failed, numTests, id),"\n")
+      messageStr = myResult
    end
+   print(self.formatMsg(self, messageStr, iTest, masterTbl.passed,
+                        masterTbl.failed, numTests, id),msgExtra)
+
 end
 
 function M.formatMsg(self, result, iTest, passed, failed, numTests, id)

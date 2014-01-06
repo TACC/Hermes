@@ -20,11 +20,7 @@ function M.queue(tbl, envTbl, funcTbl)
 end
 
 function M.runtest(self, tbl)
-   local logFileNm = tbl.idTag .. ".log"
-   if (masterTbl.batchLog) then
-      logFileNm = masterTbl.batchLog
-   end
-
+   local logFileNm = masterTbl.batchLog or tbl.idTag .. ".log"
    local a = {}
    a[#a + 1] = self.batchTbl.submitCmd
    a[#a + 1] = tbl.scriptFn

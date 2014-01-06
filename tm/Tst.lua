@@ -1,4 +1,3 @@
--- $Id: Tst.lua 345 2010-09-28 22:29:58Z mclay $ --
 require("fileOps")
 require("string_split")
 
