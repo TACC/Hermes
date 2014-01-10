@@ -3,7 +3,10 @@
 function tool()
    require ("engine")
 
-   table.remove(arg,1)
+   for i = 1,#arg do
+      arg[i-1] = arg[i]
+   end
+   arg[#arg] = nil
 
    local execDir, execName = engine.splitCmdName(arg[0])
    

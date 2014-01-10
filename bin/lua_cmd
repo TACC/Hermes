@@ -40,13 +40,18 @@ fi
 
 export LUA_PATH="$execLuaPath$extra"
 
-#echo projectDir : $projectDir
-#echo LD_LIBRARY_PATH : $LD_LIBRARY_PATH
-#echo LUA_PATH : $LUA_PATH
-#echo LUA_CPATH : $LUA_CPATH
-#echo execDir  : $execDir
-#echo cmdPath  : $cmdPath
-#echo
+for i in "$@"; do
+  if [ "$i" = "-v" -o "$i" = "-D" ]; then
+    echo "projectDir      : $projectDir"
+    echo "LD_LIBRARY_PATH : $LD_LIBRARY_PATH"
+    echo "LUA_PATH        : $LUA_PATH"
+    echo "LUA_CPATH       : $LUA_CPATH"
+    echo "execDir         : $execDir"
+    echo "cmdPath         : $cmdPath"
+    echo
+    break
+  fi
+done
 
 $projectDir/lib/tool.lua $cmdPath "$@"
 
