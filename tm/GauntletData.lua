@@ -75,8 +75,6 @@ function GauntletData:new(o)
       restart  = { GauntletData.setupRestart, GauntletData.applyRestart }
    }
 
-   o.runList = {}
-
    o.minNP   = 0
    o.maxNP   = 1.e20
    o.data    = {}
