@@ -36,7 +36,7 @@ local function findPackageName(fileName)
       i,j, p = p:find("^(.*)/")
       if (not i) then break end
    end
-      
+
    local pkgName = ""
    for _,p in ipairs(paths) do
       if (pkgTbl[p]) then
