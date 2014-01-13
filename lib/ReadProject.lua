@@ -12,8 +12,8 @@ local function findPackageName(fileName)
    local projectData = masterTbl.projectData
 
    local i,j, p, icnt
-   local pkgTbl ={}
-   local icnt = 0
+   local pkgTbl = {}
+   local icnt   = 0
    for _,v in ipairs(projectData.PackageList or {}) do
       pkgTbl[v.pkgName] = v
       icnt = icnt + 1
@@ -36,7 +36,7 @@ local function findPackageName(fileName)
       i,j, p = p:find("^(.*)/")
       if (not i) then break end
    end
-      
+
    local pkgName = ""
    for _,p in ipairs(paths) do
       if (pkgTbl[p]) then

@@ -3,10 +3,9 @@
 function tool()
    require ("engine")
 
-   for i=1,#arg do
+   for i = 1,#arg do
       arg[i-1] = arg[i]
    end
-
    arg[#arg] = nil
 
    local execDir, execName = engine.splitCmdName(arg[0])
