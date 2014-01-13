@@ -37,6 +37,10 @@ function M.tableMerge(t1, t2)
 end
 
 function M.Msg(self, messageStr, iTest, numTests, id, resultFn, background)
+   if (messageStr ~= "Started" and background) then 
+      print("")
+      return
+   end
    local masterTbl	= self.masterTbl
    local msgExtra       = ""
    if (messageStr ~= "Started" and not background) then
