@@ -8,6 +8,13 @@ function CmdLineOptions:execute(myTable)
    local cmdlineParser = Optiks:new{usage=usage, error = Error}
 
    cmdlineParser:add_option{ 
+      name   = {'-c'},
+      dest   = 'cmdResultFn',
+      action = 'store',
+      type   = 'string',
+   }
+
+   cmdlineParser:add_option{ 
       name   = {'-r','--resultFn'},
       dest   = 'resultFn',
       action = 'store',

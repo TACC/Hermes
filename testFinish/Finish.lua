@@ -103,7 +103,12 @@ function Finish.execute(self,myTable)
    -- Diff tools write out "result.lua"
    local resultFn     = masterTbl.resultFn
    local runtimeFn    = masterTbl.runtimeFn
-   local result       = self:parseInput(masterTbl.pargs)
+   local pargs        = masterTbl.pargs
+   if (masterTbl.cmdResultFn) then
+      pargs[#pargs+1] = masterTbl.cmdResultFn
+   end
+
+   local result       = self:parseInput(pargs)
 
    local myResult = { testresult = result }
 
