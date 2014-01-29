@@ -14,8 +14,7 @@ testdescript = {
      testprog $(outputDir)/testprog.soln
      diffprog r1.csv $(tol) $(testDir)/testprog.gold $(outputDir)/testprog.soln
      diffprog r2.csv $(tol) $(testDir)/testprog.gold $(outputDir)/testprog.soln
-     cat r1.csv r2.csv > result.csv
-     testFinish  -r $(resultFn) -t $(runtimeFn) result.csv
+     testFinish  -r $(resultFn) -t $(runtimeFn)   r1.csv r2.csv 
    ]],
 
    tests = {

@@ -14,18 +14,30 @@ local load  = (_VERSION == "Lua 5.1") and loadstring or load
 
 Finish = BaseTask:new()
 
-function Finish.parseInput(self, fn)
-   local attr = lfs.attributes(fn)
-   if ( not attr or type(attr) ~= "table" or attr.mode ~= "file") then
-      return "failed"
-   end
+function Finish.parseInput(self, fnA)
 
-   local ext = extname(fn)
-   if (ext == ".lua") then
-      return self:parseLuaResult(fn)
-   else
-      return self:parseCSVResult(fn)
+   local result = "passed"
+
+   for i = 1, #fnA do
+      local fn = fnA[i]
+
+      local attr = lfs.attributes(fn)
+      if ( not attr or type(attr) ~= "table" or attr.mode ~= "file") then
+         return "failed"
+      end
+
+      local ext     = extname(fn)
+      local singleR
+      if (ext == ".lua") then
+         singleR = self:parseLuaResult(fn)
+      else
+         singleR = self:parseCSVResult(fn)
+      end
+      if (singleR ~= "passed") then
+         return singleR
+      end
    end
+   return result
 end
 
 acceptT = { failed = true, passed = true, diff = true } 
@@ -89,10 +101,9 @@ function Finish.execute(self,myTable)
 
    ---------------------------------------------------------------
    -- Diff tools write out "result.lua"
-   local cmdResultFn = masterTbl.cmdResultFn or masterTbl.pargs[1]
-   local resultFn    = masterTbl.resultFn
-   local runtimeFn   = masterTbl.runtimeFn
-   local result      = self:parseInput(cmdResultFn)
+   local resultFn     = masterTbl.resultFn
+   local runtimeFn    = masterTbl.runtimeFn
+   local result       = self:parseInput(masterTbl.pargs)
 
    local myResult = { testresult = result }
 
