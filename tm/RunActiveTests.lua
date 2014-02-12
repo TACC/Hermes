@@ -4,6 +4,7 @@ require("sys")
 require("common")
 require("JobSubmitBase")
 require("serializeTbl")
+require("CleanEnv")
 local dbg = require("Dbg"):dbg()
 
 local posix = require("posix")
@@ -65,6 +66,8 @@ function RunActiveTests:execute(myTable)
    if (numTests > 0) then
       print("\nStarting Tests:\n")
    end 
+
+   cleanEnv()
 
    local i = 0
    for tag       in pairs(masterTbl.tagTbl)    do
