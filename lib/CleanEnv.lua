@@ -10,6 +10,7 @@ local concatTbl = table.concat
 local keepT     = {
    ['ACCOUNT']         = 'keep',
    ['HOME']            = 'keep',
+   ['USER']            = 'keep',
    ['LD_LIBRARY_PATH'] = 'keep',
    ['LUA_CPATH']       = 'keep',
    ['LUA_PATH']        = 'keep',
