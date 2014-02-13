@@ -26,6 +26,8 @@ local execT = {
    lua    = 'keep',
    python = 'keep',
    tm     = 'keep',
+   expr   = 'keep',
+   seq    = 'keep',
 }
 
 local function cleanPath(v)
