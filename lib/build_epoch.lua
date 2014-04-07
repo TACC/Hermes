@@ -1,5 +1,5 @@
 require("strict")
-require("posix")
+local posix = require("posix")
 
 epoch = false
 function build_epoch()
