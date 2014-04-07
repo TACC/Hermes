@@ -1,9 +1,9 @@
 -- $Id: Initialize.lua 340 2010-03-30 20:42:27Z mclay $ --
 
+require("strict")
 require("GauntletData")
 require("Gauntlet")
 require("getUname")
-require("sys")
 require("dirlist")
 require("version")
 require("string_split")
@@ -19,9 +19,9 @@ local function  processTag(tagA)
    for i, tag in ipairs(tagA) do
       local ltag = tag:lower()
       if (ltag == 'today') then
-	 tag   = ymdString(sys.gettimeofday())
+	 tag   = ymdString(epoch())
       elseif (ltag == 'yesterday') then
-	 tag   = ymdString(sys.gettimeofday()-86400.0)
+	 tag   = ymdString(epoch()-86400.0)
       end
       tagA[i] = tag
    end
@@ -77,7 +77,7 @@ function Initialize:execute(myTable)
    ----------------------------------------------------------------------------------
    -- Use user supplied command line epoch if given (default is -1)
 
-   masterTbl.currentEpoch    = sys.gettimeofday()
+   masterTbl.currentEpoch    = epoch()
    if (masterTbl.epoch > 0) then
       masterTbl.currentEpoch = masterTbl.epoch
    end

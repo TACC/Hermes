@@ -1,9 +1,8 @@
 -- -*- lua -*-
 -- $Id: tm.tasks 312 2009-02-12 01:51:15Z mclay $ --
-
---print("Here 1")
+require("build_epoch")
 function taskMain()
-   --print("Here 2")
+   build_epoch()
    task{"CmdLineOptions"}   
    task{"ReadProject"}  -- Project file shows top of dir tree
    task{"Initialize"}

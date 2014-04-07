@@ -1,7 +1,5 @@
--- $Id: CmdLineOptions.lua 352 2011-01-28 22:54:53Z mclay $ --
 require("common")
 require("string_split")
-require("sys")
 require("fileOps")
 require("version")
 

@@ -1,6 +1,6 @@
 -- $Id: RunActiveTests.lua 353 2011-02-01 21:09:25Z mclay $ --
 
-require("sys")
+require("strict")
 require("common")
 require("JobSubmitBase")
 require("serializeTbl")
@@ -26,7 +26,6 @@ resultTbl = {
       comment    = comment
    }, 
 }
-
 
 
 local function MakeDir(path)
@@ -157,7 +156,7 @@ function RunActiveTests:runTest(masterTbl, tst, iTest, numTests)
 
    local resultFn  = fullFn(tst:get('resultFn'))
    serializeTbl{name='myResult', value=resultTbl.started, fn=resultFn, indent=true}
-   local t      = sys.gettimeofday()
+   local t      = epoch()
    local stime  = { start_time = t, end_time = -1 }
    tst:set('start_epoch', t)
 

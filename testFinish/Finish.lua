@@ -1,6 +1,6 @@
 -- $Id: Finish.lua 287 2008-11-06 18:45:20Z mclay $ --
 
-require("sys")
+require("build_epoch")
 require("serializeTbl")
 require("getUname")
 require("fileOps")
@@ -115,9 +115,10 @@ function Finish.execute(self,myTable)
    serializeTbl{name="myResult", value=myResult, fn=resultFn, indent=true}
 
    local t = getUname()
+   build_epoch()
 
    assert(loadfile(runtimeFn))()
-   runtime.end_time = sys.gettimeofday()
+   runtime.end_time = epoch()
 
    for k in pairs(t) do
       runtime[k] = t[k]
