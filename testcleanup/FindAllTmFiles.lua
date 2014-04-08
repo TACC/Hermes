@@ -3,6 +3,7 @@
 require("dirlist")
 require("fileOps")
 require("ignoreDirList")
+local lfs = require("lfs")
 
 FindAllTmFiles = BaseTask:new()
 
