@@ -1,4 +1,4 @@
--- $Id: FindTests.lua 311 2009-02-12 01:50:31Z mclay $ --
+require("strict")
 FindTests = BaseTask:new()
 require("common")
 require("Tst")

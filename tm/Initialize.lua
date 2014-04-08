@@ -1,5 +1,3 @@
--- $Id: Initialize.lua 340 2010-03-30 20:42:27Z mclay $ --
-
 require("strict")
 require("GauntletData")
 require("Gauntlet")

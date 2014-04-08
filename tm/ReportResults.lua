@@ -1,5 +1,4 @@
--- $Id: ReportResults.lua 287 2008-11-06 18:45:20Z mclay $ --
-
+require("strict")
 require("Tst")
 require("common")
 require("serializeTbl")

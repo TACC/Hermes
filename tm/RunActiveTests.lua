@@ -1,5 +1,3 @@
--- $Id: RunActiveTests.lua 353 2011-02-01 21:09:25Z mclay $ --
-
 require("strict")
 require("common")
 require("JobSubmitBase")

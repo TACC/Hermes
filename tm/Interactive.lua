@@ -1,4 +1,3 @@
--- $Id: Default.lua 322 2009-03-27 23:06:59Z eijkhout $ --
 require("strict")
 require("inherits")
 

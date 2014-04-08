@@ -1,5 +1,5 @@
 -- -*- lua -*-
--- $Id: tm.tasks 312 2009-02-12 01:51:15Z mclay $ --
+require("strict")
 require("build_epoch")
 function taskMain()
    build_epoch()

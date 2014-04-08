@@ -1,7 +1,6 @@
--- $Id: Gauntlet.lua 194 2008-06-25 21:43:50Z mclay $ --
+require("strict")
 
 Gauntlet = {}
-
 
 function Gauntlet.new(self, gauntletData)
    local o =  {}

@@ -1,3 +1,4 @@
+require("strict")
 require("Gauntlet")
 SelectTests = BaseTask:new()
 

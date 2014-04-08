@@ -1,3 +1,4 @@
+require("strict")
 require("common")
 require("string_split")
 require("fileOps")

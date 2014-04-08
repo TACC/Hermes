@@ -1,4 +1,5 @@
 -- $Id: Batch.lua 353 2011-02-01 21:09:25Z mclay $ --
+require("strict")
 
 local masterTbl     = masterTbl()
 local concatTbl     = table.concat

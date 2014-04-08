@@ -1,3 +1,4 @@
+require("strict")
 BaseTask = {}
 
 function BaseTask:new(name)

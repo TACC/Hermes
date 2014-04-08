@@ -1,4 +1,4 @@
--- $Id: ReportSpanResults.lua 247 2008-07-16 16:01:11Z mclay $ --
+require("strict")
 
 ReportAllResults = BaseTask:new()
 

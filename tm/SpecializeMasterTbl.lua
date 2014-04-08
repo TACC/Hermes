@@ -1,4 +1,4 @@
--- $Id: SpecializeMasterTbl.lua 254 2008-07-18 01:38:42Z mclay $ --
+require("strict")
 
 SpecializeMasterTbl = BaseTask:new()
 require("fileOps")

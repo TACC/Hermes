@@ -1,11 +1,12 @@
--- $Id: ReportSpanResults.lua 287 2008-11-06 18:45:20Z mclay $ --
+require("strict")
 
-ReportSpanResults = BaseTask:new()
 
 require("serializeTbl")
 require("ReportResults")
 require("fileOps")
 require("TermWidth")
+
+ReportSpanResults = BaseTask:new()
 
 function ReportSpanResults:execute(myTable)
    local tag         = myTable.tag

@@ -1,4 +1,4 @@
--- $Id: GauntletData.lua 292 2008-12-01 05:28:35Z mclay $ --
+require("strict")
 require("Tst")
 
 GauntletData = {}

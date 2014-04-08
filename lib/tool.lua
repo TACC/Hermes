@@ -1,5 +1,6 @@
 #!/usr/bin/env lua
--- -*- lua -*-
+
+require("strict")
 function tool()
    require ("engine")
 

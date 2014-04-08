@@ -1,5 +1,6 @@
 -- $Id: dirlist.lua 278 2008-10-16 02:49:20Z mclay $ --
 -- -*- lua -*-
+require("strict")
 require("fileOps")
 local lfs   = require("lfs")
 local posix = require("posix")

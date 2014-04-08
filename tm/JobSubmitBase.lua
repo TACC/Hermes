@@ -1,5 +1,4 @@
--- $Id$ --
-
+require("strict")
 require("inherits")
 require("fileOps")
 
