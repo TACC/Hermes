@@ -1,5 +1,4 @@
 -- -*- lua -*-
--- $Id: tm.tasks 177 2008-06-24 19:34:29Z mclay $ --
 
 function taskMain()
    task{"CmdLineOptions"}   

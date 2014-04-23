@@ -1,4 +1,3 @@
--- $Id$ --
 ReadCmdFile = BaseTask:new()
 
 local load = (_VERSION == "Lua 5.1") and loadstring or load

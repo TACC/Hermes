@@ -1,5 +1,4 @@
 -- -*- lua -*-
--- $Id$ --
 function taskMain()
    task{"Initialize"}     
    task{"CmdLineOptions"}

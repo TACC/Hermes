@@ -1,6 +1,4 @@
 -- -*- lua -*-
--- $Id$ --
-
 function taskMain()
    local masterTbl = masterTbl()
    task{"CmdLineOptions"}   

@@ -1,4 +1,3 @@
- -- $Id: FindTests.lua 249 2008-07-17 00:25:08Z mclay $ --
 require("strict")
 BuildMasterTbl = BaseTask:new()
 

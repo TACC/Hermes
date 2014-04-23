@@ -1,5 +1,4 @@
 -- -*- lua -*-
--- $Id: wmake.tasks 313 2009-02-12 01:51:50Z mclay $ --
 
 function taskMain()
    task{"CmdLineOptions"}

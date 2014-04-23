@@ -1,4 +1,3 @@
--- $Id: Initialize.lua 239 2008-07-10 00:02:22Z mclay $ --
 
 require("getUname")
 require("fileOps")

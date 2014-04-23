@@ -1,4 +1,3 @@
--- $Id$ --
 CmdLineOptions = BaseTask:new()
 
 function CmdLineOptions:execute(myTable)

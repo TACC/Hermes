@@ -1,4 +1,3 @@
--- $Id: CreateProject.lua 287 2008-11-06 18:45:20Z mclay $ --
 
 CreateProject = BaseTask:new()
 local posix   = require("posix")

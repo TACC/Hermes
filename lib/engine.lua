@@ -1,4 +1,3 @@
--- $Id: engine.lua 337 2010-02-24 21:43:36Z mclay $ --
 -- -*- lua -*-
 require("strict")
 require("fileOps")

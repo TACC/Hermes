@@ -1,4 +1,3 @@
--- $Id: WriteProjectData.lua 306 2009-02-06 18:30:56Z eijkhout $ --
 require("serializeTbl")
 
 WriteProjectData = BaseTask:new()

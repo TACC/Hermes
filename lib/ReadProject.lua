@@ -1,4 +1,3 @@
--- $Id: ReadProject.lua 315 2009-02-12 01:53:03Z mclay $ --
 
 ReadProject = BaseTask:new()
 require("strict")

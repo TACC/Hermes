@@ -1,5 +1,3 @@
-# $Id: Makefile 317 2009-02-12 01:54:11Z mclay $
-
 REQUIRED_PKGS	:= BeautifulTbl ColumnTable Dbg hash Optiks Optiks_Option strict   \
                    fileOps string_split serializeTbl pairsByKeys TermWidth Stencil \
                    string_trim capture declare inherits

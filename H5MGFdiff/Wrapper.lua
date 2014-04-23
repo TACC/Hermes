@@ -1,4 +1,4 @@
--- $Id: Wrapper.lua 327 2009-08-24 20:03:46Z eijkhout $ --
+require("strict")
 require("serializeTbl")
 require("fileOps")
 Wrapper = BaseTask:new()

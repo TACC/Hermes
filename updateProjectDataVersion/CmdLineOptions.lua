@@ -1,5 +1,3 @@
--- $Id: CmdLineOptions.lua 306 2009-02-06 18:30:56Z eijkhout $ --
-
 CmdLineOptions = BaseTask:new()
 
 function CmdLineOptions:execute(myTable)

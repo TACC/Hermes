@@ -1,4 +1,3 @@
--- $Id: RemoveTestDirs.lua 302 2009-02-04 23:56:32Z mclay $ --
 require("dirlist")
 require("fileOps")
 require("ignoreDirList")

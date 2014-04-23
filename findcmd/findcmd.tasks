@@ -1,5 +1,4 @@
 -- -*- lua -*-
--- $Id: findcmd.tasks 309 2009-02-07 01:24:09Z eijkhout $ --
 require("fileOps")
 
 

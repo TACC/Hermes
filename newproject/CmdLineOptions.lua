@@ -1,4 +1,3 @@
--- $Id: CmdLineOptions.lua 302 2009-02-04 23:56:32Z mclay $ -- 
 
 CmdLineOptions = BaseTask:new()
 

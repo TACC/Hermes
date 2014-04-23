@@ -1,5 +1,3 @@
--- $Id: RunMake.lua 314 2009-02-12 01:52:31Z mclay $ --
-
 ProjectTop = BaseTask:new()
 require("fileOps")
 local lfs   = require("lfs")

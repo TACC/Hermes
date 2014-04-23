@@ -1,4 +1,3 @@
--- $Id$ --
 PairTest = BaseTask:new()
 require("fileOps")
 local lfs = require("lfs")

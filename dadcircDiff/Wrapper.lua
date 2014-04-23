@@ -1,5 +1,3 @@
--- $Id: Wrapper.lua 194 2008-06-25 21:43:50Z mclay $ --
-
 Wrapper = BaseTask:new()
 
 function Wrapper:execute(myTable)

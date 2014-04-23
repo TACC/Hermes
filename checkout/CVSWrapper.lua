@@ -1,5 +1,3 @@
--- $Id: CVSWrapper.lua 194 2008-06-25 21:43:50Z mclay $ --
-
 CVSWrapper = BaseTask:new()
 
 function CVSWrapper:execute(myTable)

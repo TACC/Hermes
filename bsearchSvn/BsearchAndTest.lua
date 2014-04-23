@@ -1,4 +1,3 @@
--- $Id$ --
 BsearchAndTest = BaseTask:new()
 
 require("fileOps")

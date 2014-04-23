@@ -1,4 +1,3 @@
--- $Id$ --
 CmdLineOptions = BaseTask:new()
 
 local function vname()

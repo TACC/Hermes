@@ -1,5 +1,4 @@
 -- -*- lua -*-
--- $Id: updateProjectDataVersion.tasks 306 2009-02-06 18:30:56Z eijkhout $ --
 
 function taskMain()
    task{"ReadProject"}

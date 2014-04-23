@@ -1,5 +1,3 @@
--- $Id: BuildMpprunCmd.lua 239 2008-07-10 00:02:22Z mclay $ --
-
 require("fileOps")
 BuildMpprunCmd = BaseTask:new()
 
