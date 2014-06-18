@@ -1,7 +1,0 @@
--- -*- lua -*-
-function taskMain()
-   task{"Initialize"}     
-   task{"CmdLineOptions"}
-   task{"Wrapper"}
-   return masterTbl().status
-end

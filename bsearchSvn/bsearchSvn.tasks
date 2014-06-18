@@ -1,8 +1,0 @@
--- -*- lua -*-
-
-function taskMain()
-   task{"CmdLineOptions"}   
-   task{"ReadCmdFile"}
-   task{"BsearchAndTest"}
-   return masterTbl().status
-end

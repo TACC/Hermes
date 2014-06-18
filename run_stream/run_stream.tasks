@@ -1,7 +1,0 @@
--- -*- lua -*-
-
-function taskMain()
-   task{"CmdLineOptions"}   
-   task{"RunStream"}
-   return 0
-end
