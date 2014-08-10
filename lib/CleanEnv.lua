@@ -29,6 +29,8 @@ local execT = {
    tm     = 'keep',
    expr   = 'keep',
    seq    = 'keep',
+   rm     = 'keep',
+   mpirun = 'keep',
 }
 
 local function cleanPath(v)
