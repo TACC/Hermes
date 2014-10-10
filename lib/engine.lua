@@ -107,7 +107,7 @@ function findDirInDirTree(wd, fn)
    local masterTbl = masterTbl()
    local cwd       = posix.getcwd()
    local dir       = nil
-
+   local prev      = ""
    posix.chdir(wd)
    while (true) do
       local fullFn = pathJoin(wd,  fn)
@@ -116,9 +116,10 @@ function findDirInDirTree(wd, fn)
          dir = wd
          break
       end
-      if (wd == '/') then
+      if (wd == '/' or wd == prev) then
          Error("You must be in a project! Did not find: " .. masterTbl.projectFn)
       end
+      prev = wd
       posix.chdir("..")
       wd  = posix.getcwd()
    end
