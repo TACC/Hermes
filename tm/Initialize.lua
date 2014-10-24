@@ -4,7 +4,7 @@ require("Gauntlet")
 require("getUname")
 require("dirlist")
 require("version")
-require("string_split")
+require("string_utils")
 require("ignoreDirList")
 require("fileOps")
 
