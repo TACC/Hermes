@@ -6,6 +6,7 @@ require("fileOps")
 require("string_split")
 require("string_trim")
 
+_DEBUG      = false
 local dbg   = require("Dbg"):dbg()
 local lfs   = require("lfs")
 local posix = require("posix")

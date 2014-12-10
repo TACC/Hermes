@@ -1,4 +1,5 @@
 
+_DEBUG      = false
 ReadProject = BaseTask:new()
 require("strict")
 require("fileOps")

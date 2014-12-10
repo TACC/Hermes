@@ -1,5 +1,6 @@
 
 CreateProject = BaseTask:new()
+_DEBUG        = false
 local posix   = require("posix")
 
 function CreateProject:execute(myTable)

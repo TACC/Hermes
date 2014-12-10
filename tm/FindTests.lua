@@ -4,6 +4,7 @@ require("common")
 require("Tst")
 require("dirlist")
 require("fileOps")
+_DEBUG      = false
 local Dbg   = require("Dbg")
 local posix = require("posix")
 

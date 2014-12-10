@@ -3,9 +3,9 @@ require("common")
 require("JobSubmitBase")
 require("serializeTbl")
 require("CleanEnv")
-local dbg = require("Dbg"):dbg()
-
-local posix = require("posix")
+_DEBUG         = false
+local dbg      = require("Dbg"):dbg()
+local posix    = require("posix")
 RunActiveTests = BaseTask:new()
 comment    = [[
    Test Results:

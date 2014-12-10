@@ -1,5 +1,6 @@
 ProjectTop = BaseTask:new()
 require("fileOps")
+_DEBUG      = false
 local lfs   = require("lfs")
 local posix = require("posix")
 function ProjectTop:execute(myTable)

@@ -1,6 +1,7 @@
 
 require("getUname")
 require("fileOps")
+_DEBUG      = false
 local posix = require("posix")
 
 Initialize = BaseTask:new()

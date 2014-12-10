@@ -1,6 +1,7 @@
 -- -*- lua -*-
 require("strict")
 require("fileOps")
+_DEBUG      = false
 local dbg   = require("Dbg"):dbg()
 local posix = require("posix")
 

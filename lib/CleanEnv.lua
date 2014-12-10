@@ -3,6 +3,7 @@ require("string_split")
 require("fileOps")
 require("pairsByKeys")
 
+_DEBUG          = false
 local posix     = require("posix")
 local getenv    = posix.getenv
 local setenv    = posix.setenv

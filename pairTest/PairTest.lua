@@ -2,6 +2,7 @@ PairTest = BaseTask:new()
 require("fileOps")
 local lfs = require("lfs")
 
+_DEBUG          = false
 local posix     = require("posix")
 local max       = math.max
 local concatTbl = table.concat

@@ -4,6 +4,7 @@ require("string_split")
 require("fileOps")
 require("version")
 
+_DEBUG      = false
 local posix = require("posix")
 CmdLineOptions = BaseTask:new()
 

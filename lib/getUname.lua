@@ -1,4 +1,5 @@
 require("strict")
+_DEBUG      = false
 local posix = require("posix")
 function getUname()
    local t                = {}
