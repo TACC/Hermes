@@ -1,6 +1,6 @@
 require("strict")
 require("fileOps")
-require("string_split")
+require("string_utils")
 
 local Stencil = require("Stencil")
 Tst = {}

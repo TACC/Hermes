@@ -10,17 +10,19 @@ fi
 
 shift
 
-cwd=`pwd`
+cwd=$PWD
 cd $execDir
 projectDir=''
 done=0
+prev=''
 while [ $done != 1 ]; do
   if [ -f Hermes.db ]; then
     done=1
-    projectDir=`pwd`
+    projectDir=$PWD
   else
+    prev=$PWD
     cd ..
-    if [ `pwd` = '/' ]; then
+    if [ $PWD = '/' -o $prev = $PWD ]; then
       echo Did not find 'Hermes.db', Hermes must be in a project.
       exit;
     fi

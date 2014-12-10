@@ -3,8 +3,7 @@ require("build_epoch")
 require("serializeTbl")
 require("getUname")
 require("fileOps")
-require("string_split")
-require("string_trim")
+require("string_utils")
 
 _DEBUG      = false
 local dbg   = require("Dbg"):dbg()
