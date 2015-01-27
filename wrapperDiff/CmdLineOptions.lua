@@ -15,6 +15,12 @@ function CmdLineOptions:execute(myTable)
       action = 'store'
    }
 
+   cmdlineParser:add_option{ 
+      name   = {'--csv'},
+      dest   = 'csvFn',
+      action = 'store'
+   }
+
    cmdlineParser:add_option{
       name   = {'-v','--verbose'},
       dest   = 'verbosityLevel',

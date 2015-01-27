@@ -40,13 +40,6 @@ function DiffWrapper:execute(myTable)
    local status = os_execute(cmdline)
    masterTbl.status = status
 
-   local resultFn = masterTbl.resultFn
-
-   local f        = io.open(resultFn,"r")
-   if (f) then
-      local s = f:read("*all")
-      assert(load(s))()
-   end
    local result = "diff"
    if (status == 0) then
       result = "passed"
@@ -62,9 +55,30 @@ function DiffWrapper:execute(myTable)
    os.remove("diff.log")
    os.remove(modA[1])
    os.remove(modA[2])
-   myTbl[#myTbl+1] = { result=result, program="wrapperDiff"}
-   serializeTbl{name="myTbl", value=myTbl, fn=resultFn, indent=true}
+
+   local resultFn = masterTbl.resultFn
+   local csvFn    = masterTbl.csvFn
+
+   if (csvFn) then
+      local f = io.open(csvFn,"a")
+      f:write(result,", ",modA[2],", wrapperDiff\n")
+      f:close()
+   end
+
+   if (resultFn) then
+      local f        = io.open(resultFn,"r")
+      if (f) then
+         local s = f:read("*all")
+         assert(load(s))()
+      end
+      myTbl[#myTbl+1] = { result=result, program="wrapperDiff"}
+      serializeTbl{name="myTbl", value=myTbl, fn=resultFn, indent=true}
+   end
 end
+
+
+
+
 
 
 local function execute51(s)
