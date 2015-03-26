@@ -51,7 +51,7 @@ function fullFn(f)
 end
 
 function UUIDString(epoch)
-   local ymd  = os.date("*t", epoch)
+   local ymd  = os.date("*t", math.floor(epoch))
 
    --                           y    m    d    h    m    s
    local uuid = string.format("%d_%02d_%02d_%02d_%02d_%02d", 
@@ -61,7 +61,7 @@ function UUIDString(epoch)
 end
 
 function ymdString(epoch)
-   local ymd  = os.date("*t", epoch)
+   local ymd  = os.date("*t", math.floor(epoch))
 
    --                     y    m    d
    return string.format("%d_%02d_%02d", ymd.year, ymd.month, ymd.day)

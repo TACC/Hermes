@@ -167,7 +167,7 @@ function RunActiveTests:runTest(masterTbl, tst, iTest, numTests)
    f:write(runScript)
    f:close()
 
-   posix.chmod(scriptFn,"+x")
+   posix.chmod(scriptFn,"700")
 
    local id         = tst:get('id')
    local background = tst:get('background') or (jobSubmitMethod == "BATCH")

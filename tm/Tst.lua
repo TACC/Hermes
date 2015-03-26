@@ -39,7 +39,7 @@ function Tst.new(self, testparams, fileName, testdescript, target, epoch, i)
 
    local masterTbl = masterTbl()
 
-   masterTbl.date = os.date("%c", masterTbl.currentEpoch)
+   masterTbl.date = os.date("%c", math.floor(masterTbl.currentEpoch))
 
    local projectDir   = masterTbl.projectDir
    local pattern      = projectDir:gsub("%-","%%-")

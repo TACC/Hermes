@@ -13,7 +13,7 @@ function ReportResults:execute(myTable)
    local rptTbl         = masterTbl.rptTbl
    local HumanDataA     = {}
    local tstSummary     = masterTbl.tstSummary
-   local totalTime      = os.date("!%T", masterTbl.totalTestTime)
+   local totalTime      = os.date("!%T", math.floor(masterTbl.totalTestTime))
 
    local e              = string.format("%.2f", masterTbl.totalTestTime -
                                             math.floor(masterTbl.totalTestTime))
