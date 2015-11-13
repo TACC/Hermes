@@ -34,10 +34,10 @@ language to be embedded with other applications.  See www.lua.org for
 more details.
 
 To use lua in this context we need some libraries that do not come
-from the standard distribution.  I maintain an svn repository that has
-the lua source as well as the necessary libraries.
+from the standard distribution.  
 
-  $ svn co https://riverton.dyndns.org/svn/lua/trunk lua
+   $ wget http://downloads.sourceforge.net/project/lmod/lua-5.1.4.5.tar.gz
+
 
 Change to the lua directory and follow the INSTALL file directions.
 
