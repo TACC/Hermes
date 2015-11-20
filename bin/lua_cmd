@@ -32,7 +32,7 @@ done
 cd $cwd
 
 
-execLuaPath="$projectDir/lib/?.lua"
+execLuaPath="$projectDir/lib/?.lua;$projectDir/tools/?.lua"
 extra=
 if [ "x$LUA_PATH" != x ]; then
   extra=";$LUA_PATH"
