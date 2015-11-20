@@ -4,9 +4,14 @@
 # Fetch tools from luatools directory:
 
 LUATOOLS=(
+  BeautifulTbl.lua
   Dbg.lua
+  Optiks.lua
+  Optiks_Option.lua
   Stencil.lua
   TermWidth.lua
+  capture.lua
+  declare.lua
   fileOps.lua
   inherits.lua
   pairsByKeys.lua
