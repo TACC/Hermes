@@ -41,10 +41,10 @@ local concatTbl = table.concat
 -- @param exec Name of executable
 -- @param path The path to use. If nil then use env PATH.
 function findInPath(exec, path)
-   local result  = ""
+   local result  = "unknown_path_for_" .. (exec or "unknown")
    if ( exec == nil) then return result end
-   exec = exec:trim()
-   local i = exec:find(" ")
+   exec       = exec:trim()
+   local i    = exec:find(" ")
    local cmd  = exec
    local tail = ""
    if (i) then
