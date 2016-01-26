@@ -23,15 +23,16 @@ local keepT     = {
    
 
 local execT = {
-   gcc    = 'keep',
-   icc    = 'keep',
-   lua    = 'keep',
-   python = 'keep',
-   tm     = 'keep',
-   expr   = 'keep',
-   seq    = 'keep',
-   rm     = 'keep',
-   mpirun = 'keep',
+   gcc     = 'keep',
+   icc     = 'keep',
+   lua     = 'keep',
+   python  = 'keep',
+   tm      = 'keep',
+   expr    = 'keep',
+   seq     = 'keep',
+   rm      = 'keep',
+   sha1sum = 'keep',
+   mpirun  = 'keep',
 }
 
 local function cleanPath(v)
