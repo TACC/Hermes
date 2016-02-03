@@ -55,7 +55,7 @@ local function cleanPath(v)
 
    for execName in pairs(execT) do
       local cmd = findInPath(execName, myPath)
-      if (cmd ~= '') then
+      if (not cmd:find("unknown_path_for") ) then
          local p = path_regularize(dirname(cmd))
          pathT[p].keep = true
       end
