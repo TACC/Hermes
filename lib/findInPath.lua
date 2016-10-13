@@ -148,8 +148,3 @@ function findInPath(exec, path)
    return result
 end
 
-local path = findInPath("FooBar")
-print(path)
-
-local path = findInPath("cp")
-print(path)
