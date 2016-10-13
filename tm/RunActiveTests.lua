@@ -3,6 +3,7 @@ require("common")
 require("JobSubmitBase")
 require("serializeTbl")
 require("CleanEnv")
+require("findInPath")
 _DEBUG         = false
 local dbg      = require("Dbg"):dbg()
 local posix    = require("posix")
