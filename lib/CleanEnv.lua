@@ -33,6 +33,7 @@ local execT = {
    rm      = 'keep',
    sha1sum = 'keep',
    mpirun  = 'keep',
+   Rscript = 'keep',
 }
 
 local function cleanPath(v)
