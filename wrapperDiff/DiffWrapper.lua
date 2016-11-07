@@ -11,8 +11,8 @@ function DiffWrapper:execute(myTable)
    local masterTbl = masterTbl()
 
    local origA      = { masterTbl.pargs[1], masterTbl.pargs[2] } 
-   local modA       = { removeExt(barefilename(origA[1])) .. ".left",
-                        removeExt(barefilename(origA[2])) .. ".right",}
+   local modA       = { '_' .. removeExt(barefilename(origA[1])) .. ".left",
+                        '_' .. removeExt(barefilename(origA[2])) .. ".right",}
    local cmdA       = {}
    local cmdLine
 
@@ -53,8 +53,8 @@ function DiffWrapper:execute(myTable)
       result          = (status == 0) and "failed" or "diff"
    end
    os.remove("diff.log")
-   os.remove(modA[1])
-   os.remove(modA[2])
+   --os.remove(modA[1])
+   --os.remove(modA[2])
 
    local resultFn = masterTbl.resultFn
    local csvFn    = masterTbl.csvFn
