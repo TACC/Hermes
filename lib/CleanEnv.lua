@@ -15,6 +15,7 @@ local keepT     = {
    ['LD_LIBRARY_PATH'] = 'keep',
    ['LUA_CPATH']       = 'keep',
    ['LUA_PATH']        = 'keep',
+   ['BASH_ENV']        = 'keep',
    ['TARG']            = 'keep',
    ['TARGET']          = 'keep',
    --
@@ -30,6 +31,7 @@ local execT = {
    tm      = 'keep',
    expr    = 'keep',
    seq     = 'keep',
+   sed     = 'keep',
    rm      = 'keep',
    sha1sum = 'keep',
    mpirun  = 'keep',
