@@ -53,6 +53,16 @@ local function cleanPath(v)
       end
    end
 
+   local keepPathA = { "/bin", "/usr/bin" }
+   for i = 1,#keepPathA do
+      idx  = idx + 1
+      local path = keepPathA[i]
+      if (pathT[path] == nil) then
+         pathT[path]     = { idx = idx, keep = true }
+         pathA[#pathA+1] = path
+      end
+   end
+
    local myPath = concatTbl(pathA,':')
    pathA        = {}
 
