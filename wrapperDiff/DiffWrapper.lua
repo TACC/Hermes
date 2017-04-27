@@ -17,7 +17,7 @@ function DiffWrapper:execute(myTable)
    local cmdLine
 
    for i = 1,2 do
-      cmdA[#cmdA + 1 ] = "sed -e 's/Lua: Version.*/Lua: Version/g' <"
+      cmdA[#cmdA + 1 ] = "sed -e 's/Lua: Version.*/Lua: Version/g' -e 's/suite: Version.*//g' <"
       cmdA[#cmdA + 1 ] = origA[i]
       cmdA[#cmdA + 1 ] = ">"
       cmdA[#cmdA + 1 ] = modA[i]
