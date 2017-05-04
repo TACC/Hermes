@@ -1,2 +1,1 @@
-Hermes
-======
+tm/doc/getting_started_with_tm.txt
