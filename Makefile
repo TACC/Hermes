@@ -73,7 +73,9 @@ world_update:
             echo "All files not checked in => try again";                          \
         else                                                                       \
 	    branchName=`git status | head -n 1 | sed 's/^[# ]*On branch //g'`;	   \
-            git push        github $$branchName;                                   \
-            git push --tags github $$branchName;                                   \
+            git push        github     $$branchName;                               \
+            git push --tags github     $$branchName;                               \
+            git push        rtm_github $$branchName;                               \
+            git push --tags rtm_github $$branchName;                               \
         fi;                                                                        \
         rm -f /tmp/git_st_$$$$
