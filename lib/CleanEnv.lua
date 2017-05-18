@@ -35,6 +35,7 @@ local execT = {
    rm      = 'keep',
    sha1sum = 'keep',
    mpirun  = 'keep',
+   cmake   = 'keep',
    Rscript = 'keep',
 }
 
