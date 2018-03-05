@@ -1,5 +1,9 @@
 -- -*- lua -*-
-if not setfenv then -- Lua 5.2
+
+require("strict")
+require("declare")
+
+if (not isDefined("setfenv")) then -- Lua 5.2
   -- based on http://lua-users.org/lists/lua-l/2010-06/msg00314.html
   -- this assumes f is a function
   local function findenv(f)
@@ -17,12 +21,10 @@ if not setfenv then -- Lua 5.2
     return f end
 end
 
-require("strict")
-require("fileOps")
 _DEBUG      = false
 local dbg   = require("Dbg"):dbg()
 local posix = require("posix")
-
+require("fileOps")
 Error  = nil
 engine = {}
 master = {
