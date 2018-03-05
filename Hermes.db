@@ -1,8 +1,8 @@
 -- -*- lua -*-
--- created: Thu May 18 14:13:28 2017 --
+-- created: Mon Mar  5 14:04:52 2018 --
 ProjectData = {
-  ["HermesVersion"] = "2.6",
-  ["HermesVersionDate"] = "Thu May 18 14:13:28 2017",
+  ["HermesVersion"] = "2.7",
+  ["HermesVersionDate"] = "Mon Mar  5 14:04:52 2018",
   PackageList = {
     {
       ["pkgName"] = "hermes",
