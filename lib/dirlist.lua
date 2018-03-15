@@ -1,9 +1,9 @@
--- -*- lua -*-
+_DEBUG      = false
+local posix = require("posix")
+
 require("strict")
 require("fileOps")
-_DEBUG      = false
 local lfs   = require("lfs")
-local posix = require("posix")
 
 function dirlist(path)
    local list = {}

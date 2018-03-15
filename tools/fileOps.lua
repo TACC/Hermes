@@ -2,6 +2,9 @@
 -- A collection of useful file operations.
 -- @module fileOps
 
+_DEBUG          = false
+local posix     = require("posix")
+
 require("strict")
 
 ------------------------------------------------------------------------
@@ -31,8 +34,6 @@ require("strict")
 --------------------------------------------------------------------------
 
 require("string_utils")
-_DEBUG          = false
-local posix     = require("posix")
 local lfs       = require("lfs")
 local concatTbl = table.concat
 

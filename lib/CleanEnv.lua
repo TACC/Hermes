@@ -1,10 +1,11 @@
+_DEBUG          = false
+local posix     = require("posix")
+
 require("strict")
 require("string_utils")
 require("fileOps")
 require("pairsByKeys")
 
-_DEBUG          = false
-local posix     = require("posix")
 local getenv    = posix.getenv
 local setenv    = posix.setenv
 local concatTbl = table.concat

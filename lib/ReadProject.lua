@@ -1,10 +1,10 @@
-
 _DEBUG      = false
+local posix = require("posix")
+
 ReadProject = BaseTask:new()
 require("strict")
 require("fileOps")
 local dbg   = require("Dbg"):dbg()
-local posix = require("posix")
 
 local function findPackageName(fileName)
    local masterTbl   = masterTbl()

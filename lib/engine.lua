@@ -1,9 +1,9 @@
 -- -*- lua -*-
-
 _DEBUG      = false
+local posix = require("posix")
+
 require("strict")
 local dbg   = require("Dbg"):dbg()
-local posix = require("posix")
 require("fileOps")
 Error  = nil
 engine = {}

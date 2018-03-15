@@ -1,6 +1,7 @@
-require("strict")
 _DEBUG      = false
 local posix = require("posix")
+
+require("strict")
 
 epoch = false
 function build_epoch()

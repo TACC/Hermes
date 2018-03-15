@@ -1,8 +1,9 @@
-
-require("getUname")
-require("fileOps")
 _DEBUG      = false
 local posix = require("posix")
+
+require("strict")
+require("getUname")
+require("fileOps")
 
 Initialize = BaseTask:new()
 

@@ -1,11 +1,11 @@
+_DEBUG      = false
+local posix = require("posix")
 require("strict")
 require("common")
 require("string_utils")
 require("fileOps")
 require("version")
 
-_DEBUG      = false
-local posix = require("posix")
 CmdLineOptions = BaseTask:new()
 
 local function vname()

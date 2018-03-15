@@ -1,8 +1,11 @@
 ProjectTop = BaseTask:new()
-require("fileOps")
 _DEBUG      = false
-local lfs   = require("lfs")
 local posix = require("posix")
+
+require("strict")
+require("fileOps")
+local lfs   = require("lfs")
+
 function ProjectTop:execute(myTable)
    local masterTbl  = masterTbl()
    local pargs      = masterTbl.pargs

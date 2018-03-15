@@ -1,6 +1,7 @@
-require("strict")
 _DEBUG      = false
 local posix = require("posix")
+
+require("strict")
 function getUname()
    local t                = {}
    local osName		  = posix.uname("%s")

@@ -1,7 +1,8 @@
-require("strict")
 _G._DEBUG       = false                     -- Required by luaposix 33
-local concatTbl = table.concat
 local posix     = require("posix")
+
+require("strict")
+local concatTbl = table.concat
 local function argsPack(...)
    local arg = { n = select("#", ...), ...}
    return arg

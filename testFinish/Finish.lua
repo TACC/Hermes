@@ -1,14 +1,15 @@
+_DEBUG      = false
+local posix = require("posix")
 
+require("strict")
 require("build_epoch")
 require("serializeTbl")
 require("getUname")
 require("fileOps")
 require("string_utils")
 
-_DEBUG      = false
 local dbg   = require("Dbg"):dbg()
 local lfs   = require("lfs")
-local posix = require("posix")
 local load  = (_VERSION == "Lua 5.1") and loadstring or load
 
 Finish = BaseTask:new()

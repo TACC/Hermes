@@ -2,6 +2,9 @@
 -- use io.popen to open a pipe to collect the output of a command.
 -- @module capture
 
+_DEBUG      = false
+local posix = require("posix")
+
 require("strict")
 
 ------------------------------------------------------------------------
@@ -31,9 +34,7 @@ require("strict")
 --------------------------------------------------------------------------
 
 
-_DEBUG      = false
 local dbg   = require("Dbg"):dbg()
-local posix = require("posix")
 
 --------------------------------------------------------------------------
 -- Capture stdout from *cmd*

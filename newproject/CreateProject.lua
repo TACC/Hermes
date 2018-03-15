@@ -1,7 +1,7 @@
-
-CreateProject = BaseTask:new()
 _DEBUG        = false
 local posix   = require("posix")
+
+CreateProject = BaseTask:new()
 
 function CreateProject:execute(myTable)
    local masterTbl = masterTbl()
