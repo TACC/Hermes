@@ -1,4 +1,6 @@
 #!/usr/bin/env lua
+_DEBUG      = false
+local posix = require("posix")
 
 require("strict")
 function tool()
