@@ -25,6 +25,9 @@ function FindAllTmFiles:execute(myTable)
 end
 
 function FindAllTmFiles:allTMFiles(path, pattern, t)
+   local attr = lfs.attributes(path)
+   if (attr == nil or attr.mode ~= "directory") then return end
+
    local ignoreT = ignoreDirList()
    for file in lfs.dir(path) do
       if (not ignoreT[file]) then
