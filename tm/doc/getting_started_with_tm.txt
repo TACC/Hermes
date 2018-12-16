@@ -69,27 +69,35 @@ your directory to there and lets start.
     $ cd hermes-x.y.z/tm/doc
     $ make
 
-The make command will build two programs: testprog and diffprog.  The
-testprog program is there to represent a program under test and the
+The make command will build two programs: testprog and diffprog.  
+
+Thetestprog program is there to represent a program under test and the
 diffprog is there as an example of a program to compute the difference
-between a "gold" solution file and a test one.
+between a "gold" solution file and a test one.  To run an example:
+
+    $ ./testprog test_file
 
 The testprog.c file shows a very simple program that writes a file
 containing the numbers 0 to 99 with a little random noise added.  The
 diffprog.c file  takes two files and compares them.  The diffprog
 takes several arguments:
 
-    $ diffprog result.lua 1.0e-6 gold_file test_file
+    $ diffprog result.csv 1.0e-6 gold_file test_file
 
 The first argument is the name of the lua file that is required to
 tell tm how your program did.  The second argument is the norm test
 value.  The final two arguments are the gold file that has the known
 good solution and test file.
 
-The results.lua file looks something like this:
+The results.csv file looks something like this:
+
+    # Fri Dec 14 08:54:21 2018
+    passed
+
+In running TM, the results.lua file looks something like this:
 
     -- -*- lua -*-
-    -- Fri Feb 19 16:39:18 2015
+    -- Fri Dec 14 08:54:21 2018
     myTbl = {
       {
          ["result"] = "passed",
@@ -223,39 +231,39 @@ The period says run tm by looking for all the test descriptions files
 from the current directory on down.  In this case there is only the
 simple_test.tdesc file.  The output will look like this:
 
-
-    TM Version: 1.5
-
+    TM Version: 1.7
+    
     Starting Tests:
-
-         Started : 10:16:49 tst: 1/1 P/F: 0:0, rt/simple_test/simple_test/t1
-          passed : 10:16:49 tst: 1/1 P/F: 1:0, rt/simple_test/simple_test/t1        
+    
+         Started : 09:43:30 tst: 1/1 P/F: 0:0, rt/simple_test/simple_test/t1
+          passed : 09:43:30 tst: 1/1 P/F: 1:0, rt/simple_test/simple_test/t1
 
 
     Finished Tests
 
-    ************************************************************************
-    *** Test Results                                                     ***
-    ************************************************************************
-     
-    Date:             Mon Feb 22 10:16:49 2010
-    Tag:              2010_02_22
-    TM Version:       1.5
-    Hermes Version:   1.9.1
-    Lua Version:      Lua 5.1
-    Total Test Time:  00:00:00.09
-     
-    ************************************************************************
-    *** Test Summary                                                     ***
-    ************************************************************************
-     
+    *******************************************************************************
+    *** Test Results                                                            ***
+    *******************************************************************************
+
+    Date:             Sun Dec 16 09:43:30 2018
+    TARGET:
+    Tag:              2018_12_16
+    TM Version:       1.7
+    Hermes Version:   2.8
+    Lua Version:      Lua 5.3
+    Total Test Time:  00:00:00.10
+
+    *******************************************************************************
+    *** Test Summary                                                            ***
+    *******************************************************************************
+
     Total:   1
     passed:  1
 
-    *******  *  ****    *****************              *********************
-    Results  R  Time    Test Name                      version/message
-    *******  *  ****    *****************              *********************
-    passed   R  0.0881  rt/simple_test/simple_test/t1  
+    *******  *  ****   *********                      ***************
+    Results  R  Time   Test Name                      version/message
+    *******  *  ****   *********                      ***************
+    passed   R  0.101  rt/simple_test/simple_test/t1
 
 The output is has two parts.  The first part is from the "Starting
 Tests" to "Finished Tests".   For each test, it reports the start and
