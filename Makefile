@@ -10,39 +10,18 @@ VERSION		:= $(shell updateProjectDataVersion --version)
 MAIN_DIR := Hermes.db Makefile COPYRIGHT
 
 
-dist:  
-	$(MAKE) DistD=DIST _dist
-
-_dist:  _distMkDir _distMainDir _distBin _distCmds _distCleanupSVN _distReqPkg _distTar
-
-_distMkDir:
-	$(RM) -r $(DistD)
-	mkdir $(DistD)
-
-_distMainDir:
-	cp $(MAIN_DIR) $(DistD)
-
-_distBin:
-	mkdir $(DistD)/bin
-	cp $(BINList) $(DistD)/bin
-
-_distCmds:
-	cp -r $(CMDList) $(DistD)
-
-
-_distCleanupSVN:
-	find $(DistD) -name .svn | xargs rm -rf 
-
-_distReqPkg:
-	cp `findLuaPkgs $(REQUIRED_PKGS)` $(DistD)/lib
-
-_distTar:
-	echo "hermes"-$(VERSION) > .fname;                		   \
-	$(RM) -r `cat .fname` `cat .fname`.tar*;         		   \
-	mv ${DistD} `cat .fname`;                            		   \
-	tar chf `cat .fname`.tar `cat .fname`;           		   \
-	bzip2 `cat .fname`.tar;                           		   \
-	rm -rf `cat .fname` .fname; 
+dist:
+	GIT_BRANCH=`git status | head -n 1 | sed -e 's/^[# ]*On branch //g' -e 's/^[# ]*HEAD detached at//g'`  ; \
+	git archive --prefix=hermes-$(VERSION)/ $$GIT_BRANCH > hermes-$(VERSION).tar                           ; \
+        $(RM) -rf DIST                                                                                         ; \
+        mkdir DIST                                                                                             ; \
+        cd DIST                                                                                                ; \
+        tar xf ../hermes-$(VERSION).tar                                                                        ; \
+        find hermes-$(VERSION) -type f      -print0 | xargs -0 sed -i.bk 's/\@git\@/$(GIT_VERSION)/g'          ; \
+        find hermes-$(VERSION) -name '*.bk' -exec rm -f {} \;                                                  ; \
+        $(RM) ../hermes-$(VERSION).tar                                                                         ; \
+        tar cjf ../hermes-$(VERSION).tar.bz2 hermes-$(VERSION)                                                 ; \
+	cd ..; $(RM) -rf DIST
 
 
 install:  $(INSTALLDIR)
