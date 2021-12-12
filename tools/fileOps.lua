@@ -1,15 +1,14 @@
 --------------------------------------------------------------------------
 -- A collection of useful file operations.
 -- @module fileOps
-
-_DEBUG          = false
+_G._DEBUG       = false                     -- Required by luaposix 33
 local posix     = require("posix")
 
 require("strict")
 
 ------------------------------------------------------------------------
 --
---  Copyright (C) 2008-2014 Robert McLay
+--  Copyright (C) 2008-2018 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -36,6 +35,7 @@ require("strict")
 require("string_utils")
 local lfs       = require("lfs")
 local concatTbl = table.concat
+local access    = posix.access
 
 --------------------------------------------------------------------------
 -- find the absolute path to an executable.
@@ -43,9 +43,10 @@ local concatTbl = table.concat
 -- @param path The path to use. If nil then use env PATH.
 function findInPath(exec, path)
    local result  = "unknown_path_for_" .. (exec or "unknown")
-   if ( exec == nil) then return result end
-   exec       = exec:trim()
-   local i    = exec:find(" ")
+   local found   = false
+   if ( exec == nil) then return result, found end
+   exec = exec:trim()
+   local i = exec:find(" ")
    local cmd  = exec
    local tail = ""
    if (i) then
@@ -54,22 +55,23 @@ function findInPath(exec, path)
    end
 
    if (cmd:find("/")) then
-      if (posix.access(cmd,"x")) then
-         return exec
+      if (access(cmd,"x")) then
+         return exec, true
       else
-         return result
+         return result, false
       end
    end
 
    path    = path or os.getenv("PATH")
    for dir in path:split(":") do
       local fullcmd = pathJoin(dir, cmd)
-      if (posix.access(fullcmd,"x")) then
+      if (access(fullcmd,"x")) then
          result = fullcmd .. tail
+         found  = true
          break
       end
    end
-   return result
+   return result, found
 end
 
 ------------------------------------------------------------------------
