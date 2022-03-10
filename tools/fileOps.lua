@@ -1,15 +1,14 @@
 --------------------------------------------------------------------------
 -- A collection of useful file operations.
 -- @module fileOps
-
-_DEBUG          = false
+_G._DEBUG       = false                     -- Required by luaposix 33
 local posix     = require("posix")
 
 require("strict")
 
 ------------------------------------------------------------------------
 --
---  Copyright (C) 2008-2014 Robert McLay
+--  Copyright (C) 2008-2018 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -37,6 +36,7 @@ require("string_utils")
 local lfs       = require("lfs")
 local access    = posix.access
 local concatTbl = table.concat
+local access    = posix.access
 
 --------------------------------------------------------------------------
 -- find the absolute path to an executable.

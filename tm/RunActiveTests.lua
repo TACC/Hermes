@@ -5,7 +5,7 @@ require("common")
 require("JobSubmitBase")
 require("serializeTbl")
 require("CleanEnv")
-require("findInPath")
+require("fileOps")
 local dbg      = require("Dbg"):dbg()
 RunActiveTests = BaseTask:new()
 comment    = [[
