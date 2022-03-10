@@ -35,6 +35,7 @@ require("strict")
 
 require("string_utils")
 local lfs       = require("lfs")
+local access    = posix.access
 local concatTbl = table.concat
 
 --------------------------------------------------------------------------
@@ -43,9 +44,10 @@ local concatTbl = table.concat
 -- @param path The path to use. If nil then use env PATH.
 function findInPath(exec, path)
    local result  = "unknown_path_for_" .. (exec or "unknown")
-   if ( exec == nil) then return result end
-   exec       = exec:trim()
-   local i    = exec:find(" ")
+   local found   = false
+   if ( exec == nil) then return result, found end
+   exec = exec:trim()
+   local i = exec:find(" ")
    local cmd  = exec
    local tail = ""
    if (i) then
@@ -54,24 +56,24 @@ function findInPath(exec, path)
    end
 
    if (cmd:find("/")) then
-      if (posix.access(cmd,"x")) then
-         return exec
+      if (access(cmd,"x")) then
+         return exec, true
       else
-         return result
+         return result, false
       end
    end
 
    path    = path or os.getenv("PATH")
    for dir in path:split(":") do
       local fullcmd = pathJoin(dir, cmd)
-      if (posix.access(fullcmd,"x")) then
+      if (access(fullcmd,"x")) then
          result = fullcmd .. tail
+         found  = true
          break
       end
    end
-   return result
+   return result, found
 end
-
 ------------------------------------------------------------------------
 -- Return true if path is a directory.  Note that a symlink to a
 -- directory is not a directory.
