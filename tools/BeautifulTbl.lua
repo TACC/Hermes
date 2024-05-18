@@ -45,7 +45,7 @@ require("strict")
 
 ------------------------------------------------------------------------
 --
---  Copyright (C) 2008-2014 Robert McLay
+--  Copyright (C) 2008-2018 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -106,7 +106,7 @@ function M.new(self, t)
 end
 
 --------------------------------------------------------------------------
--- This is a private member function that client codes should not use.  
+-- This is a private member function that client codes should not use.
 -- It figures out the max size of each column.  Then adds spaces to
 -- make each column be justified.  By default all columns are
 -- left-justified. To get write right-justified, the client code must
@@ -132,7 +132,7 @@ function M._build_tbl(self, tblIn)
       for icol = 1, numC do
          local v = a[icol]
          if (numC > 1) then
-            columnCnt[icol] = max(length(v), columnCnt[icol] or 0)
+            columnCnt[icol] = max(length(tostring(v)), columnCnt[icol] or 0)
          end
       end
    end

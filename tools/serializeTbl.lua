@@ -1,6 +1,26 @@
+--------------------------------------------------------------------------
+-- This collection of routines are used to convert a table into a string.
+-- This string is valid lua code. Note that this will only work for "DAG"
+-- and not loops. There are more general solutions available but the
+-- output less attractive.  Since Lmod tables are DAG's this works fine.
+--
+-- Typical usage:
+--   Write to a file:
+--      serializeTbl{indent=true, name="SomeName", value=luaTable,
+--                   fn = "/path/to/file"}
+--   Generate String:
+--      s = serializeTbl{indent=true, name="SomeName", value=luaTable}
+--
+--   Note that indent can also be an indent string (i.e. indent = "    ")
+--   which will be treated as the initial indentation.
+
+-- @module serializeTbl
+
+require("strict")
+
 ------------------------------------------------------------------------
 --
---  Copyright (C) 2008-2014 Robert McLay
+--  Copyright (C) 2008-2018 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -24,34 +44,44 @@
 --
 --------------------------------------------------------------------------
 
---------------------------------------------------------------------------
--- serializeTbl: This collection of routines are used to convert a
---               table into a string.  This string is valid lua code.
---               Note that this will only work for "DAG" and not loops.
---               There are more general solutions available but the
---               output less attractive.  Since Lmod tables are DAG's
---               this works fine.
---
--- Typical usage:
---   Write to a file:
---      serializeTbl{indent=true, name="SomeName", value=luaTable,
---                   fn = "/path/to/file"}
---   Generate String:
---      s = serializeTbl{indent=true, name="SomeName", value=luaTable}
---
-require("strict")
 require("fileOps")
 require("pairsByKeys")
 require("TermWidth")
 
 --------------------------------------------------------------------------
--- nsformat(): Convert the string value into a quoted string of some kind
---             and boolean into true/false.
+-- Convert the string value into a quoted string of some kind and boolean
+-- into true/false.
 
-local function nsformat(value)
+local quoteA = {
+   {'[[',']]'},
+   {'[=[',']=]'},
+   {'[==[',']==]'},
+   {'[===[',']===]'},
+   {'[====[',']====]'},
+   {'[=====[',']=====]'},
+   {'[======[',']======]'},
+   {'[=======[',']=======]'},
+   {'[========[',']========]'},
+}
+   
+local function l_quoteValue(value)
+   for i = 1,#quoteA do
+      local left = quoteA[i][1]
+      local rght = quoteA[i][2]
+      if (not (value:find(left,1,true) or value:find(rght,1,true))) then
+         return left, rght
+      end
+   end
+   return quoteA[1][1], quoteA[1][2]
+end
+
+
+local function l_nsformat(value)
    if (type(value) == 'string') then
+      value = value:gsub("\\","\\\\")
       if (value:find("\n")) then
-	 value = "[[\n" .. value .. "\n]]"
+         local left, rght = l_quoteValue(value)
+	 value = left .. value .. rght
       else
          value = value:gsub('"','\\"')
 	 value = "\"" .. value .. "\""
@@ -68,19 +98,41 @@ local function nsformat(value)
    return value
 end
 
---------------------------------------------------------------------------
--- outputTblHelper():  This is the work-horse for this collections.  It is
---                     used recursively for subtables.  It also ignores
---                     keys that start with "_".
+local keywordT = {
+   ['and']    = true,  ['break']  = true,    ['do']       = true,
+   ['else']   = true,  ['elseif'] = true,    ['end']      = true,
+   ['false']  = true,  ['for']    = true,    ['function'] = true,
+   ['if']     = true,  ['in']     = true,    ['local']    = true,
+   ['nil']    = true,  ['not']    = true,    ['or']       = true,
+   ['repeat'] = true,  ['return'] = true,    ['then']     = true,
+   ['true']   = true,  ['until']  = true,    ['while']    = true,
+}
 
-local function outputTblHelper(indentIdx, name, T, a, level)
+local function wrap_name(indent, name)
+   local str
+   if (name:find("[^0-9A-Za-z_]") or keywordT[name] or name == " " or
+       name:sub(1,1):find("[0-9]") ) then
+      str = indent .. "[\"" .. name .. "\"]"
+   else
+      str = indent .. name
+   end
+   return str
+end
+
+
+--------------------------------------------------------------------------
+-- This is the work-horse for this collections.  It is recursively for
+-- sub-tables.  It also ignores keys that start with "__" unless
+-- keepDUnderScore is true.
+
+local function outputTblHelper(indentIdx, name, T, keepDUnderScore, a, level)
 
    -------------------------------------------------
-   -- Remove all keys in table that start with "_"
+   -- Remove all keys in table that start with "__"
 
    local t = {}
    for key in pairs(T) do
-      if (type(key) == "number" or key:sub(1,1) ~= '_') then
+      if (type(key) == "number" or keepDUnderScore or key:sub(1,2) ~= '__') then
          t[key] = T[key]
       end
    end
@@ -98,16 +150,20 @@ local function outputTblHelper(indentIdx, name, T, a, level)
    -- characters or it start with a number.
    local str
    if (type(name) == 'string') then
-      if (name:find("[-+:./]") or name == "local" or name == "nil" or
-          name:sub(1,1):find("[0-9]")) then
-	 str = indent .. "[\"" .. name .. "\"] = {\n"
-      else
-	 str = indent .. name .. " = {\n"
-      end
+      str = wrap_name(indent, name) .. " = {"
    else
-      str = indent .. "{\n"
+      str = indent .. "{"
    end
    a[#a+1] = str
+   if (next(T) == nil) then
+      if (level == 0) then
+         a[#a+1] = '}\n'
+      else
+         a[#a+1] = "},\n"
+      end
+      return
+   end
+   a[#a] = a[#a] .. "\n"
 
    --------------------------------------------------
    -- Update indent
@@ -133,8 +189,8 @@ local function outputTblHelper(indentIdx, name, T, a, level)
       a[#a+1] = indent
       w       = w + indent:len()
       for i = 1,#t-1 do
-         a[#a+1] = nsformat(t[i])
-         w       = w + a[#a]:len()
+         a[#a+1] = l_nsformat(t[i])
+         w       = w + tostring(a[#a]):len()
          a[#a+1] = ", "
          w       = w + a[#a]:len()
          if ( w > twidth) then
@@ -143,21 +199,21 @@ local function outputTblHelper(indentIdx, name, T, a, level)
          end
       end
       if (#t > 0) then
-         a[#a+1] = nsformat(t[#t])
+         a[#a+1] = l_nsformat(t[#t])
          a[#a+1] = ",\n"
       end
    else
       for key, value in pairsByKeys(t) do
          if (type(value) == 'table') then
-            outputTblHelper(indentIdx, key, t[key], a, level+1)
+            outputTblHelper(indentIdx, key, t[key], keepDUnderScore, a, level+1)
          else
             if (type(key) == "string") then
-               str = indent .. '[\"'..key ..'\"] = '
+               str = wrap_name(indent, key) .. ' = '
             else
                str = indent
             end
             a[#a+1] = str
-            a[#a+1] = nsformat(t[key])
+            a[#a+1] = l_nsformat(t[key])
             a[#a+1] = ",\n"
          end
       end
@@ -172,25 +228,29 @@ local function outputTblHelper(indentIdx, name, T, a, level)
 end
 
 --------------------------------------------------------------------------
--- serializeTbl(): The interface routine for this file.  Note that
---                 it returns a string if no file name is given.
-
+-- The interface routine for this file.  Note that it returns a string
+-- if no file name is given.
+-- @param options input table.
 function serializeTbl(options)
-   local a         = {}
-   local n         = options.name
-   local level     = 0
-   local value     = options.value
-   local indentIdx = -1
+   local a               = {}
+   local n               = options.name
+   local level           = 0
+   local value           = options.value
+   local keepDUnderScore = options.keep_double_underscore
+   local indentIdx       = -1
    if (options.indent) then
       indentIdx = 0
+      if (type(options.indent) == 'string' and options.indent:find("^  *$")) then
+         indentIdx = options.indent:len()
+      end
    end
 
    if (type(value) == "table") then
-      outputTblHelper(indentIdx, options.name, options.value, a, level)
+      outputTblHelper(indentIdx, options.name, options.value, keepDUnderScore, a, level)
    else
-      a[#a+1] = n
+      a[#a+1] = wrap_name("",n)
       a[#a+1] = " = "
-      a[#a+1] = nsformat(value)
+      a[#a+1] = l_nsformat(value)
       a[#a+1] = "\n"
    end
 

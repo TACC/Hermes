@@ -1,9 +1,8 @@
 #!/bin/bash
 # -*- shell-script -*-
 
-# Fetch tools from luatools directory:
 
-LUATOOLS=(
+fileA=(
   BeautifulTbl.lua
   Dbg.lua
   Optiks.lua
@@ -13,6 +12,7 @@ LUATOOLS=(
   capture.lua
   declare.lua
   fileOps.lua
+  haveTermSupport.lua
   inherits.lua
   pairsByKeys.lua
   serializeTbl.lua
@@ -20,10 +20,4 @@ LUATOOLS=(
   strict.lua
 )
 
-LUATOOLS_DIR=$HOME/w/luatools/modules
-HERMES_TOOLS_DIR=$HOME/w/hermes/tools
-
-for i in "${LUATOOLS[@]}"; do
-  cp $LUATOOLS_DIR/$i $HERMES_TOOLS_DIR
-done
 

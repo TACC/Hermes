@@ -43,7 +43,7 @@ require("strict")
 
 ------------------------------------------------------------------------
 --
---  Copyright (C) 2008-2014 Robert McLay
+--  Copyright (C) 2008-2018 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -66,6 +66,7 @@ require("strict")
 --  THE SOFTWARE.
 --
 --------------------------------------------------------------------------
+
 local blank        = " "
 local huge         = math.huge
 local max          = math.max
@@ -82,34 +83,59 @@ s_currentLevel  = huge
 s_levelA        = {}
 s_isActive      = false
 s_prefix        = ""
-local function prtTbl(a)
-   io.stderr:write("table:\n")
-   for _,v in ipairs(a) do
-      if (type(a) == "table") then
-	 prtTbl(v)
-      else
-	 io.stderr:write(v)
-      end
-   end
+--local function l_prtTbl(a)
+--   io.stderr:write("table:\n")
+--   for _,v in ipairs(a) do
+--      if (type(a) == "table") then
+--	 l_prtTbl(v)
+--      else
+--	 io.stderr:write(v)
+--      end
+--   end
+--end
+
+--[[ rPrint(struct, [limit], [indent])   Recursively print arbitrary data.
+Set limit (default 100) to stanch infinite loops.
+Indents tables as [KEY] VALUE, nested tables as [KEY] [KEY]...[KEY] VALUE
+Set indent ("") to prefix each line:    Mytable [KEY] [KEY]...[KEY] VALUE
+
+Taken from https://gist.github.com/stuby/5445834
+--]]
+local function l_rPrint(s, l, i)
+    -- recursive Print (structure, limit, indent)
+    l = (l) or 100; i = i or "";	-- default item limit, indent string
+    if (l<1) then io.stderr:write("ERROR: Item limit reached.", "\n"); return l-1 end;
+    local ts = type(s);
+    if (ts ~= "table") then
+        io.stderr:write(i," ", tostring(ts), " ", tostring(s),"\n")
+        return l-1
+    end
+    io.stderr:write(i," ", ts,"\n");  -- print "table"
+    for k,v in pairs(s) do  -- print "[KEY] VALUE"
+        l = l_rPrint(v, l, i.."\t["..tostring(k).."]");
+        if (l < 0) then break end
+    end
+    return l
 end
 
-local function argsPack(...)
-   local arg = { n = select ("#", ...), ...}
-   return arg
+local function l_argsPack(...)
+   local argA = { n = select("#", ...), ...}
+   return argA
 end
-local pack        = (_VERSION == "Lua 5.1") and argsPack or table.pack
+local pack        = (_VERSION == "Lua 5.1") and l_argsPack or table.pack -- luacheck: compat
 
-local function changeIndentLevel(i)
+local function l_changeIndentLevel(i)
    s_indentLevel  = s_indentLevel + i
    s_indentString = blank:rep(s_indentLevel*2)
 end
 
-local function new(self)
+local function l_new(self)
    local o = {}
    setmetatable(o,self)
    self.__index = self
    o.print      = M._quiet
    o.printA     = M._quiet
+   o.printT     = M._quiet
    o.textA      = M._quiet
    o.start      = M._quiet
    o.fini       = M._quiet
@@ -126,7 +152,7 @@ end
 -- @param self Dbg object.
 function M.dbg(self)
    if (s_dbg == nil) then
-      s_dbg = new(self)
+      s_dbg = l_new(self)
    end
    return s_dbg
 end
@@ -154,6 +180,7 @@ function M.activateDebug(self, level, indentLevel)
    elseif (level > 0) then
       self.print            = M._print
       self.printA           = M._printA
+      self.printT           = M._printT
       self.textA            = M._textA
       self.start            = M._start
       self.fini             = M._fini
@@ -165,9 +192,10 @@ function M.activateDebug(self, level, indentLevel)
       if (s_indentLevel > 0) then
          s_indentString     = blank:rep(s_indentLevel*2)
       end
-   else 
+   else
       self.print      = M._quiet
       self.printA     = M._quiet
+      self.printT     = M._quiet
       self.textA      = M._quiet
       self.start      = M._quiet
       self.fini       = M._quiet
@@ -216,12 +244,12 @@ end
 
 --------------------------------------------------------------------------
 -- extract the verbosity level
-local function extractVPL(t)
+local function l_extractVPL(t)
    local vpl = t.level or s_vpl
    return vpl
 end
 
-local function startExtractVPL(t)
+local function l_startExtractVPL(t)
    local vpl = t.level or s_vpl
    s_levelA[#s_levelA+1] = vpl
    return vpl
@@ -230,7 +258,7 @@ end
 --------------------------------------------------------------------------
 -- Start of a routine
 function M._start(t)
-   s_vpl = startExtractVPL(t)
+   s_vpl = l_startExtractVPL(t)
    if (s_vpl > s_currentLevel) then return end
 
    io.stderr:write(s_indentString)
@@ -238,7 +266,7 @@ function M._start(t)
       io.stderr:write(tostring(t[i]))
    end
    io.stderr:write("{\n")
-   changeIndentLevel(1)
+   l_changeIndentLevel(1)
 
 end
 
@@ -281,9 +309,9 @@ end
 -- a warning was called.
 function M._warning(...)
    io.stderr:write("\n",s_prefix,"Warning: ")
-   local arg = pack(...)
-   for i = 1, arg.n do
-      io.stderr:write(arg[i])
+   local argA = pack(...)
+   for i = 1, argA.n do
+      io.stderr:write(argA[i])
    end
    s_warningCalled = true
 end
@@ -292,12 +320,12 @@ end
 -- Print error message and quit.
 function M._error(...)
    io.stderr:write("\n",s_prefix,"Error: ")
-   local arg = pack(...)
-   for i = 1, arg.n do
-      io.stderr:write(arg[i])
+   local argA = pack(...)
+   for i = 1, argA.n do
+      io.stderr:write(argA[i])
    end
    io.stderr:write("\n")
-   errorExit()
+   M.errorExit()
 end
 
 
@@ -319,7 +347,7 @@ end
 -- @param t input table.
 
 function M._print(t)
-   local vpl = extractVPL(t)
+   local vpl = l_extractVPL(t)
    if (vpl > s_currentLevel) then
       return
    end
@@ -328,7 +356,7 @@ function M._print(t)
    for i = 1, #t do
       local v = t[i]
       if (type(v) == "table") then
-	 prtTbl(v)
+         l_rPrint(v, nil, s_indentString)
       else
          if (type(v) ~= "string") then
             v = tostring(v)
@@ -364,11 +392,11 @@ function M._textA(t)
       io.stderr:write(t.name,":\n")
    end
 
-   changeIndentLevel(1)
+   l_changeIndentLevel(1)
    for i = 1, #a do
       io.stderr:write(s_indentString, a[i])
    end
-   changeIndentLevel(-1)
+   l_changeIndentLevel(-1)
 end
 
 --------------------------------------------------------------------------
@@ -412,6 +440,11 @@ end
 -- flush the output to stderr.
 function M.flush()
    io.stderr:flush()
+end
+
+function M._printT(name, value)
+   require("serializeTbl")
+   io.stderr:write(serializeTbl{indent=s_indentString, name = name, value=value})
 end
 
 ---- finis -----

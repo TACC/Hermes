@@ -33,11 +33,20 @@ require("strict")
 --------------------------------------------------------------------------
 
 require("string_utils")
+local getenv    = os.getenv
+local TILDE     = getenv("HOME") or "~"
 local lfs       = require("lfs")
 local access    = posix.access
+local stat      = posix.stat
 local concatTbl = table.concat
-local access    = posix.access
+local dbg       = require("Dbg"):dbg()
 
+
+local function l_argsPack(...)
+   local argA = { n = select("#", ...), ...}
+   return argA
+end
+local pack        = (_VERSION == "Lua 5.1") and l_argsPack or table.pack  -- luacheck: compat
 --------------------------------------------------------------------------
 -- find the absolute path to an executable.
 -- @param exec Name of executable
@@ -74,13 +83,56 @@ function findInPath(exec, path)
    end
    return result, found
 end
+
+--------------------------------------------------------------------------
+-- find the absolute path to an executable or nil if not found
+-- @param exec Name of executable
+-- @param path The path to use. If nil then use env PATH.
+function find_exec_path(exec, path)
+   local result  = nil
+   if ( exec == nil or exec == "" or exec:lower() == "none" ) then return result end
+   exec = exec:trim()
+   local i = exec:find(" ")
+   local cmd  = exec
+   local tail = ""
+   if (i) then
+      cmd  = exec:sub(1,i-1)
+      tail = exec:sub(i)
+   end
+
+   if (cmd:find("/")) then
+      if (access(cmd,"x")) then
+         return exec
+      else
+         return result
+      end
+   end
+
+   path    = path or os.getenv("PATH")
+   for dir in path:split(":") do
+      local fullcmd = pathJoin(dir, cmd)
+      if (access(fullcmd,"x")) then
+         result = fullcmd .. tail
+         break
+      end
+   end
+   return result
+end
+
 ------------------------------------------------------------------------
 -- Return true if path is a directory.  Note that a symlink to a
 -- directory is not a directory.
 -- @param d A file path
 function isDir(d)
    if (d == nil) then return false end
-   local t = posix.stat(d,"type")
+   local t = stat(d,"type")
+
+   -- If the file is a link then adding a '/' on the end
+   -- seems to tell stat to resolve the link to its final link.
+   if (t == "link") then
+      d = d .. '/'
+      t = stat(d,"type")
+   end
 
    local result = (t == "directory")
 
@@ -94,8 +146,20 @@ function isFile(fn)
    if (fn == nil) then return false end
    local t = posix.stat(fn,"type")
 
-   local result = ((t == "regular") or (t == "link"))
+   local result = t and t ~= "directory"
+   if (t == "link") then
+      result = realpath(fn)
+   end
+   return result
+end
 
+function exists(f)
+   if (f == nil) then return false end
+   local result = posix.stat(f,"type")
+
+   if (result == "link") then
+      result = realpath(f)
+   end
    return result
 end
 
@@ -104,7 +168,7 @@ end
 -- @param fn A file path
 function isExec(fn)
    if (fn == nil) then return false end
-   local result = posix.access(fn,"rx")
+   local result = access(fn,"rx")
    return result
 end
 
@@ -198,10 +262,10 @@ end
 -- and no trailing slash.
 
 function pathJoin(...)
-   local a = {}
-   local arg = { n = select('#', ...), ...}
-   for i = 1, arg.n  do
-      local v = arg[i]
+   local a    = {}
+   local argA = pack(...)
+   for i = 1, argA.n  do
+      local v = argA[i]
       if (v and v ~= '') then
          local vType = type(v)
          if (vType ~= "string") then
@@ -267,8 +331,9 @@ end
 -- when following symlinks
 -- @return A absolute path.
 
-function abspath (path, localDir)
+local function l_abspath (path, localDir)
    if (path == nil) then return nil end
+
    local cwd = lfs.currentdir()
    path = path:trim()
 
@@ -276,17 +341,16 @@ function abspath (path, localDir)
       path = pathJoin(cwd,path)
    end
 
-   local dir    = dirname(path)
-   local ival   = lfs.chdir(dir)
+   local dir  = dirname(path)
+   local ival = lfs.chdir(dir)
+   if (not ival) then return nil end
 
    local cdir   = lfs.currentdir()
    if (cdir == nil) then
       dbg.print{"lfs.currentdir(): is nil"}
    end
 
-   dir          = cdir or dir
-
-
+   dir  = cdir or dir
    path = pathJoin(dir, barefilename(path))
    local result = path
 
@@ -304,25 +368,120 @@ function abspath (path, localDir)
          lfs.chdir(cwd)
          return result
       end
-      result = abspath(rl, localDir)
+      result = l_abspath(rl, localDir)
    end
    lfs.chdir(cwd)
    return result
 end
 
+function realpath(path, localDir)
+   if (localDir or not posix.realpath) then
+      return l_abspath(path, localDir)
+   end
+   return posix.realpath(path)
+end
+
+
 --------------------------------------------------------------------------
 -- Remove leading and trail spaces and extra slashes.
 -- @param value A path
 -- @return A clean canonical path.
-function path_regularize(value)
+function path_regularize(value, full)
    if value == nil then return nil end
-   value = value:gsub("^%s+","")
-   value = value:gsub("%s+$","")
-   value = value:gsub("//+","/")
-   value = value:gsub("/%./","/")
-   value = value:gsub("/$","")
    if (value == '') then
-      value = ' '
+      return value
    end
+   local doubleSlash = value:find("[^/]//$")
+   value = value:gsub("^%s+", " ")
+   value = value:gsub("%s+$", "")
+   value = value:gsub("//+" , "/")
+   value = value:gsub("/%./", "/")
+   value = value:gsub("/$"  , "")
+   value = value:gsub("^~"  , TILDE)
+   local a    = {}
+   local aa   = {}
+   for dir in value:split("/") do
+      aa[#aa + 1] = dir
+   end
+
+   local first  = aa[1]
+   local icnt   = 2
+   local num    = #aa
+   if (first == ".") then
+      for i = 2, num do
+         if (aa[i] ~= ".") then
+            icnt = i
+            break
+         else
+            icnt = icnt + 1
+         end
+      end
+      a[1] = (icnt > num) and "." or aa[icnt]
+      icnt = icnt + 1
+   else
+      a[1] = first
+   end
+
+
+
+   if (full) then
+      for i = icnt, #aa do
+         local dir  = aa[i]
+         local prev = a[#a]
+         if (    dir == ".." and prev ~= "..") then
+            a[#a] = nil
+         elseif (dir ~= ".") then
+            a[#a+1] = dir
+         end
+      end
+   else
+      for i = icnt, #aa do
+         local dir  = aa[i]
+         local prev = a[#a]
+         if (dir ~= ".") then
+            a[#a+1] = dir
+         end
+      end
+   end
+
+   value = concatTbl(a,"/")
+
+   if (doubleSlash) then
+      value = value .. '//'
+   end
+
    return value
+end
+
+local function l_walk_dir(path)
+   local dirA  = {}
+   local fileA = {}
+   local attr = lfs.attributes(path)
+   if (attr and type(attr) == "table" and attr.mode == "directory" and
+       access(path,"x")) then
+      for file in lfs.dir(path) do
+         if ( file ~= '.' and file ~= '..') then
+            local fn   = pathJoin(path,file)
+            local mode = lfs.attributes(fn,'mode')
+            if (mode == 'directory') then
+               dirA[#dirA+1]   = file
+            else
+               fileA[#fileA+1] = file
+            end
+         end
+      end
+   end
+   return dirA, fileA
+end
+
+local function l_walker(root)
+   local dirA, fileA = l_walk_dir(root)
+   coroutine.yield(root,dirA,fileA)
+   for i = 1, #dirA do
+      l_walker(pathJoin(root,dirA[i]))
+   end
+end
+
+function dir_walk(path)
+   return coroutine.wrap(function () l_walker(path) end)
 end

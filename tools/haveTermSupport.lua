@@ -1,14 +1,16 @@
---------------------------------------------------------------------------
--- use io.popen to open a pipe to collect the output of a command.
--- @module capture
-_DEBUG      = false
-local posix = require("posix")
-
 require("strict")
 
-------------------------------------------------------------------------
+--------------------------------------------------------------------------
+-- Lmod License
+--------------------------------------------------------------------------
 --
---  Copyright (C) 2008-2014 Robert McLay
+--  Lmod is licensed under the terms of the MIT license reproduced below.
+--  This means that Lmod is free software and can be used for both academic
+--  and commercial purposes at absolutely no cost.
+--
+--  ----------------------------------------------------------------------
+--
+--  Copyright (C) 2008-2018 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -32,27 +34,22 @@ require("strict")
 --
 --------------------------------------------------------------------------
 
+local term = nil
+if (pcall(require,"term")) then
+   term = require("term")
+end
+local s_init     = true
+local s_haveTerm = false
+local getenv     = os.getenv
+function haveTermSupport()
 
-local dbg   = require("Dbg"):dbg()
-
-
---------------------------------------------------------------------------
--- Capture stdout from *cmd*
--- @param cmd a string that contains a unix command.
-
-function capture(cmd)
-   dbg.start{"capture(",cmd,")"}
-   dbg.print{"cwd: ",posix.getcwd(),"\n",level=2}
-   local p = io.popen(cmd)
-   if p == nil then
-      return nil
+   if (s_init) then
+      s_init     = false
+      s_haveTerm = (term ~= nil)
    end
-   local ret = p:read("*all")
-   p:close()
-   dbg.start{"capture output()",level=2}
-   dbg.print{ret}
-   dbg.fini("capture output")
-   dbg.fini("capture")
-   return ret
+   return s_haveTerm
 end
 
+function connected2Term()
+   return haveTermSupport() and getenv("TERM") and term.isatty(io.stderr)
+end
