@@ -8,7 +8,7 @@ Getting Started.
 
 This document describes how to get started with the TM testing
 manager.  This document is split up into two parts.  The first
-part describes how to install the lua scripting language and how to
+part describes how to install the Lua scripting language and how to
 install  the Hermes package of which "tm" is a part of.  The second
 part explains how to use the tool by way of an example.
 
@@ -33,7 +33,7 @@ to be a scripting language as well as library to be a configuration
 language to be embedded with other applications.  See www.lua.org for
 more details.
 
-To use lua in this context we need some libraries that do not come
+To use Lua in this context we need some libraries that do not come
 from the standard distribution.  
 
    $ wget http://downloads.sourceforge.net/project/lmod/lua-5.1.4.5.tar.gz
@@ -41,7 +41,7 @@ from the standard distribution.
 
 Change to the lua directory and follow the INSTALL file directions.
 
-The hermes package is much simplier to install.  Take the attached tar
+The hermes package is much simpler to install.  Take the attached tar
 ball and untar it where you wish it installed:
 
    $ tar xzf hermes-x.y.z.tar.gz
@@ -455,7 +455,7 @@ and tests parts:
       { id='t2', tol=1.01e-12},
    },
 
-So the "t1" test has a resonable tolerance of 1.01e-6 where as the
+So the "t1" test has a reasonable tolerance of 1.01e-6 where as the
 "t2" test has an impossible tolerance  of 1.01e-12 so that test fails.
 
 
