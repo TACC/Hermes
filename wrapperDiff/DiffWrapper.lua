@@ -14,10 +14,20 @@ function DiffWrapper:execute(myTable)
    local modA       = { '_' .. removeExt(barefilename(origA[1])) .. ".left",
                         '_' .. removeExt(barefilename(origA[2])) .. ".right",}
    local cmdA       = {}
+   local pattA      = {}
    local cmdLine
 
+   pattA[#pattA + 1] = " -e 's/Lua: Version.*/Lua: Version/g'"
+   pattA[#pattA + 1] = " -e 's/suite: Version.*//g'"
+   pattA[#pattA + 1] = " -e 's/by Robert McLay mclay@tacc.utexas.edu *//g'"
+   pattA[#pattA + 1] = " -e 's|https://lmod.readthedocs.io *||g'"
+
+   local pattStr = concatTbl(pattA,"")
+
    for i = 1,2 do
-      cmdA[#cmdA + 1 ] = "sed -e 's/Lua: Version.*/Lua: Version/g' -e 's/suite: Version.*//g' <"
+
+      cmdA[#cmdA + 1 ] = "sed"
+      cmdA[#cmdA + 1 ] = pattStr
       cmdA[#cmdA + 1 ] = origA[i]
       cmdA[#cmdA + 1 ] = ">"
       cmdA[#cmdA + 1 ] = modA[i]
