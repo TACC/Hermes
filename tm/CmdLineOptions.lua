@@ -196,8 +196,8 @@ end
 function expandOptions(aa)
    local a = {}
    for _,v in ipairs(aa) do
-      for s in v:split("[ :,]") do
-	 s = s:trim()
+      for word in v:split("[ :,]") do
+	 local s = word:trim()
 	 if (s ~= "") then
 	    a[#a+1] = s
 	 end
