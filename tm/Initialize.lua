@@ -163,8 +163,9 @@ function Initialize:readTargFile(fn)
    local s         = f:read("*all")
    local t         = {}
 
-   for line in s:split("\n") do
-      local i = line:find('#')
+   for myLine in s:split("\n") do
+      local line = myLine
+      local i    = line:find('#')
       if (i) then
          line = line:sub(1,i-1)
       end
