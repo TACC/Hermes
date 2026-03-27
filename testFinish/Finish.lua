@@ -49,8 +49,8 @@ function Finish.parseCSVResult(self, fn)
    local found  = false
    f:close()
 
-   for line in whole:split("\n") do
-      line        = line:trim()
+   for myLine in whole:split("\n") do
+      local line  = myLine:trim()
       local first = line:sub(1,1)
       if (first ~= "#" and line:len() > 0) then
          local word = line
