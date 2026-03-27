@@ -46,9 +46,9 @@ local function cleanPath(v)
    local pathA  = {}
 
    local idx = 0
-   for path in v:split(':') do
-      idx = idx + 1
-      path = path_regularize(path)
+   for myPath in v:split(':') do
+      idx        = idx + 1
+      local path = path_regularize(myPath)
       if (pathT[path] == nil) then
          pathT[path]     = { idx = idx, keep = false }
          pathA[#pathA+1] = path
